@@ -17,14 +17,14 @@ services:
       - /var/log:/var/log
     environment:
       - DEBUG=0
-      - GUNICORN_WORKERS=4
+      - GUNICORN_WORKERS=1
       - GUNICORN_BIND_ADDRESS=0.0.0.0:5000
-      - GUNICORN_LOG_LEVEL=warn
-      - GUNICORN_RELOAD=
+      - GUNICORN_LOG_LEVEL=info
+      - GUNICORN_RELOAD=--reload
     healthcheck:
       test: "curl -f http://localhost:5000/ping || exit 1"
       retries: 3
       interval: 30s
       timeout: 30s
     restart: always
-    scale: 2
+    scale: 1

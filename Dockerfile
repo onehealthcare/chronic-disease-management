@@ -10,5 +10,5 @@ RUN apt-get update && apt-get install software-properties-common -y && add-apt-r
 COPY requirements.txt /requirements.txt
 RUN pip3 install -r /requirements.txt
 
-CMD ["python3", "/opt/code/app.py"]
-
+WORKDIR /opt/code/
+CMD ["sh", "-c", "gunicorn app:app --bind=$GUNICORN_BIND_ADDRESS --workers=$GUNICORN_WORKERS --log-level=$GUNICORN_LOG_LEVEL $GUNICORN_RELOAD"]
