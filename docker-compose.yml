@@ -1,0 +1,22 @@
+version: '3.7'
+services:
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./ci/nginx/web.conf:/etc/nginx/conf.d/web.conf
+    depends_on:
+      - web
+    ports:
+      - "8079:8080"
+  web:
+    build: .
+    image: tonghs/web-env
+    volumes:
+      - .:/opt/code
+    healthcheck:
+      test: "curl -f http://localhost:5000/ping || exit 1"
+      retries: 3
+      interval: 30s
+      timeout: 30s
+    restart: always
+    scale: 5
