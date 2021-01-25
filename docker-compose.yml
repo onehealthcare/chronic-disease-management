@@ -1,10 +1,11 @@
 version: '3.7'
 services:
   nginx:
-    image: nginx:latest
+    image: jwilder/nginx-proxy
     volumes:
       - ./ci/nginx/web.conf:/etc/nginx/conf.d/web.conf
       - /var/log:/var/log
+      - /var/run/docker.sock:/tmp/docker.sock:ro
     depends_on:
       - web
     ports:
@@ -19,8 +20,9 @@ services:
       - DEBUG=0
       - GUNICORN_WORKERS=4
       - GUNICORN_BIND_ADDRESS=0.0.0.0:5000
-      - GUNICORN_LOG_LEVEL=warn
+      - GUNICORN_LOG_LEVEL=WARN
       - GUNICORN_RELOAD=
+      - GUNICORN_ACCESS_LOGFILE=-
     healthcheck:
       test: "curl -f http://localhost:5000/ping || exit 1"
       retries: 3
