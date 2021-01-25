@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   nginx:
-    image: jwilder/nginx-proxy
+    image: nginx:latest
     volumes:
       - ./ci/nginx/:/etc/nginx/conf.d/
       - /var/log:/var/log
