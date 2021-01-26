@@ -1,0 +1,6 @@
+---
+- hosts: web
+  remote_user: tonghs
+  tasks:
+  - name: update web repo and restart
+    shell: cd /home/tonghs/app/web-template && git pull --rebase && make restart
