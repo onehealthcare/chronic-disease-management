@@ -1,1 +1,1 @@
-ansible-playbook -i hosts start.yml -vvv
+ansible-playbook -i hosts start.yml -v

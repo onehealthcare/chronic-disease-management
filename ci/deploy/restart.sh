@@ -1,1 +1,1 @@
-ansible-playbook -i hosts restart.yml -vvv
+ansible-playbook -i hosts restart.yml -v
