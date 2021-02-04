@@ -9,5 +9,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: sed 's/COPY sources.list \/etc\/apt\/sources.list//g' Dockerfile > Dockerfile
+      - run: sed -i 's/COPY sources.list \/etc\/apt\/sources.list//g' Dockerfile
       - run: make test
