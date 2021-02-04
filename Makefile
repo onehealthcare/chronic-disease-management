@@ -1,11 +1,11 @@
 dev-image:
-	docker build . -t tonghs/web-template:0.1
+	docker build . -t tonghs/web-template
 
 run-server:
-	docker-compose up -d
+	docker-compose -f docker-compose.app.yml up -d
 
 run-dev-server:
-	docker-compose -f docker-compose-dev.yml up --scale web=1
+	docker-compose -f docker-compose.dev.yml up --scale web=1
 
 scale-reload:
 	docker-compose scale web=4
@@ -18,4 +18,4 @@ restart:
 	./restart.sh
 
 test:
-	ci/run_test.sh
+	docker-compose -f docker-compose.test.yml run --rm test
