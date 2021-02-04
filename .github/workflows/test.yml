@@ -10,4 +10,5 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: sed -i 's/COPY sources.list \/etc\/apt\/sources.list//g' Dockerfile
+      - run: sed -i 's/ipython//g' requirements.txt
       - run: make test
