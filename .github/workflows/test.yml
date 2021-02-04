@@ -1,12 +1,13 @@
-name: Run-Test
+name: Run test
 
 on:
   pull_request:
     types: [opened, synchronize]
 
 jobs:
-  basic:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - run: sed 's/COPY sources.list \/etc\/apt\/sources.list//g' Dockerfile > Dockerfile
       - run: make test
