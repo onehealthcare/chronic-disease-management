@@ -1,0 +1,11 @@
+version: '3.7'
+services:
+  test:
+    build: .
+    image: tonghs/web-template
+    command: bash -c 'pip3 install pytest pytest-mock && py.test --cache-clear -vv -s tests/'
+    volumes:
+      - .:/opt/code
+      - /var/log:/var/log
+    environment:
+      - DEBUG=0
