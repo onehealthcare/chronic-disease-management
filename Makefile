@@ -1,5 +1,5 @@
 dev-image:
-	docker build . -t tonghs/web-template:0.1
+	docker build . -t tonghs/web-template
 
 run-server:
 	docker-compose -f docker-compose.app.yml up -d

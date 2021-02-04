@@ -1,0 +1,12 @@
+name: Run-Test
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  basic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: make test
