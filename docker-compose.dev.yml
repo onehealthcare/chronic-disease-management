@@ -18,6 +18,7 @@ services:
       - .:/opt/code
       - /var/log:/var/log
     environment:
+      - PYTHONPATH=/opt/code
       - DEBUG=0
       - GUNICORN_WORKERS=1
       - GUNICORN_BIND_ADDRESS=0.0.0.0:5000

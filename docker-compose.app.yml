@@ -18,11 +18,17 @@ services:
       - /var/log:/var/log
     environment:
       - DEBUG=0
+      - PYTHONPATH=/opt/code
       - GUNICORN_WORKERS=4
       - GUNICORN_BIND_ADDRESS=0.0.0.0:5000
       - GUNICORN_LOG_LEVEL=WARN
       - GUNICORN_RELOAD=
       - GUNICORN_ACCESS_LOGFILE=-
+      - MYSQL_HOST=db
+      - MYSQL_PORT=3306
+      - MYSQL_USER=root
+      - MYSQL_PASSWD=tonghs
+      - MYSQL_DB=web-template
     healthcheck:
       test: "curl -f http://localhost:5000/ping || exit 1"
       retries: 3

@@ -3,9 +3,17 @@ services:
   test:
     build: .
     image: tonghs/web-template
-    command: bash -c 'pip3 install pytest pytest-mock && py.test --cache-clear -vv -s tests/'
+    command: bash -c 'pip3 install pytest pytest-mock && ci/run_test.sh'
     volumes:
       - .:/opt/code
       - /var/log:/var/log
     environment:
+      - PYTHONPATH=/opt/code
       - DEBUG=0
+      - MYSQL_HOST=db
+      - MYSQL_PORT=3306
+      - MYSQL_USER=root
+      - MYSQL_PASSWD=tonghs
+      - MYSQL_DB=web_template
+    depends_on:
+      - db
