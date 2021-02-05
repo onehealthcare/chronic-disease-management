@@ -1,14 +1,9 @@
 import datetime
-from peewee import Model, DateTimeField, DoesNotExist
+
+from config import MYSQL_DB, MYSQL_HOST, MYSQL_PASSWD, MYSQL_PORT, MYSQL_USER
+from peewee import DateTimeField, DoesNotExist, Model
 from playhouse.pool import PooledMySQLDatabase
 
-from config import (
-    MYSQL_HOST,
-    MYSQL_PORT,
-    MYSQL_USER,
-    MYSQL_PASSWD,
-    MYSQL_DB,
-)
 
 db = PooledMySQLDatabase(MYSQL_DB, user=MYSQL_USER, password=MYSQL_PASSWD,
                          host=MYSQL_HOST, port=MYSQL_PORT)

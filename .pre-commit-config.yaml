@@ -67,6 +67,8 @@ repos:
         name: Check type annotations w/ mypy
         args:
           - --txt-report=ci/
+          - --ignore-missing-imports
         additional_dependencies:
           - lxml
           - pydantic
+          - peewee

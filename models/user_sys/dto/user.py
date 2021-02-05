@@ -1,13 +1,14 @@
-from typing import Optional
 import datetime
+from typing import Optional
+
 from pydantic import BaseModel
 
 
 class UserDTO(BaseModel):
     id: int
     name: str
-    bits: int
     status: int
+    bits: int
     ident: str
     created_at: datetime.datetime
     updated_at: Optional[datetime.datetime]
