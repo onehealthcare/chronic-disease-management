@@ -2,6 +2,7 @@ import datetime
 from typing import Optional
 
 from pydantic import BaseModel
+from utils.datetime_utils import _datetime
 
 
 class UserDTO(BaseModel):
@@ -21,5 +22,5 @@ class UserDTO(BaseModel):
             bits=dao.bits,
             status=dao.status,
             ident=dao.ident,
-            created_at=dao.created_at
+            created_at=_datetime(dao.created_at)
         )
