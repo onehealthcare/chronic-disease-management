@@ -1,0 +1,72 @@
+---
+exclude: >
+  (?x)^(
+    .*/mypy/vendor/byteplay.py|
+    libs/ec/priv_tool.py
+  )$
+default_language_version:
+  python: python3.6
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks.git
+    rev: v3.2.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-ast
+      - id: check-case-conflict
+      - id: check-docstring-first
+      - id: check-json
+      - id: pretty-format-json
+        args:
+          - --autofix
+          - --no-ensure-ascii
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: check-xml
+      - id: debug-statements
+      - id: end-of-file-fixer
+        exclude: ^generated/.*$
+      - id: trailing-whitespace
+  - repo: https://gitlab.com/pycqa/flake8
+    rev: 3.8.3
+    hooks:
+      - id: flake8
+        args:
+          - --ignore=E722,E741,E501,E228,E226,E261,E266,E128,E402,W503,W605
+          - --builtins=G,request
+          - --jobs=1
+        exclude: ^generated/.*$
+        additional_dependencies:
+          - flake8-print
+  - repo: https://github.com/miki725/importanize/
+    rev: '0.7'
+    hooks:
+      - id: importanize
+        name: Fix imports order
+        args:
+          - --verbose
+        exclude: ^generated/.*$
+  - repo: https://github.com/xiachufang/py-find-injection
+    rev: 2fbeba25c1cc1b41c906a1db235d9a3b84151b68
+    hooks:
+      - id: py-find-injection
+        name: Check potential SQL injection
+  - repo: https://github.com/pre-commit/mirrors-autopep8
+    rev: v1.5.4
+    hooks:
+      - id: autopep8
+        name: Fix code style w/ autopep8
+        args:
+          - --in-place
+          - --ignore=E722,E741,E501,E228,E226,E261,E266,E128,E402,E241,W503
+          - --select=W504
+        exclude: ^generated/.*$
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v0.782
+    hooks:
+      - id: mypy
+        name: Check type annotations w/ mypy
+        args:
+          - --txt-report=ci/
+        additional_dependencies:
+          - lxml
+          - pydantic

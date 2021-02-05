@@ -31,4 +31,5 @@ class Base(Model):
     def save(self, *args, **kwargs):
         if hasattr(self, 'updated_at'):
             self.updated_at = datetime.datetime.now()
+            self._updated_at = datetime.datetime.now()
         return super(Base, self).save(*args, **kwargs)
