@@ -1,23 +1,45 @@
-import os
+import sentry_sdk
+from config import DEBUG, SENTRY_DSN
 from flask import Flask
-from models.user_sys import get_user_by_id, UserDTO, UserNotFoundException
+from models.init_db import db
+from sentry_sdk.integrations.flask import FlaskIntegration
+from views.main import app as main_app
+from views.render import error
+
+
+sentry_sdk.init(
+    dsn=SENTRY_DSN,
+    integrations=[FlaskIntegration()]
+)
 
 app = Flask(__name__)
 
 
-@app.route('/')
-def hello_world():
-    try:
-        user: UserDTO = get_user_by_id(1)
-    except UserNotFoundException:
-        return 'user not found 1'
-    return f'Hello World!{os.getpid()}: {user.name}'
+@app.errorhandler(500)
+def handle_500(e):
+    original = str(getattr(e, "original_exception", e))
+    return error(error=original, status_code=500)
 
 
-@app.route('/ping')
-def ping():
-    return 'ok'
+@app.errorhandler(404)
+def handle_404(e):
+    return error(error='Not Found', status_code=404)
+
+
+@app.before_request
+def conn():
+    if db.is_closed():
+        db.connect()
+
+
+@app.teardown_request
+def close(e):
+    if not db.is_closed():
+        db.close()
+
+
+app.register_blueprint(main_app)
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", debug=False)
+    app.run(host="0.0.0.0", debug=DEBUG)

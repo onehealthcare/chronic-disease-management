@@ -1,5 +1,6 @@
 import os
 
+
 DEBUG = bool(os.environ.get('DEBUG', False))
 
 # MySQL
@@ -10,4 +11,4 @@ MYSQL_PASSWD = os.environ.get('MYSQL_PASSWD', 'tonghs')
 MYSQL_DB = os.environ.get('MYSQL_DB', 'web-template')
 
 # sentry
-SENTRY_DSN = "https://2c959e2e5cc945fb88b543644e281ddf@sentry.io/1840050"
+SENTRY_DSN = "https://ad8effa8e62040b6826c8a44b025ad6c@o327962.ingest.sentry.io/5624232"
