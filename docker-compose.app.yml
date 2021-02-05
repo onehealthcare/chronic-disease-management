@@ -29,6 +29,7 @@ services:
       - MYSQL_USER=root
       - MYSQL_PASSWD=tonghs
       - MYSQL_DB=web-template
+      - LOG_PATH=/var/log/web-template
     healthcheck:
       test: "curl -f http://localhost:5000/ping || exit 1"
       retries: 3
