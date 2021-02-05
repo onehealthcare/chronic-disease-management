@@ -19,3 +19,6 @@ restart:
 
 test:
 	docker-compose -f docker-compose.yml -f docker-compose.test.yml run --rm test && docker-compose down
+
+
+.PHONY: dev-image run-server run-dev-server scale restart-rebuild restart test
