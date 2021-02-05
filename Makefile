@@ -7,7 +7,7 @@ run-server:
 run-dev-server:
 	docker-compose -f docker-compose.dev.yml up --scale web=1
 
-scale-reload:
+scale:
 	docker-compose scale web=4
 	docker exec -it web-template_nginx_1 nginx -s reload
 
@@ -15,7 +15,7 @@ restart-rebuild:
 	docker-compose up -d --no-deps --build web
 
 restart:
-	./restart.sh
+	./ci/restart.sh
 
 test:
-	docker-compose -f docker-compose.test.yml run --rm test
+	docker-compose -f docker-compose.yml -f docker-compose.test.yml run --rm test && docker-compose down

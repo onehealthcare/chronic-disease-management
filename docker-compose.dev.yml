@@ -13,10 +13,12 @@ services:
   web:
     build: .
     image: tonghs/web-template
+    command: bash -c './dev.sh'
     volumes:
       - .:/opt/code
       - /var/log:/var/log
     environment:
+      - PYTHONPATH=/opt/code
       - DEBUG=0
       - GUNICORN_WORKERS=1
       - GUNICORN_BIND_ADDRESS=0.0.0.0:5000
@@ -24,10 +26,14 @@ services:
       - GUNICORN_RELOAD=--reload
       - GUNICORN_ACCESS_LOGFILE=-
       - PYTHONUNBUFFERED=TRUE
+      - MYSQL_HOST=192.168.44.6
+      - MYSQL_PORT=3306
+      - MYSQL_USER=root
+      - MYSQL_PASSWD=tonghs
+      - MYSQL_DB=web-template
     healthcheck:
       test: "curl -f http://localhost:5000/ping || exit 1"
       retries: 3
       interval: 30s
       timeout: 30s
     restart: always
-    scale: 1
