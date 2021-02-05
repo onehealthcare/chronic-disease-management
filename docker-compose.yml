@@ -13,6 +13,10 @@ services:
      - MYSQL_HOST=192.168.44.6
      - MYSQL_PORT=3306
      - MYSQL_ROOT_PASSWORD=tonghs
-     - MYSQL_USER=tonghs  #创建 tonghs 用户
-     - MYSQL_PASSWORD=tonghs  #设置 tonghs 用户的密码
+     - MYSQL_USER=tonghs
+     - MYSQL_PASSWORD=tonghs
      - MYSQL_DB=web-template
+    networks:
+      default:
+        aliases:
+          - test-db
