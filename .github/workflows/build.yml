@@ -5,7 +5,7 @@ on:
     branches: main
 
 jobs:
-  login-registry:
+  login-build-push:
     runs-on: ubuntu-latest
     steps:
       -
@@ -15,19 +15,19 @@ jobs:
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       -
-        name: Login to GitLab
+        name: Login to uhub
         uses: docker/login-action@v1
         with:
-          registry: uhub.service.ucloud.cn
-          username: ${{ secrets.UHUB_USERNAME }}
-          password: ${{ secrets.UHUB_PASSWORD }}
+          registry: ${{ secrets.REGISTRY_URL }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
       -
         name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: tonghs/web-template:latest
+          tags: ${{ secrets.REGISTRY_URL }}/tonghs/web-template:latest
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
