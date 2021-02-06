@@ -1,3 +1,4 @@
+import pytest
 from models.const import CommonStatus
 from models.user_sys import (
     UserNotFoundException,
@@ -13,12 +14,8 @@ def test_user():
     user_name = 'tonghs'
     ident = 'xxx'
 
-    try:
+    with pytest.raises(UserNotFoundException):
         get_user_by_id(user_id)
-    except UserNotFoundException:
-        pass
-    else:
-        raise
 
     user = create_user(name=user_name, ident=ident)
     assert user.name == user_name
@@ -34,3 +31,9 @@ def test_user():
     delete_user(user.id)
     user = get_user_by_id(user.id)
     assert user.status == CommonStatus.DELETED
+
+    with pytest.raises(UserNotFoundException):
+        delete_user(4)
+
+    with pytest.raises(UserNotFoundException):
+        update_status_by_user_id(4, CommonStatus.INIT)

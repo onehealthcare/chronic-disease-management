@@ -1,9 +1,9 @@
 version: '3.7'
 services:
   test:
-    build: .
+    build .
     image: tonghs/web-template
-    command: bash -c 'pip3 install pytest pytest-mock && ci/run_test.sh'
+    command: bash -c 'pip3 install pytest pytest-mock pytest-cov && ci/run_test.sh'
     volumes:
       - .:/opt/code
       - /var/log:/var/log

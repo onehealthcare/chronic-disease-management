@@ -1,4 +1,4 @@
-dev-image:
+build-image:
 	docker build . -t tonghs/web-template
 
 run-server:
@@ -18,7 +18,7 @@ restart:
 	./ci/restart.sh
 
 test:
-	docker-compose -f docker-compose.yml -f docker-compose.test.yml run --rm test && docker-compose down
+	docker-compose -f docker-compose.yml -f docker-compose.test.yml run --rm test
 
 
-.PHONY: dev-image run-server run-dev-server scale restart-rebuild restart test
+.PHONY: build-image run-server run-dev-server scale restart-rebuild restart test

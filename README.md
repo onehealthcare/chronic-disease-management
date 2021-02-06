@@ -16,7 +16,7 @@
 
 ## 开发
 ```shell
-make dev-image && make run-dev-server
+make build-image && make run-dev-server
 ```
 
 
