@@ -1,6 +1,6 @@
 # web-template
 
-![run test](https://github.com/tonghs/web-template/workflows/Run%20test/badge.svg)
+![run test](https://github.com/tonghs/web-template/workflows/test/badge.svg)
 
 集成了一些常用功能的 wesite template，基于 Python3 和 Flask，其中包括：
 - Python3
