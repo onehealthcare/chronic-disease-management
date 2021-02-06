@@ -15,9 +15,9 @@ jobs:
       - run: sed -i 's/--cov-report=html/--cov-report=xml/g' ci/run_test.sh
       - run: docker-compose -f docker-compose.yml up -d
       - run: make test
-	  - uses: codecov/codecov-action@v1
-	    with:
-	  	  token: ${{ secrets.CODECOV_TOKEN }}
-	  	  name: codecov-umbrella # optional
-	  	  fail_ci_if_error: true # optional (default = false)
-	  	  verbose: true # optional (default = false)
+      - uses: codecov/codecov-action@v1
+        with:
+      	  token: ${{ secrets.CODECOV_TOKEN }}
+      	  name: codecov-umbrella # optional
+      	  fail_ci_if_error: true # optional (default = false)
+      	  verbose: true # optional (default = false)
