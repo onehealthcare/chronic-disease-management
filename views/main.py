@@ -1,7 +1,7 @@
 import os
+
 import peewee
 import simplejson
-
 from flask import Blueprint, request
 from models.user_sys import (
     UserDTO,
@@ -22,20 +22,12 @@ def hello_world():
     return ok('hello world')
 
 
-@app.route('/user')
-def query_user():
-    _user_id: str = request.args.get('user_id', '')
+@app.route('/user/<int:user_id>/')
+def query_user(user_id):
     msg: str = ""
 
-    if not _user_id:
+    if not user_id:
         return ok('hello world')
-
-    try:
-        user_id: int = int(_user_id)
-    except (ValueError, TypeError):
-        msg = f'user_id is not valid: {_user_id}'
-        logger.error(msg)
-        return error(msg)
 
     try:
         user: UserDTO = get_user_by_id(user_id)
@@ -48,7 +40,7 @@ def query_user():
     return ok(f'Hello World!{os.getpid()}: {user.name}')
 
 
-@app.route('/user', methods=['POST'])
+@app.route('/user/', methods=['POST'])
 def _create_user():
     data = request.get_json()
     logger.info(f"create_user,requeset,{simplejson.dumps(data)}")
@@ -60,7 +52,7 @@ def _create_user():
     try:
         user = create_user(name=name, ident=ident)
     except peewee.IntegrityError:
-        return error('存在同名用户')
+        return error('存在同名用户', 500)
     return ok(content=user.dict())
 
 
