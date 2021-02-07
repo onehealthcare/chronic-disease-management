@@ -3,7 +3,7 @@ services:
   nginx:
     image: nginx:latest
     volumes:
-      - ./ci/nginx/web.conf:/etc/nginx/conf.d/web.conf
+      - ./ci/nginx/conf.d/:/etc/nginx/conf.d/
       - /var/log:/var/log
       - /var/run/docker.sock:/tmp/docker.sock:ro
     depends_on:
