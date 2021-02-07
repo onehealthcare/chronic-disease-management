@@ -6,7 +6,6 @@ services:
       - ./ci/nginx/conf.d/:/etc/nginx/conf.d/
       - ./ci/nginx/nginx.conf:/etc/nginx/nginx.conf
       - /var/log:/var/log
-      - /var/run/docker.sock:/tmp/docker.sock:ro
     depends_on:
       - web
     ports:
