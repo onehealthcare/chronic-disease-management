@@ -1,6 +1,7 @@
 import os
-
+import peewee
 import simplejson
+
 from flask import Blueprint, request
 from models.user_sys import (
     UserDTO,
@@ -32,7 +33,7 @@ def query_user():
     try:
         user_id: int = int(_user_id)
     except (ValueError, TypeError):
-        msg = f'user_id is not valid: {user_id}'
+        msg = f'user_id is not valid: {_user_id}'
         logger.error(msg)
         return error(msg)
 
@@ -56,7 +57,10 @@ def _create_user():
         return error("name is required")
 
     ident: str = data.get('ident', '')
-    user = create_user(name=name, ident=ident)
+    try:
+        user = create_user(name=name, ident=ident)
+    except peewee.IntegrityError:
+        return error('存在同名用户')
     return ok(content=user.dict())
 
 
