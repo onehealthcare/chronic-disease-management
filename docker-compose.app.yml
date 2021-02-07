@@ -16,6 +16,7 @@ services:
     volumes:
       - .:/opt/code
       - /var/log:/var/log
+      - ./ci/hosts:/etc/hosts
     environment:
       - DEBUG=0
       - PYTHONPATH=/opt/code
