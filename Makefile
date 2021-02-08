@@ -11,14 +11,15 @@ scale:
 	docker-compose -f docker-compose.app.yml scale web=4
 	docker exec -it web-template_nginx_1 nginx -s reload
 
-restart-rebuild:
+rebuild:
 	docker-compose -f docker-compose.app.yml up -d --no-deps --build web
 
 restart:
-	./ci/restart.sh
+	sudo docker ps | grep web-template | grep -v nginx | awk '{print $$NF}' | xargs -o -I {} sudo docker exec -it {} /bin/bash -c "ps -C gunicorn fch -o pid | head -n 1 | xargs kill -HUP && echo {}"
+
 
 test:
 	docker-compose -f docker-compose.yml -f docker-compose.test.yml run --rm test
 
 
-.PHONY: build-image run-server run-dev-server scale restart-rebuild restart test
+.PHONY: build-image run-server run-dev-server scale rebuild restart test
