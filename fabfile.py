@@ -31,3 +31,14 @@ def deploy(c):
 
     # restart
     hosts.run(f'cd {path} && make restart', pty=True)
+
+
+@task
+def restart(c):
+    hosts: List[Group] = Group(*UBUNTU_HOSTS)
+    path: str = "/home/tonghs/app/web-template"
+    # git sync
+    # hosts.run(f'cd {path} && git checkout . && git pull --rebase')
+
+    # restart
+    hosts.run(f'cd {path} && make restart', pty=True)
