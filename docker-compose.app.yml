@@ -9,7 +9,7 @@ services:
     depends_on:
       - web
     ports:
-      - "80:8080"
+      - "8079:8080"
   web:
     build: .
     image: tonghs/web-template
