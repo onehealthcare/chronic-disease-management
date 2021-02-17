@@ -15,7 +15,7 @@ rebuild:
 	docker-compose -f docker-compose.app.yml up -d --no-deps --build web
 
 restart:
-	sudo docker ps | grep web-template | grep -v nginx | awk '{print $$NF}' | xargs -o -I {} sudo docker exec -it {} /bin/bash -c "ps -C gunicorn fch -o pid | head -n 1 | xargs kill -HUP && echo {}"
+	sudo docker ps | grep web-template | grep -v nginx | awk '{print $$NF}' | xargs -o -I {} sudo docker exec -it {} /bin/bash -c "ps -C gunicorn fch -o pid | head -n 1 | xargs kill -HUP && echo restart {} ... done"
 
 test:
 	docker-compose -f docker-compose.yml -f docker-compose.test.yml run --rm test
