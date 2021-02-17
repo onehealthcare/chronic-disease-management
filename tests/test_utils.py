@@ -1,6 +1,10 @@
 import datetime
+import os
+import shutil
 
 import pytest
+from config import LOG_PATH
+from utils import logger as _logger
 from utils.datetime_utils import (
     _date,
     _datetime,
@@ -93,3 +97,38 @@ def test_misc():
     assert not is_within_a_week(dt, now)
     assert is_within_a_week(dt, datetime.datetime(2021, 1, 7, 12, 3, 4))
     assert not is_within_a_week(dt, datetime.datetime(2021, 2, 7, 12, 3, 4))
+
+
+def test_logger():
+    log_path = os.path.join(LOG_PATH, 'tests/test_utils')
+    if os.path.exists(log_path):
+        shutil.rmtree(log_path)
+
+    logger = _logger('tests.test_utils')
+    logger.info('test info')
+    logger.warning('test warning')
+    logger.error('test error')
+
+    path = os.path.join(LOG_PATH, 'tests/test_utils/log')
+    f = open(path, 'r')
+    txt = f.read()
+
+    assert 'INFO test info' in txt
+    assert 'WARNING test warning' in txt
+    assert 'ERROR test error' in txt
+
+    f.close()
+
+    logger2 = _logger('tests.test_utils')
+    logger2.info('test info2')
+    logger2.warning('test warning2')
+    logger2.error('test error2')
+
+    f = open(path, 'r')
+    txt = f.read()
+
+    assert 'INFO test info2' in txt
+    assert 'WARNING test warning2' in txt
+    assert 'ERROR test error2' in txt
+
+    f.close()
