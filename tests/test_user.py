@@ -1,3 +1,5 @@
+import datetime
+
 import pytest
 from models.const import CommonStatus
 from models.user_sys import (
@@ -22,6 +24,9 @@ def test_user():
     assert user.ident == ident
     assert user.id is not None
     assert user.created_at is not None
+
+    now = datetime.datetime.now()
+    assert (now - user.created_at).seconds < 300
 
     update_status_by_user_id(user.id, CommonStatus.INIT)
 

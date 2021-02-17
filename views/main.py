@@ -9,12 +9,12 @@ from models.user_sys import (
     create_user,
     get_user_by_id,
 )
-from utils import logger
+from utils import logger as _logger
 from views.render import error, ok
 
 
 app = Blueprint('main_app', __name__)
-logger = logger('views.main')
+logger = _logger('views.main')
 
 
 @app.route('/')
