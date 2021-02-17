@@ -20,5 +20,7 @@ restart:
 test:
 	docker-compose -f docker-compose.yml -f docker-compose.test.yml run --rm test
 
+deploy:
+	git pull --rebase && fab deploy
 
-.PHONY: build-image run-server run-dev-server scale rebuild restart test
+.PHONY: build-image run-server run-dev-server scale rebuild restart test deploy
