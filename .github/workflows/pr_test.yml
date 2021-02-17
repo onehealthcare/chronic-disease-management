@@ -12,5 +12,8 @@ jobs:
       - run: sed -i 's/COPY ci\/sources.list \/etc\/apt\/sources.list//g' Dockerfile
       - run: sed -i 's/ -i http:\/\/mirrors.aliyun.com\/pypi\/simple\/ --extra-index-url https:\/\/pypi.python.org\/simple --trusted-host mirrors.aliyun.com//g' Dockerfile
       - run: sed -i 's/ipython//g' requirements.txt
+      - run: sed -i 's/gunicorn==.*//g' requirements.txt
+      - run: sed -i 's/gevent==.*//g' requirements.txt
+      - run: sed -i 's/psutil==.*//g' requirements.txt
       - run: docker-compose -f docker-compose.yml up -d
       - run: make test
