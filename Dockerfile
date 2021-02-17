@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install software-properties-common -y && add-apt-r
 
 COPY requirements.txt /requirements.txt
 RUN pip3 install -r /requirements.txt -i http://mirrors.aliyun.com/pypi/simple/ --extra-index-url https://pypi.python.org/simple --trusted-host mirrors.aliyun.com
+RUN rm -rf /root/.cache && rm -rf /tmp/*
 
 WORKDIR /opt/code/
 CMD ["sh", "-c", "gunicorn app:app --bind=$GUNICORN_BIND_ADDRESS --workers=$GUNICORN_WORKERS --log-level=$GUNICORN_LOG_LEVEL $GUNICORN_RELOAD --access-logfile=$GUNICORN_ACCESS_LOGFILE --worker-class gevent"]
