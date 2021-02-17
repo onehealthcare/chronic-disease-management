@@ -1,4 +1,4 @@
-name: merge to main branch(test and build docker image)
+name: merge to main branch
 
 on:
   push:
