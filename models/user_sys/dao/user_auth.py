@@ -18,10 +18,6 @@ class UserAuthDAO(Base):
         table_name = 'user_auth'
 
     @classmethod
-    def get_by_id(cls, id: int) -> 'UserAuthDAO':
-        return UserAuthDAO.get(UserAuthDAO.id == id)
-
-    @classmethod
     def get_by_user_id_and_provider(cls, user_id: int, provider: int) -> 'UserAuthDAO':
         return UserAuthDAO.get(UserAuthDAO.user_id == user_id,
                                UserAuthDAO.provider == provider)
