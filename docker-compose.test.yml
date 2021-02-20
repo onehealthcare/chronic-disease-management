@@ -3,7 +3,7 @@ services:
   test:
     build: .
     image: tonghs/web-template
-    command: bash -c 'pip3 install pytest pytest-mock pytest-cov && ci/run_test.sh'
+    command: bash -c 'pip3 install -i http://mirrors.aliyun.com/pypi/simple/ --extra-index-url https://pypi.python.org/simple --trusted-host mirrors.aliyun.com pytest pytest-mock pytest-cov && ci/run_test.sh'
     volumes:
       - .:/opt/code
       - /var/log:/var/log

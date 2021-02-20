@@ -6,7 +6,7 @@ services:
      --character-set-server=utf8mb4
      --collation-server=utf8mb4_general_ci
      --explicit_defaults_for_timestamp=true
-    image: mysql:5.7.16
+    image: mysql:5.7
 
     environment:
      - TZ=Asia/Shanghai

@@ -1,5 +1,4 @@
 import datetime
-from typing import Optional
 
 from pydantic import BaseModel
 from utils.datetime_utils import _datetime
@@ -12,7 +11,6 @@ class UserDTO(BaseModel):
     bits: int
     ident: str
     created_at: datetime.datetime
-    updated_at: Optional[datetime.datetime]
 
     @classmethod
     def from_dao(cls, dao):
