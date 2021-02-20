@@ -3,6 +3,7 @@ from config import DEBUG, SENTRY_DSN
 from flask import Flask
 from models.init_db import db
 from sentry_sdk.integrations.flask import FlaskIntegration
+from views.account import app as account_app
 from views.main import app as main_app
 from views.render import error
 
@@ -39,6 +40,7 @@ def close(e):
 
 
 app.register_blueprint(main_app)
+app.register_blueprint(account_app)
 
 
 if __name__ == '__main__':
