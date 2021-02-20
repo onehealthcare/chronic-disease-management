@@ -15,4 +15,4 @@ from wechatpy.client.api import WeChatWxa
 db = PooledMySQLDatabase(MYSQL_DB, user=MYSQL_USER, password=MYSQL_PASSWD,
                          host=MYSQL_HOST, port=MYSQL_PORT)
 
-wxapp = WeChatWxa(WeChatClient(WXAPP_ID, WXAPP_SECRET))
+wxapp_client = WeChatWxa(WeChatClient(WXAPP_ID, WXAPP_SECRET))
