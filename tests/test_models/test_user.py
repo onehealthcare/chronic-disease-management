@@ -51,6 +51,11 @@ def test_user():
     with pytest.raises(UserNotFoundException):
         update_status_by_user_id(4, CommonStatus.INIT)
 
+    # 创建一样 user_name 的用户
+    user = create_user(name=user_name, ident=ident)
+    assert user_name in user.name
+    assert len(user.name) == len(user_name) + 5
+
 
 def test_user_auth():
     user_id = 100

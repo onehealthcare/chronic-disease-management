@@ -1,3 +1,5 @@
+import string
+
 from models.const import CommonStatus
 from models.init_db import db
 from models.user_sys.dao.user import UserDAO
@@ -8,6 +10,7 @@ from models.user_sys.exceptions import (
     UserAuthNotFoundException,
     UserNotFoundException,
 )
+from utils.str_utils import random_str
 
 
 def get_user_by_id(user_id: int) -> UserDTO:
@@ -18,8 +21,20 @@ def get_user_by_id(user_id: int) -> UserDTO:
     return UserDTO.from_dao(user)
 
 
+def find_avaliable_name(original_name):
+    name = original_name
+    while True:
+        randstr = random_str(4)
+
+        for i in [''] + list(string.ascii_lowercase):
+            if not UserDAO.get_by_name(name=name):
+                return name
+            name = '%s_%s%s' % (original_name, randstr, i)
+
+
 def create_user(name: str, ident: str = "") -> UserDTO:
-    user = UserDAO.create(name=name, ident=ident)
+    name = find_avaliable_name(name)
+    user: UserDAO = UserDAO.create(name=name, ident=ident)
     return UserDTO.from_dao(user)
 
 
