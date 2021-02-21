@@ -19,3 +19,7 @@ LOG_PATH = os.environ.get('LOG_PATH', "/var/log/web-template")
 # 微信小程序
 WXAPP_ID = os.environ.get('WXAPP_ID', '')
 WXAPP_SECRET = os.environ.get('WXAPP_SECRET', '')
+
+
+# jwt
+JWT_SECRET = os.environ.get('JWT_SECRET', 'you-secret')
