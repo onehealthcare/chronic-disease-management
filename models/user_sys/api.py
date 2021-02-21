@@ -23,6 +23,8 @@ def get_user_by_id(user_id: int) -> UserDTO:
 
 def find_avaliable_name(original_name):
     name = original_name
+    if not name:
+        name = '用户'
     while True:
         randstr = random_str(4)
 
