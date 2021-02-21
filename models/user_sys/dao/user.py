@@ -20,6 +20,10 @@ class UserDAO(Base):
     def get_by_id(cls, user_id: int) -> 'UserDAO':
         return UserDAO.get(UserDAO.id == user_id)
 
+    @classmethod
+    def get_by_name(cls, name: str) -> 'UserDAO':
+        return UserDAO.get(UserDAO.name == name)
+
     def update_status(self, status: int):
         self.status = status
         self.save()

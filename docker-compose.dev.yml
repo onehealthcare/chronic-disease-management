@@ -29,9 +29,11 @@ services:
       - MYSQL_HOST=${MYSQL_HOST:-db}
       - MYSQL_PORT=${MYSQL_PORT:-3306}
       - MYSQL_USER=${MYSQL_USER:-root}
-      - MYSQL_PASSWD=${MYSQL_USER:-tonghs}
+      - MYSQL_PASSWD=${MYSQL_PASSWD:-tonghs}
       - MYSQL_DB=${MYSQL_DB:-web-template}
       - LOG_PATH=/var/log/web-template
+      - WXAPP_ID=${WXAPP_ID:-wxapp_id}
+      - WXAPP_SECRET=${WXAPP_SECRET:-wxapp_secret}
     healthcheck:
       test: "curl -f http://localhost:5000/ping || exit 1"
       retries: 3
