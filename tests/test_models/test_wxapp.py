@@ -1,6 +1,6 @@
 import pytest
 from models.init_db import wxapp_client
-from models.wxapp import code_to_session
+from models.wxapp import InvalidAuthCodeError, code_to_session
 
 
 @pytest.fixture()
@@ -12,6 +12,11 @@ def wxapp_client_monkey_patch():
         }
 
     setattr(wxapp_client, 'code_to_session', _code_to_session)
+
+
+def test_code_to_session_exception():
+    with pytest.raises(InvalidAuthCodeError):
+        code_to_session('aaa')
 
 
 def test_code_to_session(wxapp_client_monkey_patch):
