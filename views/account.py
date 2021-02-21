@@ -47,6 +47,6 @@ def login_via_wxapp():
                                  provider=UserAuthProvider.WXAPP,
                                  detail_json=simplejson.dumps(detail))
 
-    acccess_token, refresh_token = get_jwt(user_id=user.id, user_name=user.name)
+    access_token, refresh_token = get_jwt(user_id=user.id, user_name=user.name)
 
-    return ok(dump_account(user, acccess_token, refresh_token))
+    return ok(dump_account(user, access_token, refresh_token))
