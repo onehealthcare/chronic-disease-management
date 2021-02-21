@@ -4,6 +4,7 @@ from typing import Any, Dict, Tuple
 import jwt
 from config import JWT_SECRET
 from jwt.exceptions import DecodeError, InvalidSignatureError
+from models.token.exceptions import InvalidTokenError
 
 
 def get_jwt(user_id: int, user_name: str) -> Tuple[bytes, bytes]:
@@ -29,15 +30,16 @@ def get_jwt(user_id: int, user_name: str) -> Tuple[bytes, bytes]:
 
 
 def decode_jwt(token: str) -> Dict:
-    return jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
+    try:
+        return jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
+    except (DecodeError, InvalidSignatureError):
+        raise InvalidTokenError
 
 
 def is_token_valid(token: str, user_id: int) -> bool:
     try:
         data = decode_jwt(token)
-    except DecodeError:
-        return False
-    except InvalidSignatureError:
+    except InvalidTokenError:
         return False
 
     if data.get('user_id', '') != user_id:

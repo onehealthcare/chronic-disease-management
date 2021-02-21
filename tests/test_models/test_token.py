@@ -1,8 +1,7 @@
 import time
 
-import jwt
 import pytest
-from models.token import decode_jwt, get_jwt, is_token_valid
+from models.token import InvalidTokenError, decode_jwt, get_jwt, is_token_valid
 
 
 def test_jwt():
@@ -30,5 +29,5 @@ def test_jwt():
 
     token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTQxNDQwMDQsImlhdCI6MTYxMzg4NDgwNCwidXNlcl9pZCI6MTAwLCJ1c2VyX25hbWUiOiJ0b25naHMifQ.Z1JSEJssGWW7_ohEtS1CwzqegWHu38S9RTy-aBhMqH0'
     assert not is_token_valid(token, user_id)
-    with pytest.raises(jwt.exceptions.InvalidSignatureError):
+    with pytest.raises(InvalidTokenError):
         decode_jwt(token)
