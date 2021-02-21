@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from models.init_db import wxapp_client
+from models.wxapp import code_to_session
 from utils import logger as _logger
 from views.common import ApiError
 from views.render import error, ok
@@ -16,6 +16,5 @@ def login_via_wxapp():
     if not code:
         return error(ApiError.invalid_wxapp_cod)
 
-    data = wxapp_client.code_to_session(code)
-
+    data = code_to_session(code)
     return ok(data)
