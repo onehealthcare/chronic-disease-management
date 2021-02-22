@@ -6,6 +6,7 @@ from models.user_sys.api import (
     delete_user_auth_by_user_id,
     get_user_by_id,
     get_user_by_third_party_id,
+    set_user_admin,
     update_status_by_user_id,
 )
 from models.user_sys.const import UserAuthProvider
@@ -27,6 +28,7 @@ __all__ = [
     'create_oauth_user',
     'get_user_by_third_party_id',
     'delete_user_auth_by_user_id',
+    'set_user_admin',
 
     'UserAuthProvider',
 

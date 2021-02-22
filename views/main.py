@@ -10,6 +10,7 @@ from models.user_sys import (
     get_user_by_id,
 )
 from utils import logger as _logger
+from views.middleware.auth import need_admin, need_login
 from views.render import error, ok
 
 
@@ -18,11 +19,13 @@ logger = _logger('views.main')
 
 
 @app.route('/')
+@need_login
 def hello_world():
     return ok('hello world')
 
 
 @app.route('/user/<int:user_id>/')
+@need_admin
 def query_user(user_id):
     msg: str = ""
 

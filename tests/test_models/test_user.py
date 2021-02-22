@@ -2,7 +2,7 @@ import datetime
 
 import pytest
 import simplejson
-from models.const import CommonStatus
+from models.const import CommonStatus, Role
 from models.user_sys import (
     UserAuthNotFoundException,
     UserAuthProvider,
@@ -14,8 +14,10 @@ from models.user_sys import (
     delete_user_auth_by_user_id,
     get_user_by_id,
     get_user_by_third_party_id,
+    set_user_admin,
     update_status_by_user_id,
 )
+from models.user_sys.dao.user import UserDAO
 from models.user_sys.dao.user_auth import UserAuthDAO
 
 
@@ -55,6 +57,25 @@ def test_user():
     user = create_user(name=user_name, ident=ident)
     assert user_name in user.name
     assert len(user.name) == len(user_name) + 5
+
+    # user role
+    with pytest.raises(UserNotFoundException):
+        set_user_admin(10000)
+
+    user = UserDAO.get_by_id(user.id)
+    assert not user.is_admin()
+
+    set_user_admin(user.id)
+    user = get_user_by_id(user.id)
+    assert user.is_admin()
+
+    user = UserDAO.get_by_id(user.id)
+    user.clear_bit(Role.BITS_ROLE_ADMIN)
+    assert not user.is_admin()
+
+    user.set_role_admin()
+    user.set_role_clear()
+    assert user.bits == 0
 
 
 def test_user_auth():
