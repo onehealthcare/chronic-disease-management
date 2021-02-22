@@ -1,11 +1,15 @@
+import base64
+
 import sentry_sdk
 from config import DEBUG, SENTRY_DSN
 from flask import Flask, g, request
+from metaclass.cursor import Pager
 from models.init_db import db
 from models.token import InvalidTokenError, decode_jwt
 from models.user_sys import get_user_by_id
 from sentry_sdk.integrations.flask import FlaskIntegration
 from views.account import app as account_app
+from views.common import ApiError
 from views.main import app as main_app
 from views.render import error
 
@@ -42,12 +46,32 @@ def before_request():
     if access_token:
         try:
             data = decode_jwt(access_token)
+            user_id: int = data.get('user_id', 0)
+            if user_id:
+                g.me = get_user_by_id(user_id)
+
         except InvalidTokenError:
             pass
 
-        user_id: int = data.get('user_id', 0)
-        if user_id:
-            g.me = get_user_by_id(user_id)
+    # pager
+    if request.method == 'GET':
+        size: int = 20
+        cursor: int = 0
+
+        _cursor: str = request.args.get('cursor', '')
+        try:
+            cursor = int(base64.b64decode(_cursor))
+        except ValueError:
+            pass
+        except TypeError:
+            return error(ApiError.invalid_cursor)
+
+        try:
+            size = int(request.args.get('size', 20))
+        except (ValueError, TypeError):
+            pass
+
+        g.pager = Pager(cursor=cursor, size=size)
 
 
 @app.teardown_request

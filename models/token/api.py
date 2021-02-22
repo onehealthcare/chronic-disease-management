@@ -1,5 +1,5 @@
 import time
-from typing import Any, Dict, Tuple
+from typing import Any, Dict, Optional, Tuple
 
 import jwt
 from config import JWT_SECRET
@@ -36,13 +36,16 @@ def decode_jwt(token: str) -> Dict:
         raise InvalidTokenError
 
 
-def is_token_valid(token: str, user_id: int) -> bool:
+def is_token_valid(token: str, user_id: Optional[int] = None) -> bool:
+    if not token:
+        return False
+
     try:
         data = decode_jwt(token)
     except InvalidTokenError:
         return False
 
-    if data.get('user_id', '') != user_id:
+    if user_id is not None and data.get('user_id', '') != user_id:
         return False
 
     now = int(time.time())
