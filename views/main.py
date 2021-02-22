@@ -10,7 +10,7 @@ from models.user_sys import (
     get_user_by_id,
 )
 from utils import logger as _logger
-from views.middleware.auth import need_login
+from views.middleware.auth import need_admin, need_login
 from views.render import error, ok
 
 
@@ -25,6 +25,7 @@ def hello_world():
 
 
 @app.route('/user/<int:user_id>/')
+@need_admin
 def query_user(user_id):
     msg: str = ""
 
