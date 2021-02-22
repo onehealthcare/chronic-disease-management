@@ -99,3 +99,10 @@ def delete_user_auth_by_user_id(user_id: int, provider: int):
         raise UserAuthNotFoundException
 
     dao.update_status(status=CommonStatus.DELETED)
+
+
+def set_user_admin(user_id: int):
+    user = UserDAO.get_by_id(user_id)
+    if not user:
+        raise UserNotFoundException
+    user.set_role_admin()
