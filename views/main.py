@@ -1,15 +1,19 @@
 import os
+from typing import List
 
 import peewee
 import simplejson
-from flask import Blueprint, request
+from flask import Blueprint, g, request
 from models.user_sys import (
     UserDTO,
     UserNotFoundException,
     create_user,
     get_user_by_id,
+    paged_get_user_list,
 )
-from utils import logger as _logger
+from utils.cursor import get_next_cursor
+from utils.logging import logger as _logger
+from views.dumps.dump_user import dump_users
 from views.middleware.auth import need_admin, need_login
 from views.render import error, ok
 
@@ -22,6 +26,17 @@ logger = _logger('views.main')
 @need_login
 def hello_world():
     return ok('hello world')
+
+
+@app.route('/users/')
+@need_admin
+def paged_users():
+    pager = g.pager
+    users: List[UserDTO] = paged_get_user_list(pager.cursor, pager.size)
+
+    next_cursor: str = ''
+    users, next_cursor = get_next_cursor(users, pager.size)
+    return ok({'users': dump_users(users), 'next_cursor': next_cursor})
 
 
 @app.route('/user/<int:user_id>/')

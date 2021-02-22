@@ -48,3 +48,11 @@ class UserDAO(Base):
 
     def is_admin(self):
         return bool(self.check_bit(Role.BITS_ROLE_ADMIN))
+
+    @classmethod
+    def paged_get_list(cls, cursor: int, size: int = 20):
+        return UserDAO.select(
+        ).where(
+            UserDAO.status == CommonStatus.NORMAL,
+            UserDAO.id > cursor
+        ).order_by(UserDAO.id).limit(size + 1)

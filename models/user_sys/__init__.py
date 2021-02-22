@@ -6,6 +6,7 @@ from models.user_sys.api import (
     delete_user_auth_by_user_id,
     get_user_by_id,
     get_user_by_third_party_id,
+    paged_get_user_list,
     set_user_admin,
     update_status_by_user_id,
 )
@@ -29,6 +30,7 @@ __all__ = [
     'get_user_by_third_party_id',
     'delete_user_auth_by_user_id',
     'set_user_admin',
+    'paged_get_user_list',
 
     'UserAuthProvider',
 

@@ -14,11 +14,13 @@ from models.user_sys import (
     delete_user_auth_by_user_id,
     get_user_by_id,
     get_user_by_third_party_id,
+    paged_get_user_list,
     set_user_admin,
     update_status_by_user_id,
 )
 from models.user_sys.dao.user import UserDAO
 from models.user_sys.dao.user_auth import UserAuthDAO
+from utils.cursor import get_next_cursor
 
 
 def test_user():
@@ -141,3 +143,16 @@ def test_user_auth():
     assert user_auth_dto.user_id == user.id
     assert user_auth_dto.status == CommonStatus.NORMAL
     assert user_auth_dto.detail_json.get('unique_id') == unique_id
+
+
+@pytest.mark.parametrize('size,result', [
+    (100, True),
+    (1, False),
+])
+def test_paged_users(size, result):
+    users = paged_get_user_list(cursor=0, size=size)
+    assert len(users) > 0
+
+    new_users, next_cursor = get_next_cursor(users, size)
+    assert (len(new_users) == len(users)) == result
+    assert (next_cursor == '') == result
