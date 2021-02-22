@@ -46,12 +46,12 @@ def before_request():
     if access_token:
         try:
             data = decode_jwt(access_token)
+            user_id: int = data.get('user_id', 0)
+            if user_id:
+                g.me = get_user_by_id(user_id)
+
         except InvalidTokenError:
             pass
-
-        user_id: int = data.get('user_id', 0)
-        if user_id:
-            g.me = get_user_by_id(user_id)
 
     # pager
     if request.method == 'GET':
@@ -71,7 +71,7 @@ def before_request():
         except (ValueError, TypeError):
             pass
 
-    g.pager = Pager(cursor=cursor, size=size)
+        g.pager = Pager(cursor=cursor, size=size)
 
 
 @app.teardown_request
