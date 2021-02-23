@@ -36,7 +36,7 @@ def login_via_wxapp():
     except InvalidAuthCodeError:
         return error(ApiError.invalid_wxapp_code)
 
-    third_party_id: str = data.get('open_id', '')
+    third_party_id: str = data.get('openid', '')
     user: UserDTO
     try:
         user = get_user_by_third_party_id(third_party_id=third_party_id,
