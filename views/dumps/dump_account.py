@@ -7,6 +7,7 @@ def dump_account(user: UserDTO, access_token: str, refresh_token: str) -> Dict[s
     return {
         'user_id': str(user.id),
         'user_name': user.name,
+        'is_admin': user.is_admin(),
         'access_token': access_token,
         'refresh_token': refresh_token
     }

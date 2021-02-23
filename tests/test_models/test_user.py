@@ -79,6 +79,10 @@ def test_user():
     user.set_role_clear()
     assert user.bits == 0
 
+    # empty user name
+    user = create_user(name='', ident=ident)
+    assert '用户' in user.name
+
 
 def test_user_auth():
     user_id = 100

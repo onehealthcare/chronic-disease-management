@@ -8,5 +8,6 @@ gevent==21.1.2
 psutil==5.8.0
 wechatpy==1.8.14
 PyJWT==2.0.1
+freezegun
 simplejson
 ipython
