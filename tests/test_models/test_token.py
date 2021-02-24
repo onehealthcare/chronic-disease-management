@@ -1,6 +1,8 @@
+import datetime
 import time
 
 import pytest
+from freezegun import freeze_time
 from models.token import InvalidTokenError, decode_jwt, get_jwt, is_token_valid
 
 
@@ -31,3 +33,12 @@ def test_jwt():
     assert not is_token_valid(token, user_id)
     with pytest.raises(InvalidTokenError):
         decode_jwt(token)
+
+    with freeze_time(lambda: datetime.datetime(2020, 1, 14)):
+        access_token, refresh_token = get_jwt(user_id=user_id, user_name=user_name)
+
+    assert not is_token_valid(token, user_id)
+    with pytest.raises(InvalidTokenError):
+        decode_jwt(token)
+
+    assert not is_token_valid('', user_id)

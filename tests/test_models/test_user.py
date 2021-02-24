@@ -58,7 +58,7 @@ def test_user():
     # 创建一样 user_name 的用户
     user = create_user(name=user_name, ident=ident)
     assert user_name in user.name
-    assert len(user.name) == len(user_name) + 5
+    assert len(user.name) >= len(user_name) + 5
 
     # user role
     with pytest.raises(UserNotFoundException):
@@ -78,6 +78,10 @@ def test_user():
     user.set_role_admin()
     user.set_role_clear()
     assert user.bits == 0
+
+    # empty user name
+    user = create_user(name='', ident=ident)
+    assert '用户' in user.name
 
 
 def test_user_auth():

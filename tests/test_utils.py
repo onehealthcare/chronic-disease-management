@@ -1,10 +1,12 @@
 import datetime
 import os
 import shutil
+from typing import Dict
 
 import pytest
 from config import LOG_PATH
 from utils import logger as _logger
+from utils.crypto import hmac_sha1_encode
 from utils.datetime_utils import (
     _date,
     _datetime,
@@ -132,3 +134,8 @@ def test_logger():
     assert 'ERROR test error2' in txt
 
     f.close()
+
+
+def test_hmac_sha1():
+    data: Dict[str, int] = {"b": 1, "a": 2}
+    assert hmac_sha1_encode(data) == "0412dfe6f19cb47335d9da7f7fd5692fb25dc8f4"
