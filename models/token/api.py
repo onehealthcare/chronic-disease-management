@@ -3,7 +3,11 @@ from typing import Any, Dict, Optional, Tuple
 
 import jwt
 from config import JWT_SECRET
-from jwt.exceptions import DecodeError, InvalidSignatureError
+from jwt.exceptions import (
+    DecodeError,
+    ExpiredSignatureError,
+    InvalidSignatureError,
+)
 from models.token.exceptions import InvalidTokenError
 
 
@@ -32,7 +36,7 @@ def get_jwt(user_id: int, user_name: str) -> Tuple[bytes, bytes]:
 def decode_jwt(token: str) -> Dict:
     try:
         return jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
-    except (DecodeError, InvalidSignatureError):
+    except (DecodeError, InvalidSignatureError, ExpiredSignatureError):
         raise InvalidTokenError
 
 
@@ -46,10 +50,6 @@ def is_token_valid(token: str, user_id: Optional[int] = None) -> bool:
         return False
 
     if user_id is not None and data.get('user_id', '') != user_id:
-        return False
-
-    now = int(time.time())
-    if data.get('exp', 0) < now:
         return False
 
     return True

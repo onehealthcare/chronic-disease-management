@@ -37,8 +37,8 @@ def test_jwt():
     with freeze_time(lambda: datetime.datetime(2020, 1, 14)):
         access_token, refresh_token = get_jwt(user_id=user_id, user_name=user_name)
 
-    assert not is_token_valid(token, user_id)
+    assert not is_token_valid(access_token, user_id)
     with pytest.raises(InvalidTokenError):
-        decode_jwt(token)
+        decode_jwt(access_token)
 
     assert not is_token_valid('', user_id)
