@@ -23,7 +23,6 @@ logger = _logger('views.main')
 
 
 @app.route('/')
-@need_login
 def hello_world():
     return ok('hello world')
 
@@ -59,6 +58,7 @@ def query_user(user_id):
 
 
 @app.route('/user/', methods=['POST'])
+@need_login
 def _create_user():
     data = request.get_json()
     logger.info(f"create_user,requeset,{simplejson.dumps(data)}")

@@ -22,4 +22,6 @@ WXAPP_SECRET = os.environ.get('WXAPP_SECRET', '')
 
 
 # jwt
-JWT_SECRET = os.environ.get('JWT_SECRET', 'you-secret')
+JWT_SECRET = os.environ.get('JWT_SECRET', 'your-secret')
+
+API_SECRET = os.environ.get('API_SECRET', 'your-secret')

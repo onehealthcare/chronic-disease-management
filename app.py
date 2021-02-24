@@ -8,6 +8,7 @@ from models.init_db import db
 from models.token import InvalidTokenError, decode_jwt
 from models.user_sys import get_user_by_id
 from sentry_sdk.integrations.flask import FlaskIntegration
+from utils.crypto import hmac_sha1_encode
 from views.account import app as account_app
 from views.common import ApiError
 from views.main import app as main_app
@@ -35,6 +36,15 @@ def handle_404(e):
 
 @app.before_request
 def before_request():
+    # api sign
+    if request.method == 'POST':
+        data = request.json
+    elif request.method == 'GET':
+        data = request.args
+
+    if 'sign' not in data or hmac_sha1_encode(data) != data.get('sign'):
+        return error(ApiError.invalid_api_sign)
+
     # db conn
     if db.is_closed():
         db.connect()
