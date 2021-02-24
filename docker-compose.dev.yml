@@ -19,7 +19,7 @@ services:
       - /var/log:/var/log
     environment:
       - PYTHONPATH=/opt/code
-      - DEBUG=0
+      - DEBUG=1
       - GUNICORN_WORKERS=1
       - GUNICORN_BIND_ADDRESS=0.0.0.0:5000
       - GUNICORN_LOG_LEVEL=DEBUG
@@ -34,6 +34,8 @@ services:
       - LOG_PATH=/var/log/web-template
       - WXAPP_ID=${WXAPP_ID:-wxapp_id}
       - WXAPP_SECRET=${WXAPP_SECRET:-wxapp_secret}
+      - JWT_SECRET=${JWT_SECRET:-your-secret}
+      - API_SECRET=${API_SECRET:-your-secret}
     healthcheck:
       test: "curl -f http://localhost:5000/ping || exit 1"
       retries: 3
