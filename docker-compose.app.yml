@@ -30,6 +30,10 @@ services:
       - MYSQL_USER=${MYSQL_USER:-root}
       - MYSQL_PASSWD=${MYSQL_PASSWD:-tonghs}
       - MYSQL_DB=${MYSQL_DB:-web-template}
+      - JWT_SECRET=${JWT_SECRET:-your-secret}
+      - API_SECRET=${API_SECRET:-your-secret}
+      - WXAPP_ID=${WXAPP_ID:-your-wxapp-id}
+      - WXAPP_SECRET=${WXAPP_SECRET:-your-wxapp-secret}
       - LOG_PATH=/var/log/web-template
     healthcheck:
       test: "curl -f http://localhost:5000/ping || exit 1"

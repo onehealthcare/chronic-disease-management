@@ -15,5 +15,9 @@ services:
       - MYSQL_USER=root
       - MYSQL_PASSWD=tonghs
       - MYSQL_DB=web_template
+      - JWT_SECRET=${JWT_SECRET:-your-secret}
+      - API_SECRET=${API_SECRET:-your-secret}
+      - WXAPP_ID=${WXAPP_ID:-your-wxapp-id}
+      - WXAPP_SECRET=${WXAPP_SECRET:-your-wxapp-secret}
     depends_on:
       - db
