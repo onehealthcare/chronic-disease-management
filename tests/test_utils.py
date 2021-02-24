@@ -138,4 +138,4 @@ def test_logger():
 
 def test_hmac_sha1():
     data: Dict[str, int] = {"b": 1, "a": 2}
-    assert hmac_sha1_encode(data) == "738ce6079cde6a7494cb2e1679a76c6bea7c6643"
+    assert hmac_sha1_encode(data) == "0412dfe6f19cb47335d9da7f7fd5692fb25dc8f4"
