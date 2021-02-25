@@ -7,6 +7,7 @@ from models.user_sys import (
     UserDTO,
     UserNotFoundException,
     create_user,
+    delete_user,
     get_user_by_id,
     paged_get_user_list,
     rename_user,
@@ -112,7 +113,34 @@ def _update_user():
     return ok()
 
 
-@app.route('/user/', methods=['POST', 'GET', 'PATCH'])
+@need_admin
+def _delete_user():
+    data = request.get_json()
+    logger.info(f"delete_user,requeset,{simplejson.dumps(data)}")
+    data = request.get_json()
+    try:
+        user_id: int = int(data.get('user_id', '0'))
+    except ValueError:
+        return error('用户 ID 格式错误')
+
+    if not g.me.is_admin() or g.me.id == user_id:
+        logger.warn(f"delete_user,access_denied,{simplejson.dumps(data)}")
+        return error(ApiError.access_denied, 403)
+
+    if not user_id:
+        return error("user_id is required")
+
+    try:
+        delete_user(user_id=user_id)
+    except UserNotFoundException as e:
+        logger.warn(f"delete_user,user_not_found,{simplejson.dumps(data)}")
+        return error(e.message)
+
+    logger.info(f"update_user,ok,{simplejson.dumps(data)}")
+    return ok()
+
+
+@app.route('/user/', methods=['POST', 'GET', 'PATCH', 'DELETE'])
 def _user():
     if request.method == "GET":
         return _get_user()
@@ -122,6 +150,9 @@ def _user():
 
     elif request.method == "PATCH":
         return _update_user()
+
+    elif request.method == "DELETE":
+        return _delete_user()
 
 
 @app.route('/update_user/', methods=['POST'])

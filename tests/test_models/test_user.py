@@ -2,11 +2,12 @@ import datetime
 
 import pytest
 import simplejson
-from models.const import CommonStatus, Role
+from models.const import CommonStatus
 from models.user_sys import (
     UserAuthNotFoundException,
     UserAuthProvider,
     UserNotFoundException,
+    clear_user_admin,
     create_oauth_user,
     create_user,
     create_user_auth,
@@ -15,6 +16,7 @@ from models.user_sys import (
     get_user_by_id,
     get_user_by_third_party_id,
     paged_get_user_list,
+    rename_user,
     set_user_admin,
     update_status_by_user_id,
 )
@@ -71,10 +73,14 @@ def test_user():
     user = get_user_by_id(user.id)
     assert user.is_admin()
 
-    user = UserDAO.get_by_id(user.id)
-    user.clear_bit(Role.BITS_ROLE_ADMIN)
+    with pytest.raises(UserNotFoundException):
+        clear_user_admin(10000)
+
+    clear_user_admin(user.id)
+    user = get_user_by_id(user.id)
     assert not user.is_admin()
 
+    user = UserDAO.get_by_id(user.id)
     user.set_role_admin()
     user.set_role_clear()
     assert user.bits == 0
@@ -82,6 +88,19 @@ def test_user():
     # empty user name
     user = create_user(name='', ident=ident)
     assert '用户' in user.name
+
+    # rename user
+    new_user_name = 'tttt'
+    rename_user(user.id, new_user_name)
+    user = get_user_by_id(user.id)
+    assert user.name == new_user_name
+
+    rename_user(user.id, "")
+    user = get_user_by_id(user.id)
+    assert user.name == new_user_name
+
+    with pytest.raises(UserNotFoundException):
+        rename_user(20000, "tonghs")
 
 
 def test_user_auth():
