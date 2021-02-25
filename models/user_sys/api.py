@@ -1,5 +1,6 @@
 import string
 
+import peewee
 from models.const import CommonStatus
 from models.init_db import db
 from models.user_sys.dao.user import UserDAO
@@ -7,6 +8,7 @@ from models.user_sys.dao.user_auth import UserAuthDAO
 from models.user_sys.dto.user import UserDTO
 from models.user_sys.dto.user_auth import UserAuthDTO
 from models.user_sys.exceptions import (
+    DuplicatedUserNameError,
     UserAuthNotFoundException,
     UserNotFoundException,
 )
@@ -36,7 +38,10 @@ def find_avaliable_name(original_name):
 
 def create_user(name: str, ident: str = "") -> UserDTO:
     name = find_avaliable_name(name)
-    user: UserDAO = UserDAO.create(name=name, ident=ident)
+    try:
+        user: UserDAO = UserDAO.create(name=name, ident=ident)
+    except peewee.IntegrityError:
+        raise DuplicatedUserNameError()
     return UserDTO.from_dao(user)
 
 
@@ -111,3 +116,17 @@ def set_user_admin(user_id: int):
 def paged_get_user_list(cursor: int, size: int = 20):
     daos = UserDAO.paged_get_list(cursor=cursor, size=size)
     return [UserDTO.from_dao(dao) for dao in daos]
+
+
+def rename_user(user_id: int, user_name: str):
+    if not user_name:
+        return
+
+    user = UserDAO.get_by_id(user_id)
+    if not user:
+        raise UserNotFoundException
+
+    try:
+        user.rename(user_name=user_name)
+    except peewee.IntegrityError:
+        raise DuplicatedUserNameError()

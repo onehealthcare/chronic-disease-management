@@ -3,6 +3,7 @@ from typing import Tuple
 
 class ApiError(object):
     invalid_api_sign: Tuple[int, str] = (403, "非法请求")
+    access_denied: Tuple[int, str] = (403, "非法请求")
     login_needed: Tuple[int, str] = (1000, "需要登录")
     invalid_wxapp_code: Tuple[int, str] = (1001, "非法的小程序登录代码")
     admin_needed: Tuple[int, str] = (1002, "没有权限")

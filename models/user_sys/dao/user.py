@@ -56,3 +56,10 @@ class UserDAO(Base):
             UserDAO.status == CommonStatus.NORMAL,
             UserDAO.id > cursor
         ).order_by(UserDAO.id).limit(size + 1)
+
+    def rename(self, user_name: str):
+        if not user_name:
+            return
+
+        self.name = user_name
+        self.save()
