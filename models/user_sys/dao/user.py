@@ -42,6 +42,9 @@ class UserDAO(Base):
     def set_role_admin(self):
         self.set_bit(Role.BITS_ROLE_ADMIN)
 
+    def clear_role_admin(self):
+        self.clear_bit(Role.BITS_ROLE_ADMIN)
+
     def set_role_clear(self):
         self.bits = 0
         self.save()

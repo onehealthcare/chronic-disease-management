@@ -113,6 +113,13 @@ def set_user_admin(user_id: int):
     user.set_role_admin()
 
 
+def clear_user_admin(user_id: int):
+    user = UserDAO.get_by_id(user_id)
+    if not user:
+        raise UserNotFoundException
+    user.clear_role_admin()
+
+
 def paged_get_user_list(cursor: int, size: int = 20):
     daos = UserDAO.paged_get_list(cursor=cursor, size=size)
     return [UserDTO.from_dao(dao) for dao in daos]

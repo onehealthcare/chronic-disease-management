@@ -1,4 +1,5 @@
 from models.user_sys.api import (
+    clear_user_admin,
     create_oauth_user,
     create_user,
     create_user_auth,
@@ -34,6 +35,7 @@ __all__ = [
     'set_user_admin',
     'paged_get_user_list',
     'rename_user',
+    'clear_user_admin',
 
     'UserAuthProvider',
 
