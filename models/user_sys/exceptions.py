@@ -12,3 +12,8 @@ class UserAuthNotFoundException(Exception):
     """
     def __init__(self, message="用户 Auth 不存在"):
         self.message = message
+
+
+class DuplicatedUserNameError(Exception):
+    def __init__(self, message="存在同名用户"):
+        self.message = message

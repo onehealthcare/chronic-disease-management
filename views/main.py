@@ -1,19 +1,20 @@
-import os
 from typing import List
 
-import peewee
 import simplejson
 from flask import Blueprint, g, request
 from models.user_sys import (
+    DuplicatedUserNameError,
     UserDTO,
     UserNotFoundException,
     create_user,
     get_user_by_id,
     paged_get_user_list,
+    rename_user,
 )
 from utils.cursor import get_next_cursor
 from utils.logging import logger as _logger
-from views.dumps.dump_user import dump_users
+from views.common import ApiError
+from views.dumps.dump_user import dump_user, dump_users
 from views.middleware.auth import need_admin, need_login
 from views.render import error, ok
 
@@ -38,28 +39,27 @@ def paged_users():
     return ok({'users': dump_users(users), 'next_cursor': next_cursor})
 
 
-@app.route('/user/<int:user_id>/')
-@need_admin
-def query_user(user_id):
-    msg: str = ""
+def _get_user():
+    try:
+        user_id = int(request.args.get('user_id'))
+    except ValueError:
+        return ok('用户 ID 格式错误')
 
     if not user_id:
-        return ok('hello world')
+        return ok('用户ID不应该为空')
 
     try:
         user: UserDTO = get_user_by_id(user_id)
-    except UserNotFoundException:
-        msg = f'user not found: user_id: {user_id}'
+    except UserNotFoundException as e:
+        msg: str = f'{e.message}: {user_id}'
         logger.error(msg)
         return error(msg)
 
-    logger.info(f"query_user,ok,{user.json()}")
-    return ok(f'Hello World!{os.getpid()}: {user.name}')
+    return ok(dump_user(user))
 
 
-@app.route('/user/', methods=['POST'])
 @need_login
-def _create_user():
+def _new_user():
     data = request.get_json()
     logger.info(f"create_user,requeset,{simplejson.dumps(data)}")
     name: str = data.get('name', '')
@@ -69,9 +69,64 @@ def _create_user():
     ident: str = data.get('ident', '')
     try:
         user = create_user(name=name, ident=ident)
-    except peewee.IntegrityError:
-        return error('存在同名用户', 500)
-    return ok(content=user.dict())
+    except DuplicatedUserNameError as e:
+        logger.warn(f"create_user,dumplicated_user_name,{simplejson.dumps(data)}")
+        return error(e.message, 500)
+
+    logger.info(f"create_user,ok,{simplejson.dumps(data)}")
+    return ok(dump_user(user))
+
+
+@need_login
+def _update_user():
+    data = request.get_json()
+    logger.info(f"update_user,requeset,{simplejson.dumps(data)}")
+    data = request.get_json()
+    try:
+        user_id: int = int(data.get('user_id', '0'))
+    except ValueError:
+        return error('用户 ID 格式错误')
+
+    if user_id != g.me.id and not g.me.is_admin():
+        logger.warn(f"update_user,access_denied,{simplejson.dumps(data)}")
+        return error(ApiError.access_denied, 403)
+
+    user_name: str = data.get('user_name', '')
+
+    if not user_id:
+        return error("user_id is required")
+
+    if not user_name:
+        return error("name is required")
+
+    try:
+        rename_user(user_id=user_id, user_name=user_name)
+    except DuplicatedUserNameError as e:
+        logger.warn(f"update_user,dumplicated_user_name,{simplejson.dumps(data)}")
+        return error(e.message)
+    except UserNotFoundException as e:
+        logger.warn(f"update_user,user_not_found,{simplejson.dumps(data)}")
+        return error(e.message)
+
+    logger.info(f"update_user,ok,{simplejson.dumps(data)}")
+    return ok()
+
+
+@app.route('/user/', methods=['POST', 'GET', 'PATCH'])
+def _user():
+    if request.method == "GET":
+        return _get_user()
+
+    elif request.method == "POST":
+        return _new_user()
+
+    elif request.method == "PATCH":
+        return _update_user()
+
+
+@app.route('/update_user/', methods=['POST'])
+def update_user():
+    return _update_user()
 
 
 @app.route('/ping')

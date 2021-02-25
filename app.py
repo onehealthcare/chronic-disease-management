@@ -37,13 +37,14 @@ def handle_404(e):
 @app.before_request
 def before_request():
     # api sign
-    if request.method == 'POST':
-        data = request.json
-    elif request.method == 'GET':
+    if request.method == 'GET':
         data = request.args
+    else:
+        data = request.json
 
-    if 'sign' not in data or hmac_sha1_encode(data) != data.get('sign'):
-        return error(ApiError.invalid_api_sign)
+    if not DEBUG:
+        if 'sign' not in data or hmac_sha1_encode(data) != data.get('sign'):
+            return error(ApiError.invalid_api_sign)
 
     # db conn
     if db.is_closed():

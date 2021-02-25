@@ -7,12 +7,14 @@ from models.user_sys.api import (
     get_user_by_id,
     get_user_by_third_party_id,
     paged_get_user_list,
+    rename_user,
     set_user_admin,
     update_status_by_user_id,
 )
 from models.user_sys.const import UserAuthProvider
 from models.user_sys.dto.user import UserDTO
 from models.user_sys.exceptions import (
+    DuplicatedUserNameError,
     UserAuthNotFoundException,
     UserNotFoundException,
 )
@@ -31,9 +33,11 @@ __all__ = [
     'delete_user_auth_by_user_id',
     'set_user_admin',
     'paged_get_user_list',
+    'rename_user',
 
     'UserAuthProvider',
 
     'UserNotFoundException',
     'UserAuthNotFoundException',
+    'DuplicatedUserNameError',
 ]
