@@ -23,15 +23,8 @@ db = PooledMySQLDatabase(MYSQL_DB, user=MYSQL_USER, password=MYSQL_PASSWD,
 wxapp_client = WeChatWxa(WeChatClient(WXAPP_ID, WXAPP_SECRET))
 
 # 存储用户单据
-qcloud_cos_doc_client = QCloudCOSClient(secret_id=QCLOUD_SECRET_ID,
-                                        secret_key=QCLOUD_SECRET_KEY,
-                                        bucket=QCLOUD_CC_COS_BUCKET,
-                                        region=QCLOUD_CC_COS_REGION,
-                                        allow_prefix='document/')
-
-# 存储用户头像
-qcloud_cos_user_ident_client = QCloudCOSClient(secret_id=QCLOUD_SECRET_ID,
-                                               secret_key=QCLOUD_SECRET_KEY,
-                                               bucket=QCLOUD_CC_COS_BUCKET,
-                                               region=QCLOUD_CC_COS_REGION,
-                                               allow_prefix='user_ident/')
+qcloud_cos_client = QCloudCOSClient(secret_id=QCLOUD_SECRET_ID,
+                                    secret_key=QCLOUD_SECRET_KEY,
+                                    bucket=QCLOUD_CC_COS_BUCKET,
+                                    region=QCLOUD_CC_COS_REGION,
+                                    allow_prefix='*')

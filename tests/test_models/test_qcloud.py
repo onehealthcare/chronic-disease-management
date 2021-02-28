@@ -1,11 +1,7 @@
 import pytest
 from libs.qcloud import QCloudCOSGetCredentialError
-from models.init_db import qcloud_cos_doc_client, qcloud_cos_user_ident_client
-from models.qcloud import (
-    NotSupportedCategoryError,
-    QCloudCOSCategory,
-    get_cos_temp_credential,
-)
+from models.init_db import qcloud_cos_client
+from models.qcloud import get_cos_temp_credential
 
 
 @pytest.fixture
@@ -23,17 +19,12 @@ def get_cos_temp_credential_patch():
             "startTime": 1614526257
         }
 
-    setattr(qcloud_cos_doc_client, 'get_temp_credential', _get_cos_temp_credential)
-    setattr(qcloud_cos_user_ident_client, 'get_temp_credential', _get_cos_temp_credential)
+    setattr(qcloud_cos_client, 'get_temp_credential', _get_cos_temp_credential)
 
 
-@pytest.mark.parametrize('category', [
-    QCloudCOSCategory.USER_DOC,
-    QCloudCOSCategory.USER_IDENT,
-])
 @pytest.mark.usefixtures("get_cos_temp_credential_patch")
-def test_get_credential(category):
-    ret = get_cos_temp_credential(category)
+def test_get_credential():
+    ret = get_cos_temp_credential()
 
     assert 'expiredTime' in ret
     assert 'expiration' in ret
@@ -44,19 +35,15 @@ def test_get_credential(category):
     assert 'tmpSecretId' in ret.get('credentials')
     assert 'tmpSecretKey' in ret.get('credentials')
 
-    with pytest.raises(NotSupportedCategoryError):
-        get_cos_temp_credential(100)
-
 
 @pytest.fixture
 def get_cos_temp_credential_patch1():
     def _get_cos_temp_credential():
         raise QCloudCOSGetCredentialError()
 
-    setattr(qcloud_cos_doc_client, 'get_temp_credential', _get_cos_temp_credential)
-    setattr(qcloud_cos_user_ident_client, 'get_temp_credential', _get_cos_temp_credential)
+    setattr(qcloud_cos_client, 'get_temp_credential', _get_cos_temp_credential)
 
 
 def test_get_credential_exception(get_cos_temp_credential_patch1):
     with pytest.raises(QCloudCOSGetCredentialError):
-        get_cos_temp_credential(QCloudCOSCategory.USER_IDENT)
+        get_cos_temp_credential()

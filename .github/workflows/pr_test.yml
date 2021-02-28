@@ -16,5 +16,5 @@ jobs:
       - run: sed -i 's/gunicorn==.*//g' requirements.txt
       - run: sed -i 's/gevent==.*//g' requirements.txt
       - run: sed -i 's/psutil==.*//g' requirements.txt
-      - run: docker-compose -f docker-compose.yml up -d
+      - run: cp config.sample.py config.py &&  docker-compose -f docker-compose.yml up -d
       - run: make test
