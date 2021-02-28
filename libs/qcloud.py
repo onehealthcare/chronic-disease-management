@@ -3,7 +3,7 @@ from sts.sts import Sts
 from utils.logging import logger as _logger
 
 
-logger = _logger('labs.qcloud')
+logger = _logger('libs.qcloud')
 
 
 class QCloudCOSGetCredentialError(Exception):
