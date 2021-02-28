@@ -70,7 +70,7 @@ class QCloudCOSClient(object):
         self.allow_prefix = allow_prefix
         self.allow_actions = allow_actions
 
-    def get_credential(self, duration_seconds=1800):
+    def get_temp_credential(self, duration_seconds=1800):
         config = {
             'url': self.url,
             'domain': self.domain,
