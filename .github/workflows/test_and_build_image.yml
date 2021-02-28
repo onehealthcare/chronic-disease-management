@@ -15,7 +15,7 @@ jobs:
       - run: sed -i 's/ -i http:\/\/mirrors.aliyun.com\/pypi\/simple\/ --extra-index-url https:\/\/pypi.python.org\/simple --trusted-host mirrors.aliyun.com/ /g' docker-compose.test.yml
       - run: sed -i 's/ipython//g' requirements.txt
       - run: sed -i 's/--cov-report=html/--cov-report=xml/g' ci/run_test.sh
-      - run: docker-compose -f docker-compose.yml up -d
+      - run: cp config.sample.py config.py && docker-compose -f docker-compose.yml up -d
       - run: make test
       - uses: codecov/codecov-action@v1
         with:

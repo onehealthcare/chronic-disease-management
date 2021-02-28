@@ -10,6 +10,7 @@ from models.user_sys import get_user_by_id
 from sentry_sdk.integrations.flask import FlaskIntegration
 from utils.crypto import hmac_sha1_encode
 from views.account import app as account_app
+from views.auth import app as auth_app
 from views.common import ApiError
 from views.main import app as main_app
 from views.render import error
@@ -93,6 +94,7 @@ def close(e):
 
 app.register_blueprint(main_app)
 app.register_blueprint(account_app)
+app.register_blueprint(auth_app)
 
 
 if __name__ == '__main__':

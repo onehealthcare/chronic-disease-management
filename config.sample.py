@@ -24,4 +24,13 @@ WXAPP_SECRET = os.environ.get('WXAPP_SECRET', '')
 # jwt
 JWT_SECRET = os.environ.get('JWT_SECRET', 'your-secret')
 
+# API sign secret
 API_SECRET = os.environ.get('API_SECRET', 'your-secret')
+
+# qcloud
+QCLOUD_SECRET_ID = os.environ.get('QCLOUD_SECRET_ID', '')
+QCLOUD_SECRET_KEY = os.environ.get('QCLOUD_SECRET_KEY', '')
+
+# 慢病管理 bucket
+QCLOUD_CC_COS_BUCKET = os.environ.get('QCLOUD_CC_COS_BUCKET', '')
+QCLOUD_CC_COS_REGION = os.environ.get('QCLOUD_CC_COS_REGION', '')
