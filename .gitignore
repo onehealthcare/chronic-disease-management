@@ -132,3 +132,5 @@ dmypy.json
 ci/index.txt
 htmlcov/
 .DS_Store
+
+config.py
