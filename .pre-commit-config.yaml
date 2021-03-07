@@ -44,7 +44,7 @@ repos:
         name: Fix imports order
         args:
           - --verbose
-        exclude: ^generated/.*$
+        exclude: ^views/chronic_condition/__init__.py$
   - repo: https://github.com/xiachufang/py-find-injection
     rev: 2fbeba25c1cc1b41c906a1db235d9a3b84151b68
     hooks:

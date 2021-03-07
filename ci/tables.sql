@@ -38,3 +38,37 @@ CREATE TABLE `user_auth` (
   KEY `idx_provider` (`provider`),
   KEY `idx_status` (`status`)
 );
+
+--
+-- Table structure for table `chronic_condition_doc_package`
+--
+CREATE TABLE `chronic_condition_doc_package` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `desc` TEXT NOT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `_created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `_updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_user_id` (`user_id`),
+  KEY `idx_status` (`status`)
+);
+
+--
+-- Table structure for table `chronic_condition_doc_package_ident`
+--
+CREATE TABLE `chronic_condition_doc_package_ident` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `package_id` int(10) unsigned NOT NULL,
+  `ident` varchar(256) NOT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `_created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `_updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_package_id` (`package_id`),
+  KEY `idx_status` (`status`)
+);
