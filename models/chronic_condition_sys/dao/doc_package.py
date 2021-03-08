@@ -1,6 +1,7 @@
 import datetime
 from typing import List
 
+from config import QCLOUD_CC_COS_URL
 from models.base import Base
 from models.const import CommonStatus
 from peewee import CharField, DateTimeField, IntegerField, TextField
@@ -19,9 +20,22 @@ class DocPackageDAO(Base):
     class Meta:
         table_name = 'chronic_condition_doc_package'
 
+    def update_status(self, status: int):
+        self.status = status
+        self.save()
+
+    def delete(self):
+        self.update_status(status=CommonStatus.DELETED)
+
     @classmethod
     def get_by_id(cls, package_id: int) -> 'DocPackageDAO':
         return cls.get(cls.id == package_id)
+
+    @classmethod
+    def paged_by_user_id(cls, user_id: int, cursor: int, size: int = 20) -> List['DocPackageDAO']:
+        return cls.select().where(cls.user_id == user_id,
+                                  cls.status == CommonStatus.NORMAL,
+                                  cls.id >= cursor).order_by(cls.created_at.desc()).limit(size + 1)
 
     @property
     def idents(self) -> List['DocPackageIdentDAO']:
@@ -29,7 +43,7 @@ class DocPackageDAO(Base):
 
     @property
     def ident_urls(self) -> List[str]:
-        return [ident.ident for ident in self.idents]
+        return [QCLOUD_CC_COS_URL.format(ident.ident) for ident in self.idents]
 
 
 class DocPackageIdentDAO(Base):
