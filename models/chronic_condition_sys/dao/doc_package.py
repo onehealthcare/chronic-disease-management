@@ -11,7 +11,7 @@ class DocPackageDAO(Base):
     """
     用户的一次上传
     """
-    desc = TextField()
+    desc = TextField(index=True)
     user_id = IntegerField(index=True)
     status = IntegerField(index=True, default=CommonStatus.NORMAL)
     created_at = DateTimeField(default=datetime.datetime.now)
@@ -44,6 +44,16 @@ class DocPackageDAO(Base):
     @property
     def ident_urls(self) -> List[str]:
         return [QCLOUD_CC_COS_URL.format(ident.ident) for ident in self.idents]
+
+    @classmethod
+    def search_by_keyword(cls, user_id: int, keyword: str, cursor: int, size: int = 20) -> List['DocPackageDAO']:
+        if not keyword:
+            return []
+
+        return cls.select().where(cls.user_id == user_id,
+                                  cls.status == CommonStatus.NORMAL,
+                                  cls.id >= cursor,
+                                  cls.desc.contains(keyword)).order_by(cls.created_at.desc()).limit(size + 1)
 
 
 class DocPackageIdentDAO(Base):

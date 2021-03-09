@@ -36,6 +36,15 @@ def paged_doc_package_by_user_id(user_id: int, cursor: int, size: int = 0) -> Li
     return [DocPackageDTO.from_dao(dao) for dao in daos]
 
 
+def paged_search_doc_package_by_user_id(user_id: int, keyword: str, cursor: int, size: int = 0) -> List[DocPackageDTO]:
+    if not keyword:
+        return []
+
+    daos = DocPackageDAO.search_by_keyword(user_id=user_id, keyword=keyword, cursor=cursor, size=size)
+
+    return [DocPackageDTO.from_dao(dao) for dao in daos]
+
+
 def delete_doc_package_by_user_id_and_package_id(user_id: int, package_id: int):
     dao = DocPackageDAO.get_by_id(package_id)
     if not dao:

@@ -10,6 +10,7 @@ from models.chronic_condition_sys import (
     delete_doc_package_by_user_id_and_package_id,
     get_doc_package_by_id,
     paged_doc_package_by_user_id,
+    paged_search_doc_package_by_user_id,
     update_doc_package_by_user_id_and_package_id,
 )
 from models.exceptions import AccessDeniedError
@@ -30,6 +31,29 @@ def doc_packages():
     user_id: int = g.me.id
     pager = g.pager
     doc_packages: List[DocPackageDTO] = paged_doc_package_by_user_id(user_id=user_id, cursor=pager.cursor, size=pager.size)
+
+    next_cursor: str = ''
+    doc_packages, next_cursor = get_next_cursor(doc_packages, pager.size)
+
+    return ok({
+        'doc_packages': dump_doc_packages(doc_packages),
+        'next_cursor': next_cursor
+    })
+
+
+@app.route('/doc_packages/search/', methods=['GET'])
+@need_login
+def search_doc_packages():
+    user_id: int = g.me.id
+    keyword: str = request.args.get('q', '')
+    if not keyword:
+        return ok({
+            'doc_packages': [],
+            'next_cursor': ''
+        })
+
+    pager = g.pager
+    doc_packages: List[DocPackageDTO] = paged_search_doc_package_by_user_id(user_id=user_id, keyword=keyword, cursor=pager.cursor, size=pager.size)
 
     next_cursor: str = ''
     doc_packages, next_cursor = get_next_cursor(doc_packages, pager.size)

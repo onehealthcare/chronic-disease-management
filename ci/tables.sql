@@ -51,6 +51,7 @@ CREATE TABLE `chronic_condition_doc_package` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `_created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `_updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FULLTEXT (`desc`) WITH PARSER ngram,
   PRIMARY KEY (`id`),
   KEY `idx_user_id` (`user_id`),
   KEY `idx_status` (`status`)
