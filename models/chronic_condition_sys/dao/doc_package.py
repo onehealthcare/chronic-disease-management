@@ -60,9 +60,16 @@ class DocPackageIdentDAO(Base):
         table_name = 'chronic_condition_doc_package_ident'
 
     @classmethod
-    def get_by_id(cls, package_id: int) -> 'DocPackageIdentDAO':
-        return cls.get(cls.id == package_id)
+    def get_by_id(cls, ident_id: int) -> 'DocPackageIdentDAO':
+        return cls.get(cls.id == ident_id)
 
     @classmethod
     def get_by_package_id(cls, package_id: int) -> List['DocPackageIdentDAO']:
         return list(DocPackageIdentDAO.select().where(DocPackageIdentDAO.package_id == package_id, DocPackageIdentDAO.status == CommonStatus.NORMAL))
+
+    def update_status(self, status: int):
+        self.status = status
+        self.save()
+
+    def delete(self):
+        self.update_status(status=CommonStatus.DELETED)

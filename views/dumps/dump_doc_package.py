@@ -9,6 +9,7 @@ def dump_doc_package(doc_package: DocPackageDTO) -> Dict:
         'user_id': str(doc_package.user_id),
         'desc': doc_package.desc,
         'ident_urls': doc_package.ident_urls,
+        'idents': [ident.ident for ident in doc_package.idents],
         'created_at': doc_package.created_at.strftime('%Y-%m-%d %H:%M:%S')
     }
 
