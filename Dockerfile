@@ -1,6 +1,6 @@
 FROM ubuntu:18.04
 
-MAINTAINER tonghs <tonghuashuai@gmail.com>
+# MAINTAINER tonghs <tonghuashuai@gmail.com>
 
 # 更新源 && 安装必要软件
 COPY ci/sources.list /etc/apt/sources.list
@@ -12,7 +12,7 @@ RUN echo "Asia/Shanghai" > /etc/timezone && \
   add-apt-repository -y ppa:deadsnakes/ppa && \
   rm /usr/bin/python3 && \
   ln -s /usr/bin/python3.7 /usr/bin/python3 && \
-  apt-get install python3.7 python3.7-dev python3-pip curl mysql-client tzdata -y && \
+  apt-get install -y –no-install-recommends python3.7 python3.7-dev python3-pip curl mysql-client tzdata && \
   apt-get -y autoremove --purge && \
   apt-get -y clean && apt-get -y autoclean && \
   dpkg-reconfigure -f noninteractive tzdata && \

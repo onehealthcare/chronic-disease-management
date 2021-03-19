@@ -1,3 +1,5 @@
+#!/bin/bash
+
 export MYSQL_HOST=db
 export MYSQL_PORT=3306
 export MYSQL_USER=root
