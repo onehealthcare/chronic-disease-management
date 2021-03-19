@@ -57,7 +57,7 @@ class UserDAO(Base):
         return UserDAO.select(
         ).where(
             UserDAO.status == CommonStatus.NORMAL,
-            UserDAO.id > cursor
+            UserDAO.id >= cursor
         ).order_by(UserDAO.id).limit(size + 1)
 
     def rename(self, user_name: str):
