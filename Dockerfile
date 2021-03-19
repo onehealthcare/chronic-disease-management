@@ -8,11 +8,11 @@ COPY requirements.txt /requirements.txt
 ENV DEBIAN_FRONTEND=noninteractive
 RUN echo "Asia/Shanghai" > /etc/timezone && \
   apt-get update && \
-  apt-get install –-no-install-recommends -y software-properties-common && \
+  apt-get install -y software-properties-common --no-install-recommends && \
   add-apt-repository -y ppa:deadsnakes/ppa && \
   rm /usr/bin/python3 && \
   ln -s /usr/bin/python3.7 /usr/bin/python3 && \
-  apt-get install –-no-install-recommends -y python3.7 python3.7-dev python3-pip curl mysql-client tzdata && \
+  apt-get install -y python3.7 python3.7-dev python3-pip curl mysql-client tzdata –-no-install-recommends && \
   apt-get -y autoremove --purge && \
   apt-get -y clean && apt-get -y autoclean && \
   dpkg-reconfigure -f noninteractive tzdata && \
