@@ -74,8 +74,7 @@ def next_month(d):
 
 
 def prev_month(d):
-    ''' 返回上个月的第一天
-    '''
+    ''' 返回上个月的第一天 '''
     temp = this_month(d) - datetime.timedelta(days=15)
     return this_month(temp)
 
@@ -88,23 +87,20 @@ def month_range(start, end):
 
 
 def this_week(date):
-    ''' 返回date对应周的星期一
-    '''
+    ''' 返回date对应周的星期一 '''
     date = datetime_today(date)
     week_day = date.weekday()
     return date - datetime.timedelta(days=week_day)
 
 
 def week_day(date, day):
-    ''' 返回date对应周的星期X，day=0代表周一
-    '''
+    ''' 返回date对应周的星期X，day=0代表周一 '''
     date = this_week(date)
     return date + datetime.timedelta(days=day)
 
 
 def next_week(date):
-    ''' 返回date对应下周的星期一
-    '''
+    ''' 返回date对应下周的星期一 '''
     date = datetime_today(date)
     return this_week(date) + datetime.timedelta(days=7)
 
