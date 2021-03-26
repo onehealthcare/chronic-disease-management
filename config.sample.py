@@ -36,3 +36,6 @@ QCLOUD_CC_COS_BUCKET = os.environ.get('QCLOUD_CC_COS_BUCKET', '')
 QCLOUD_CC_COS_REGION = os.environ.get('QCLOUD_CC_COS_REGION', '')
 QCLOUD_CC_COS_DOMAIN = os.environ.get('QCLOUD_CC_COS_DOMAIN', 'cc.cos.motn.top')
 QCLOUD_CC_COS_URL = 'https://{}/{}{}'.format(QCLOUD_CC_COS_DOMAIN, '{}', '?imageView2/q/85')
+
+# redis
+REDIS_URL = 'redis://redis-db/0'

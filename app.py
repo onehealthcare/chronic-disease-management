@@ -44,6 +44,9 @@ def before_request():
     else:
         data = request.json
 
+    # if 'sign' not in data or hmac_sha1_encode(data) != data.get('sign'):
+    #     return error(ApiError.invalid_api_sign)
+
     if not DEBUG:
         if 'sign' not in data or hmac_sha1_encode(data) != data.get('sign'):
             return error(ApiError.invalid_api_sign)

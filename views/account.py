@@ -3,6 +3,7 @@ from typing import Dict
 import simplejson
 from flask import Blueprint, request
 from metaclass.wxapp.session import Code2SessionData
+from models.sms_sys import verify_auth_code
 from models.token import decode_jwt, get_jwt, is_token_valid
 from models.user_sys import (
     UserAuthProvider,
@@ -71,3 +72,20 @@ def refresh_token():
 
     access_token, refresh_token = get_jwt(user_id=user.id, user_name=user.name)
     return ok(dump_account(user, access_token, refresh_token))
+
+
+@app.route('/login_via_phone/', methods=['POST'])
+def login_via_phone():
+    data = request.get_json() or {}
+
+    auth_code: str = data.get('auth_code', '')
+    phone: str = data.get('phone', '')
+
+    if not auth_code:
+        return error(ApiError.invalid_sms_auth_code)
+
+    result: bool = verify_auth_code(phone=phone, auth_code=auth_code)
+    if not result:
+        return error()
+
+    return ok({'result': result})
