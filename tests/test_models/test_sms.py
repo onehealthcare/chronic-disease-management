@@ -1,0 +1,10 @@
+from models.sms_sys import generate_auth_code, verify_auth_code
+
+
+def test_sms():
+    phone: str = '11111111111'
+    length: int = 4
+    auth_code: str = generate_auth_code(phone=phone)
+    assert len(auth_code) == length
+
+    assert verify_auth_code(phone=phone, auth_code=auth_code)

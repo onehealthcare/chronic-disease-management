@@ -10,7 +10,9 @@ from models.user_sys import (
     UserDTO,
     UserNotFoundException,
     create_oauth_user,
+    create_user_by_phone,
     get_user_by_id,
+    get_user_by_phone,
     get_user_by_third_party_id,
 )
 from models.wxapp import InvalidAuthCodeError, code_to_session
@@ -74,7 +76,7 @@ def refresh_token():
     return ok(dump_account(user, access_token, refresh_token))
 
 
-@app.route('/login_via_phone/', methods=['POST'])
+@app.route('/signin_via_phone/', methods=['POST'])
 def login_via_phone():
     data = request.get_json() or {}
 
@@ -88,4 +90,12 @@ def login_via_phone():
     if not result:
         return error()
 
-    return ok({'result': result})
+    user: UserDTO
+
+    try:
+        user = get_user_by_phone(phone=phone)
+    except UserNotFoundException:
+        user = create_user_by_phone(phone=phone)
+
+    access_token, refresh_token = get_jwt(user_id=user.id, user_name=user.name)
+    return ok(dump_account(user, access_token, refresh_token))

@@ -73,3 +73,21 @@ CREATE TABLE `chronic_condition_doc_package_ident` (
   KEY `idx_package_id` (`package_id`),
   KEY `idx_status` (`status`)
 );
+
+--
+-- Table structure for table `user_phone`
+--
+CREATE TABLE `user_phone` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) NOT NULL,
+  `phone` varchar(16) NOT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `_created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `_updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_user_id` (`user_id`),
+  KEY `idx_phone` (`phone`),
+  KEY `idx_status` (`status`)
+);

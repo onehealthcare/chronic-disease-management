@@ -17,3 +17,8 @@ class UserAuthNotFoundException(Exception):
 class DuplicatedUserNameError(Exception):
     def __init__(self, message="存在同名用户"):
         self.message = message
+
+
+class DuplicatedUserPhoneError(Exception):
+    def __init__(self, message="该手机号已经注册"):
+        self.message = message
