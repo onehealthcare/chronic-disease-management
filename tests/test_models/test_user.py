@@ -4,6 +4,7 @@ import pytest
 import simplejson
 from models.const import CommonStatus
 from models.user_sys import (
+    DuplicatedUserPhoneError,
     UserAuthNotFoundException,
     UserAuthProvider,
     UserNotFoundException,
@@ -200,3 +201,6 @@ def test_user_phone():
     dao = UserPhoneDAO.get_by_phone(phone=phone)
     dto = UserPhoneDTO.from_dao(dao)
     assert dao.id == dto.id
+
+    with pytest.raises(DuplicatedUserPhoneError):
+        create_user_by_phone(phone=phone)
