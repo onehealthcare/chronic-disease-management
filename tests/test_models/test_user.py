@@ -11,9 +11,11 @@ from models.user_sys import (
     create_oauth_user,
     create_user,
     create_user_auth,
+    create_user_by_phone,
     delete_user,
     delete_user_auth_by_user_id,
     get_user_by_id,
+    get_user_by_phone,
     get_user_by_third_party_id,
     paged_get_user_list,
     rename_user,
@@ -179,3 +181,16 @@ def test_paged_users(size, result):
     new_users, next_cursor = get_next_cursor(users, size)
     assert (len(new_users) == len(users)) == result
     assert (next_cursor == '') == result
+
+
+def test_user_phone():
+    phone: str = '11111111111'
+
+    with pytest.raises(UserNotFoundException):
+        get_user_by_phone(phone)
+
+    user1 = create_user_by_phone(phone=phone)
+    user2 = get_user_by_phone(phone)
+
+    assert user1.id == user2.id
+    assert user1.name == user2.name

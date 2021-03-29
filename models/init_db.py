@@ -1,3 +1,4 @@
+import redis
 from config import (
     MYSQL_DB,
     MYSQL_HOST,
@@ -8,6 +9,7 @@ from config import (
     QCLOUD_CC_COS_REGION,
     QCLOUD_SECRET_ID,
     QCLOUD_SECRET_KEY,
+    REDIS_URL,
     WXAPP_ID,
     WXAPP_SECRET,
 )
@@ -28,3 +30,6 @@ qcloud_cos_client = QCloudCOSClient(secret_id=QCLOUD_SECRET_ID,
                                     bucket=QCLOUD_CC_COS_BUCKET,
                                     region=QCLOUD_CC_COS_REGION,
                                     allow_prefix='*')
+
+# redis
+redis_conn = redis.Redis.from_url(REDIS_URL, decode_responses=True)  # 存binary 数据，不需要 decode response

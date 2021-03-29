@@ -44,9 +44,9 @@ def before_request():
     else:
         data = request.json
 
-    if not DEBUG:
-        if 'sign' not in data or hmac_sha1_encode(data) != data.get('sign'):
-            return error(ApiError.invalid_api_sign)
+    # if not DEBUG:
+    if 'sign' not in data or hmac_sha1_encode(data) != data.get('sign'):
+        return error(ApiError.invalid_api_sign)
 
     # db conn
     if db.is_closed():
@@ -58,8 +58,8 @@ def before_request():
     access_token = request.headers.get('Auth', '')
     if access_token:
         try:
-            data = decode_jwt(access_token)
-            user_id: int = data.get('user_id', 0)
+            jwt_data = decode_jwt(access_token)
+            user_id: int = jwt_data.get('user_id', 0)
             if user_id:
                 g.me = get_user_by_id(user_id)
 
@@ -71,7 +71,7 @@ def before_request():
         size: int = 20
         cursor: int = 0
 
-        _cursor: str = request.args.get('cursor', '')
+        _cursor: str = data.get('cursor', '')
         try:
             cursor = int(base64.b64decode(_cursor))
         except ValueError:

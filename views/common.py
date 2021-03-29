@@ -10,3 +10,4 @@ class ApiError(object):
     invalid_token: Tuple[int, str] = (1003, "token 无效")
 
     invalid_cursor: Tuple[int, str] = (2001, "无效的 cursor")
+    invalid_sms_auth_code: Tuple[int, str] = (3001, "验证码无效")

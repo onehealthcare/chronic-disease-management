@@ -5,10 +5,12 @@ from models.const import CommonStatus
 from models.init_db import db
 from models.user_sys.dao.user import UserDAO
 from models.user_sys.dao.user_auth import UserAuthDAO
+from models.user_sys.dao.user_phone import UserPhoneDAO
 from models.user_sys.dto.user import UserDTO
 from models.user_sys.dto.user_auth import UserAuthDTO
 from models.user_sys.exceptions import (
     DuplicatedUserNameError,
+    DuplicatedUserPhoneError,
     UserAuthNotFoundException,
     UserNotFoundException,
 )
@@ -137,3 +139,26 @@ def rename_user(user_id: int, user_name: str):
         user.rename(user_name=user_name)
     except peewee.IntegrityError:
         raise DuplicatedUserNameError()
+
+
+def get_user_by_phone(phone: str) -> UserDTO:
+    dao = UserPhoneDAO.get_by_phone(phone=phone)
+
+    if not dao or dao.status != CommonStatus.NORMAL:
+        raise UserNotFoundException
+
+    user = get_user_by_id(user_id=dao.user_id)
+
+    return UserDTO.from_dao(user)
+
+
+@db.atomic()
+def create_user_by_phone(phone: str) -> UserDTO:
+    dao = UserPhoneDAO.get_by_phone(phone=phone)
+    if dao:
+        raise DuplicatedUserPhoneError
+
+    user = create_user(name=phone[-4:])
+    UserPhoneDAO.create(user_id=user.id, phone=phone)
+
+    return UserDTO.from_dao(user)
