@@ -24,6 +24,8 @@ from models.user_sys import (
 )
 from models.user_sys.dao.user import UserDAO
 from models.user_sys.dao.user_auth import UserAuthDAO
+from models.user_sys.dao.user_phone import UserPhoneDAO
+from models.user_sys.dto.user_phone import UserPhoneDTO
 from utils.cursor import get_next_cursor
 
 
@@ -194,3 +196,7 @@ def test_user_phone():
 
     assert user1.id == user2.id
     assert user1.name == user2.name
+
+    dao = UserPhoneDAO.get_by_phone(phone=phone)
+    dto = UserPhoneDTO.from_dao(dao)
+    assert dao.id == dto.id
