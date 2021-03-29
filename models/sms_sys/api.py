@@ -2,7 +2,11 @@ import random
 from typing import List
 
 from config import DEBUG
-from models.redis import get_sms_auth_code, save_sms_auth_code
+from models.redis import (
+    delete_sms_auth_code,
+    get_sms_auth_code,
+    save_sms_auth_code,
+)
 
 
 def generate_auth_code(phone: str, length: int = 4) -> str:
@@ -24,4 +28,8 @@ def verify_auth_code(phone: str, auth_code: str) -> bool:
 
     _auth_code: str = get_sms_auth_code(phone=phone)
 
-    return auth_code == _auth_code
+    result = auth_code == _auth_code
+    if result:
+        delete_sms_auth_code(phone=phone)
+
+    return result

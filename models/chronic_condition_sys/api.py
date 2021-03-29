@@ -16,7 +16,7 @@ from models.init_db import db
 def get_doc_package_by_id(package_id: int) -> DocPackageDTO:
     dao = DocPackageDAO.get_by_id(package_id)
     if not dao:
-        DocPackageNotFoundException()
+        raise DocPackageNotFoundException()
 
     return DocPackageDTO.from_dao(dao)
 
@@ -30,13 +30,13 @@ def create_doc_package(user_id: int, idents: List[str], desc: str) -> DocPackage
     return get_doc_package_by_id(dpa.id)
 
 
-def paged_doc_package_by_user_id(user_id: int, cursor: int, size: int = 0) -> List[DocPackageDTO]:
+def paged_doc_package_by_user_id(user_id: int, cursor: int = 0, size: int = 20) -> List[DocPackageDTO]:
     daos = DocPackageDAO.paged_by_user_id(user_id=user_id, cursor=cursor, size=size)
 
     return [DocPackageDTO.from_dao(dao) for dao in daos]
 
 
-def paged_search_doc_package_by_user_id(user_id: int, keyword: str, cursor: int, size: int = 0) -> List[DocPackageDTO]:
+def paged_search_doc_package_by_user_id(user_id: int, keyword: str, cursor: int = 0, size: int = 20) -> List[DocPackageDTO]:
     if not keyword:
         return []
 
