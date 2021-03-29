@@ -71,10 +71,10 @@ def update_doc_package_by_user_id_and_package_id(user_id: int, package_id: int, 
 
     dao = DocPackageDAO.get_by_id(package_id)
     if not dao:
-        raise DocPackageNotFoundException
+        raise DocPackageNotFoundException()
 
     if dao.user_id != user_id:
-        raise AccessDeniedError
+        raise AccessDeniedError()
 
     desc: str = data.get('desc', '')
     if desc:
@@ -92,6 +92,6 @@ def update_doc_package_by_user_id_and_package_id(user_id: int, package_id: int, 
         for ident in set(raw_ident) - set(new_idents):
             ident_id: Optional[int] = raw_ident_map.get(ident)
             if not ident_id:
-                return
+                continue
 
             delete_doc_ident_by_id(ident_id=ident_id)

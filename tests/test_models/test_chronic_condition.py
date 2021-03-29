@@ -77,6 +77,12 @@ def test_doc_package():
     with pytest.raises(AccessDeniedError):
         delete_doc_package_by_user_id_and_package_id(user_id=2, package_id=doc_package.id)
 
+    with pytest.raises(AccessDeniedError):
+        update_doc_package_by_user_id_and_package_id(user_id=2, package_id=doc_package.id, data=data)
+
+    with pytest.raises(DocPackageNotFoundException):
+        update_doc_package_by_user_id_and_package_id(user_id=user_id, package_id=10000, data=data)
+
     delete_doc_package_by_user_id_and_package_id(user_id=user_id, package_id=doc_package.id)
 
     dto = get_doc_package_by_id(package_id=doc_package.id)
