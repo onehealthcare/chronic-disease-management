@@ -30,6 +30,7 @@ class DocPackageDTO(BaseModel):
     status: int
     idents: List[DocPackageIdentDTO]
     ident_urls: List[str]
+    ident_pattern_urls: List[str]
     created_at: datetime.datetime
 
     @classmethod
@@ -39,6 +40,7 @@ class DocPackageDTO(BaseModel):
             user_id=dao.user_id,
             idents=[DocPackageIdentDTO.from_dao(o) for o in dao.idents],
             ident_urls=dao.ident_urls,
+            ident_pattern_urls=dao.ident_pattern_urls,
             desc=dao.desc,
             status=dao.status,
             created_at=_datetime(dao.created_at)

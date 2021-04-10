@@ -1,7 +1,7 @@
 import datetime
 from typing import List
 
-from config import QCLOUD_CC_COS_URL
+from config import QCLOUD_CC_COS_URL, QCLOUD_CC_COS_URL_PATTERN
 from models.base import Base
 from models.const import CommonStatus
 from peewee import CharField, DateTimeField, IntegerField, TextField
@@ -43,7 +43,13 @@ class DocPackageDAO(Base):
 
     @property
     def ident_urls(self) -> List[str]:
-        return [QCLOUD_CC_COS_URL.format(ident.ident) for ident in self.idents]
+        url: str = QCLOUD_CC_COS_URL
+        return [url.format(ident.ident) for ident in self.idents]
+
+    @property
+    def ident_pattern_urls(self) -> List[str]:
+        url: str = QCLOUD_CC_COS_URL_PATTERN
+        return [url.format(ident.ident) for ident in self.idents]
 
     @classmethod
     def search_by_keyword(cls, user_id: int, keyword: str, cursor: int, size: int = 20) -> List['DocPackageDAO']:
