@@ -44,10 +44,10 @@ def before_request():
     else:
         data = request.json
 
-    # if not DEBUG:
-    if not request.path == url_for('main_app.ping'):
-        if 'sign' not in data or hmac_sha1_encode(data) != data.get('sign'):
-            return error(ApiError.invalid_api_sign)
+    if not DEBUG:
+        if request.path != url_for('main_app.ping'):
+            if 'sign' not in data or hmac_sha1_encode(data) != data.get('sign'):
+                return error(ApiError.invalid_api_sign)
 
     # db conn
     if db.is_closed():

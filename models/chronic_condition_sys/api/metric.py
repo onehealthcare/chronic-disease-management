@@ -2,13 +2,19 @@ from typing import List
 
 from models.chronic_condition_sys.dao.metric import MetricDAO, UserMetricDAO
 from models.chronic_condition_sys.dto.metric import MetricDTO, UserMetricDTO
-from models.chronic_condition_sys.exceptions import MetricNotFoundException
+from models.chronic_condition_sys.exceptions import (
+    DuplicatedMetricException,
+    MetricNotFoundException,
+)
 from models.const import CommonStatus
 from models.init_db import db
 
 
-def create_metric(name: str, text: str) -> MetricDTO:
-    dao = MetricDAO.create(name=name, text=text)
+def create_metric(name: str, text: str, unit: str) -> MetricDTO:
+    dao = MetricDAO.get_by_name(name=name)
+    if dao:
+        raise DuplicatedMetricException()
+    dao = MetricDAO.create(name=name, text=text, unit=unit)
     return MetricDTO.from_dao(dao)
 
 
@@ -41,6 +47,7 @@ def delete_metric(metric_id: int):
 
 
 def create_user_metric(user_id: int, metric_id: int) -> UserMetricDTO:
+    get_metric(metric_id=metric_id)
     dao = UserMetricDAO.create(user_id=user_id, metric_id=metric_id)
     return UserMetricDTO.from_dao(dao)
 

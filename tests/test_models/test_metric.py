@@ -2,6 +2,7 @@ from typing import List
 
 import pytest
 from models.chronic_condition_sys import (
+    DuplicatedMetricException,
     MetricDTO,
     MetricNotFoundException,
     UserMetricDTO,
@@ -17,6 +18,7 @@ from models.chronic_condition_sys import (
 def test_metric():
     name: str = 'glucose'
     text: str = '血糖'
+    unit: str = 'mmol/L'
     user_id: int = 1
 
     with pytest.raises(MetricNotFoundException):
@@ -25,9 +27,12 @@ def test_metric():
     with pytest.raises(MetricNotFoundException):
         get_metric_by_name(name=name)
 
-    dto: MetricDTO = create_metric(name=name, text=text)
+    dto: MetricDTO = create_metric(name=name, text=text, unit=unit)
     assert dto.name == name
     assert dto.text == text
+
+    with pytest.raises(DuplicatedMetricException):
+        create_metric(name=name, text=text, unit=unit)
 
     dto = get_metric(metric_id=dto.id)
     assert dto.name == name

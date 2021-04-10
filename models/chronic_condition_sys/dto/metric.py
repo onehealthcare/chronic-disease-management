@@ -8,6 +8,7 @@ class MetricDTO(BaseModel):
     id: int
     name: str
     text: str
+    unit: str
     status: int
     created_at: datetime.datetime
 
@@ -17,6 +18,7 @@ class MetricDTO(BaseModel):
             id=dao.id,
             name=dao.name,
             text=dao.text,
+            unit=dao.unit,
             status=dao.status,
             created_at=_datetime(dao.created_at)
         )
@@ -26,6 +28,7 @@ class UserMetricDTO(BaseModel):
     id: int
     user_id: int
     metric_id: int
+    metric: MetricDTO
     status: int
     created_at: datetime.datetime
 
@@ -35,6 +38,7 @@ class UserMetricDTO(BaseModel):
             id=dao.id,
             user_id=dao.user_id,
             metric_id=dao.metric_id,
+            metric=MetricDTO.from_dao(dao.metric),
             status=dao.status,
             created_at=_datetime(dao.created_at)
         )

@@ -23,6 +23,7 @@ from models.chronic_condition_sys.dto.metric import MetricDTO, UserMetricDTO
 from models.chronic_condition_sys.exceptions import (
     DocPackageIdentNotFoundException,
     DocPackageNotFoundException,
+    DuplicatedMetricException,
     MetricNotFoundException,
 )
 
@@ -51,4 +52,5 @@ __all__ = [
     'DocPackageNotFoundException',
     'DocPackageIdentNotFoundException',
     'MetricNotFoundException',
+    'DuplicatedMetricException'
 ]

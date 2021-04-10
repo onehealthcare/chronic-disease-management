@@ -12,6 +12,7 @@ class MetricDAO(Base):
     """
     name = CharField(index=True)
     text = CharField()
+    unit = CharField()
     status = IntegerField(index=True, default=CommonStatus.NORMAL)
     created_at = DateTimeField(default=datetime.datetime.now)
     updated_at = DateTimeField(default=datetime.datetime.now)
@@ -59,6 +60,11 @@ class UserMetricDAO(Base):
     @classmethod
     def query_by_metric_id(cls, metric_id: int) -> List['UserMetricDAO']:
         return cls.select().where(cls.user_id == metric_id, cls.status == CommonStatus.NORMAL)
+
+    @property
+    def metric(self):
+        metric_id: int = self.id
+        return MetricDAO.get_by_id(metric_id=metric_id)
 
     def update_status(self, status: int):
         self.status = status
