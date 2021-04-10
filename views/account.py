@@ -88,7 +88,7 @@ def login_via_phone():
 
     result: bool = verify_auth_code(phone=phone, auth_code=auth_code)
     if not result:
-        return error()
+        return error("验证码错误")
 
     user: UserDTO
 

@@ -2,7 +2,7 @@ import base64
 
 import sentry_sdk
 from config import DEBUG, SENTRY_DSN
-from flask import Flask, g, request
+from flask import Flask, g, request, url_for
 from metaclass.cursor import Pager
 from models.init_db import db
 from models.token import InvalidTokenError, decode_jwt
@@ -45,8 +45,9 @@ def before_request():
         data = request.json
 
     # if not DEBUG:
-    if 'sign' not in data or hmac_sha1_encode(data) != data.get('sign'):
-        return error(ApiError.invalid_api_sign)
+    if not request.path == url_for('main_app.ping'):
+        if 'sign' not in data or hmac_sha1_encode(data) != data.get('sign'):
+            return error(ApiError.invalid_api_sign)
 
     # db conn
     if db.is_closed():
