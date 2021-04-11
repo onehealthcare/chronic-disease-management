@@ -59,7 +59,7 @@ class UserMetricDAO(Base):
 
     @classmethod
     def query_by_metric_id(cls, metric_id: int) -> List['UserMetricDAO']:
-        return cls.select().where(cls.user_id == metric_id, cls.status == CommonStatus.NORMAL)
+        return cls.select().where(cls.metric_id == metric_id, cls.status == CommonStatus.NORMAL)
 
     @property
     def metric(self):

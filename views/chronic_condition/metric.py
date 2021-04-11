@@ -6,6 +6,7 @@ from models.chronic_condition_sys import (
     UserMetricDTO,
     create_metric,
     create_user_metric,
+    delete_metric,
     query_user_metric_by_user_id,
 )
 from utils.logging import logger as _logger
@@ -18,25 +19,36 @@ from views.render import error, ok
 logger = _logger('views.chronic_condition.metric')
 
 
-@app.route("/metric/", methods=['POST'])
+@app.route("/metric/", methods=['POST', 'DELETE'])
 @need_admin
 def create_metric_view():
     data = request.get_json()
     logger.info(f"metric,create_metric,{simplejson.dumps(data)}")
-    name: str = data.get('name', '')
-    text: str = data.get('text', '')
-    unit: str = data.get('unit', '')
 
-    if not name or not text or not unit:
-        logger.info(f"create_metric,field_required,{simplejson.dumps(data)}")
-        return error('all field required')
+    if request.method == 'POST':
+        name: str = data.get('name', '')
+        text: str = data.get('text', '')
+        unit: str = data.get('unit', '')
 
-    try:
-        dto = create_metric(name=name, text=text, unit=unit)
-    except DuplicatedMetricException as e:
-        return error(e.message)
+        if not name or not text or not unit:
+            logger.info(f"create_metric,field_required,{simplejson.dumps(data)}")
+            return error('all field required')
 
-    return ok(dump_metric(dto))
+        try:
+            dto = create_metric(name=name, text=text, unit=unit)
+        except DuplicatedMetricException as e:
+            return error(e.message)
+
+        return ok(dump_metric(dto))
+
+    if request.method == 'DELETE':
+        try:
+            id: int = int(data.get('id', 0))
+        except (ValueError, TypeError):
+            return error('格式错误')
+
+        delete_metric(id)
+        return ok()
 
 
 @app.route('/user_metrics/', methods=['GET'])
