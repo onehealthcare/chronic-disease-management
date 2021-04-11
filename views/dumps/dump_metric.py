@@ -1,6 +1,10 @@
 from typing import Dict, List, Optional
 
-from models.chronic_condition_sys import MetricDTO, UserMetricDTO
+from models.chronic_condition_sys import (
+    MetricDTO,
+    MetricLabelDTO,
+    UserMetricDTO,
+)
 
 
 def dump_user_metric(dto: UserMetricDTO) -> Optional[Dict]:
@@ -30,4 +34,17 @@ def dump_metric(dto: MetricDTO) -> Optional[Dict]:
         "id": dto.id,
         "name": dto.name,
         "text": dto.text
+    }
+
+
+def dump_metric_label(dto: MetricLabelDTO) -> Optional[Dict]:
+    if not dto:
+        return None
+
+    return {
+        "id": dto.id,
+        "metric_id": dto.metric_id,
+        "name": dto.name,
+        "text": dto.text,
+        "order": dto.order
     }

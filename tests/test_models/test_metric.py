@@ -25,8 +25,7 @@ def test_metric():
     text: str = '血糖'
     unit: str = 'mmol/L'
     user_id: int = 1
-    label_name: str = 'pbg'
-    label_text: str = '餐后'
+    labels = [('pbg', '餐后', 2), ('fpg', '餐前', 1), ('default', '一般', 0)]
 
     with pytest.raises(MetricNotFoundException):
         delete_metric(metric_id=0)
@@ -35,7 +34,7 @@ def test_metric():
         get_metric_by_name(name=name)
 
     with pytest.raises(MetricNotFoundException):
-        create_metric_label(metric_id=0, name=label_name, text=label_text)
+        create_metric_label(metric_id=0, name='', text='')
 
     dto: MetricDTO = create_metric(name=name, text=text, unit=unit)
     assert dto.name == name
@@ -49,12 +48,17 @@ def test_metric():
     assert dto.text == text
 
     # metric label
-    label_dto = create_metric_label(metric_id=dto.id, name=label_name, text=label_text)
-    assert label_dto.name == label_name
-    assert label_dto.text == label_text
+    for label_name, label_text, label_order in labels:
+        label_dto = create_metric_label(metric_id=dto.id, name=label_name, text=label_text, order=label_order)
+        assert label_dto.name == label_name
+        assert label_dto.text == label_text
 
     label_list: List[MetricLabelDTO] = query_metric_label_by_metric_id(metric_id=dto.id)
-    assert len(label_list) == 1
+    assert len(label_list) == len(labels)
+
+    # order 顺序
+    _labels = [(dto.name, dto.text, dto.order) for dto in label_list]
+    assert _labels == sorted(labels, key=lambda x: x[2])
 
     # user metric
     user_metric_dto = create_user_metric(user_id=user_id, metric_id=dto.id)
@@ -75,4 +79,5 @@ def test_metric():
     with pytest.raises(MetricLabelNotFoundException):
         delete_metric_label(metric_label_id=0)
 
-    delete_metric_label(metric_label_id=label_list[0].id)
+    label_list: List[MetricLabelDTO] = query_metric_label_by_metric_id(metric_id=dto.id)
+    assert len(label_list) == 0

@@ -81,6 +81,7 @@ class MetricLabelDAO(Base):
     name = CharField(index=True)
     text = CharField()
     metric_id = IntegerField(index=True)
+    order = IntegerField(index=True)
     status = IntegerField(index=True, default=CommonStatus.NORMAL)
     created_at = DateTimeField(default=datetime.datetime.now)
     updated_at = DateTimeField(default=datetime.datetime.now)
@@ -98,7 +99,7 @@ class MetricLabelDAO(Base):
 
     @classmethod
     def query_by_metric_id(cls, metric_id: int) -> List['MetricLabelDAO']:
-        return cls.select().where(cls.metric_id == metric_id, cls.status == CommonStatus.NORMAL)
+        return cls.select().where(cls.metric_id == metric_id, cls.status == CommonStatus.NORMAL).order_by(cls.order.asc())
 
     def update_status(self, status: int):
         self.status = status

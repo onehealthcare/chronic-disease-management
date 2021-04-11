@@ -118,6 +118,7 @@ CREATE TABLE `chronic_condition_metric_label` (
   `metric_id` int(10) NOT NULL,
   `name` varchar(64) NOT NULL,
   `text` varchar(64) NOT NULL,
+  `order` int(4) NOT NULL DEFAULT 0,
   `status` tinyint(4) NOT NULL DEFAULT '0',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -126,6 +127,7 @@ CREATE TABLE `chronic_condition_metric_label` (
   PRIMARY KEY (`id`),
   KEY `idx_name` (`name`),
   KEY `idx_metric_id` (`metric_id`),
+  KEY `idx_order` (`order`),
   KEY `idx_status` (`status`)
 );
 

@@ -54,6 +54,9 @@ def delete_metric(metric_id: int):
     for um_dao in UserMetricDAO.query_by_metric_id(metric_id=metric_id):
         um_dao.delete()
 
+    for ml_dao in MetricLabelDAO.query_by_metric_id(metric_id=metric_id):
+        ml_dao.delete()
+
 
 def create_user_metric(user_id: int, metric_id: int) -> UserMetricDTO:
     get_metric(metric_id=metric_id)
@@ -66,9 +69,9 @@ def query_user_metric_by_user_id(user_id: int) -> List[UserMetricDTO]:
     return [UserMetricDTO.from_dao(dao) for dao in daos]
 
 
-def create_metric_label(metric_id: int, name: str, text: str) -> MetricLabelDTO:
+def create_metric_label(metric_id: int, name: str, text: str, order: int = 0) -> MetricLabelDTO:
     dao = get_metric(metric_id=metric_id)
-    dao = MetricLabelDAO.create(metric_id=dao.id, name=name, text=text)
+    dao = MetricLabelDAO.create(metric_id=dao.id, name=name, text=text, order=order)
     return MetricLabelDTO.from_dao(dao)
 
 

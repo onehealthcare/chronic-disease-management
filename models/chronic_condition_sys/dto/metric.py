@@ -47,6 +47,7 @@ class UserMetricDTO(BaseModel):
 class MetricLabelDTO(BaseModel):
     id: int
     metric_id: int
+    order: int
     name: str
     text: str
     status: int
@@ -57,6 +58,7 @@ class MetricLabelDTO(BaseModel):
         return MetricLabelDTO(
             id=dao.id,
             metric_id=dao.metric_id,
+            order=dao.order,
             name=dao.name,
             text=dao.text,
             status=dao.status,
