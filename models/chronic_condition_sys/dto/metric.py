@@ -42,3 +42,23 @@ class UserMetricDTO(BaseModel):
             status=dao.status,
             created_at=_datetime(dao.created_at)
         )
+
+
+class MetricLabelDTO(BaseModel):
+    id: int
+    metric_id: int
+    name: str
+    text: str
+    status: int
+    created_at: datetime.datetime
+
+    @classmethod
+    def from_dao(cls, dao) -> 'MetricLabelDTO':
+        return MetricLabelDTO(
+            id=dao.id,
+            metric_id=dao.metric_id,
+            name=dao.name,
+            text=dao.text,
+            status=dao.status,
+            created_at=_datetime(dao.created_at)
+        )

@@ -16,3 +16,8 @@ class MetricNotFoundException(Exception):
 class DuplicatedMetricException(Exception):
     def __init__(self, message="Metric 已存在"):
         self.message = message
+
+
+class MetricLabelNotFoundException(Exception):
+    def __init__(self, message="Metric Label 不存在"):
+        self.message = message

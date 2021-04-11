@@ -1,9 +1,18 @@
 from typing import List
 
-from models.chronic_condition_sys.dao.metric import MetricDAO, UserMetricDAO
-from models.chronic_condition_sys.dto.metric import MetricDTO, UserMetricDTO
+from models.chronic_condition_sys.dao.metric import (
+    MetricDAO,
+    MetricLabelDAO,
+    UserMetricDAO,
+)
+from models.chronic_condition_sys.dto.metric import (
+    MetricDTO,
+    MetricLabelDTO,
+    UserMetricDTO,
+)
 from models.chronic_condition_sys.exceptions import (
     DuplicatedMetricException,
+    MetricLabelNotFoundException,
     MetricNotFoundException,
 )
 from models.const import CommonStatus
@@ -55,3 +64,21 @@ def create_user_metric(user_id: int, metric_id: int) -> UserMetricDTO:
 def query_user_metric_by_user_id(user_id: int) -> List[UserMetricDTO]:
     daos = UserMetricDAO.query_by_user_id(user_id=user_id)
     return [UserMetricDTO.from_dao(dao) for dao in daos]
+
+
+def create_metric_label(metric_id: int, name: str, text: str) -> MetricLabelDTO:
+    dao = get_metric(metric_id=metric_id)
+    dao = MetricLabelDAO.create(metric_id=dao.id, name=name, text=text)
+    return MetricLabelDTO.from_dao(dao)
+
+
+def delete_metric_label(metric_label_id: int):
+    dao = MetricLabelDAO.get_by_id(metric_label_id=metric_label_id)
+    if not dao:
+        raise MetricLabelNotFoundException()
+    dao.delete()
+
+
+def query_metric_label_by_metric_id(metric_id: int) -> List[MetricLabelDTO]:
+    daos = MetricLabelDAO.query_by_metric_id(metric_id=metric_id)
+    return [MetricLabelDTO.from_dao(dao) for dao in daos]

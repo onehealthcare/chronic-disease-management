@@ -72,3 +72,37 @@ class UserMetricDAO(Base):
 
     def delete(self):
         self.update_status(status=CommonStatus.DELETED)
+
+
+class MetricLabelDAO(Base):
+    """
+    度量标签，比如血压有舒张压和收缩压，血糖有餐前餐后等
+    """
+    name = CharField(index=True)
+    text = CharField()
+    metric_id = IntegerField(index=True)
+    status = IntegerField(index=True, default=CommonStatus.NORMAL)
+    created_at = DateTimeField(default=datetime.datetime.now)
+    updated_at = DateTimeField(default=datetime.datetime.now)
+
+    class Meta:
+        table_name = "chronic_condition_metric_label"
+
+    @classmethod
+    def get_by_id(cls, metric_label_id: int) -> 'MetricLabelDAO':
+        return cls.get(cls.id == metric_label_id)
+
+    # @classmethod
+    # def get_by_name(cls, metric_id: int, name: str) -> 'MetricLabelDAO':
+    #     return cls.get(cls.name == name, cls.status == CommonStatus.NORMAL)
+
+    @classmethod
+    def query_by_metric_id(cls, metric_id: int) -> List['MetricLabelDAO']:
+        return cls.select().where(cls.metric_id == metric_id, cls.status == CommonStatus.NORMAL)
+
+    def update_status(self, status: int):
+        self.status = status
+        self.save()
+
+    def delete(self):
+        self.update_status(status=CommonStatus.DELETED)

@@ -9,21 +9,29 @@ from models.chronic_condition_sys.api.doc_package import (
 )
 from models.chronic_condition_sys.api.metric import (
     create_metric,
+    create_metric_label,
     create_user_metric,
     delete_metric,
+    delete_metric_label,
     get_metric,
     get_metric_by_name,
+    query_metric_label_by_metric_id,
     query_user_metric_by_user_id,
 )
 from models.chronic_condition_sys.dto.doc_package import (
     DocPackageDTO,
     DocPackageIdentDTO,
 )
-from models.chronic_condition_sys.dto.metric import MetricDTO, UserMetricDTO
+from models.chronic_condition_sys.dto.metric import (
+    MetricDTO,
+    MetricLabelDTO,
+    UserMetricDTO,
+)
 from models.chronic_condition_sys.exceptions import (
     DocPackageIdentNotFoundException,
     DocPackageNotFoundException,
     DuplicatedMetricException,
+    MetricLabelNotFoundException,
     MetricNotFoundException,
 )
 
@@ -33,6 +41,7 @@ __all__ = [
     'DocPackageIdentDTO',
     'MetricDTO',
     'UserMetricDTO',
+    'MetricLabelDTO',
 
     'create_doc_package',
     'delete_doc_package_by_user_id_and_package_id',
@@ -43,6 +52,9 @@ __all__ = [
     'delete_doc_ident_by_id',
     'create_user_metric',
     'query_user_metric_by_user_id',
+    'create_metric_label',
+    'delete_metric_label',
+    'query_metric_label_by_metric_id',
 
     'create_metric',
     'get_metric',
@@ -52,5 +64,6 @@ __all__ = [
     'DocPackageNotFoundException',
     'DocPackageIdentNotFoundException',
     'MetricNotFoundException',
-    'DuplicatedMetricException'
+    'DuplicatedMetricException',
+    'MetricLabelNotFoundException',
 ]
