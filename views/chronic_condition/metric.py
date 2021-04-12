@@ -10,6 +10,7 @@ from models.chronic_condition_sys import (
     create_user_metric,
     delete_metric,
     delete_metric_label,
+    query_metric_label_by_metric_id,
     query_user_metric_by_user_id,
 )
 from utils.logging import logger as _logger
@@ -17,6 +18,7 @@ from views.chronic_condition import app
 from views.dumps.dump_metric import (
     dump_metric,
     dump_metric_label,
+    dump_metric_labels,
     dump_user_metrics,
 )
 from views.middleware.auth import need_admin, need_login
@@ -92,11 +94,27 @@ def user_metric():
     return ok()
 
 
+@app.route("/metric_labels/", methods=['GET'])
+@need_admin
+def metric_labels_view():
+    data = request.args
+    try:
+        metric_id = data.get("metric_id", "0")
+    except (ValueError, TypeError):
+        return error("invalid metric id")
+
+    if not metric_id:
+        return error("all field required")
+
+    dtos = query_metric_label_by_metric_id(metric_id=metric_id)
+
+    return ok({"metric_labels": dump_metric_labels(dtos)})
+
+
 @app.route("/metric_label/", methods=['POST', 'DELETE'])
 @need_admin
 def metric_label_view():
     data = request.get_json()
-
     if request.method == 'POST':
         logger.info(f"create_metric_label,create_create_metric,{simplejson.dumps(data)}")
         name: str = data.get('name', '')
@@ -123,7 +141,7 @@ def metric_label_view():
 
         return ok(dump_metric_label(dto))
 
-    if request.method == 'DELETE':
+    elif request.method == 'DELETE':
         logger.info(f"metric_label,delete_metric_label,{simplejson.dumps(data)}")
         try:
             id: int = int(data.get('id', 0))

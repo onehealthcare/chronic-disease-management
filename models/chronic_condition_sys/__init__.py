@@ -7,6 +7,10 @@ from models.chronic_condition_sys.api.doc_package import (
     paged_search_doc_package_by_user_id,
     update_doc_package_by_user_id_and_package_id,
 )
+from models.chronic_condition_sys.api.measure import (
+    create_metric_measure,
+    get_recnet_metric_measure,
+)
 from models.chronic_condition_sys.api.metric import (
     create_metric,
     create_metric_label,
@@ -27,6 +31,7 @@ from models.chronic_condition_sys.dto.metric import (
     MetricLabelDTO,
     UserMetricDTO,
 )
+from models.chronic_condition_sys.dto.metric_measure import MetricMeasureDTO
 from models.chronic_condition_sys.exceptions import (
     DocPackageIdentNotFoundException,
     DocPackageNotFoundException,
@@ -42,6 +47,7 @@ __all__ = [
     'MetricDTO',
     'UserMetricDTO',
     'MetricLabelDTO',
+    'MetricMeasureDTO',
 
     'create_doc_package',
     'delete_doc_package_by_user_id_and_package_id',
@@ -55,6 +61,9 @@ __all__ = [
     'create_metric_label',
     'delete_metric_label',
     'query_metric_label_by_metric_id',
+
+    'create_metric_measure',
+    'get_recnet_metric_measure',
 
     'create_metric',
     'get_metric',

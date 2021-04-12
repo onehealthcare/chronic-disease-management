@@ -37,6 +37,13 @@ def dump_metric(dto: MetricDTO) -> Optional[Dict]:
     }
 
 
+def dump_metric_labels(dtos: List[MetricLabelDTO]) -> List[Dict]:
+    if not dtos:
+        return []
+
+    return list(filter(None, [dump_metric_label(dto) for dto in dtos]))
+
+
 def dump_metric_label(dto: MetricLabelDTO) -> Optional[Dict]:
     if not dto:
         return None
