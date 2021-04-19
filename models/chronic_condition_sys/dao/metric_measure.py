@@ -29,7 +29,7 @@ class MetricMeasureDAO(Base):
             cls.status == CommonStatus.NORMAL
         ).order_by(cls.created_at.desc()).limit(limit)
 
-        return list(sorted([o for o in q], key=lambda dao: dao.created_at))
+        return list(sorted([o for o in q], key=lambda dao: dao.created_at, reverse=True))
 
     @classmethod
     def query_recent_by_metric_and_time(cls, user_id: int, metric_id: int, time: datetime.datetime) -> List['MetricMeasureDAO']:

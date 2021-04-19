@@ -21,3 +21,8 @@ class DuplicatedMetricException(Exception):
 class MetricLabelNotFoundException(Exception):
     def __init__(self, message="Metric Label 不存在"):
         self.message = message
+
+
+class MetricMeasureNotFoundException(Exception):
+    def __init__(self, message="Metric MetricMeasure 不存在"):
+        self.message = message

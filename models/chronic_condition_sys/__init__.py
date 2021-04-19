@@ -9,6 +9,7 @@ from models.chronic_condition_sys.api.doc_package import (
 )
 from models.chronic_condition_sys.api.measure import (
     create_metric_measure,
+    delete_metric_measure,
     get_recnet_metric_measure,
 )
 from models.chronic_condition_sys.api.metric import (
@@ -37,6 +38,7 @@ from models.chronic_condition_sys.exceptions import (
     DocPackageNotFoundException,
     DuplicatedMetricException,
     MetricLabelNotFoundException,
+    MetricMeasureNotFoundException,
     MetricNotFoundException,
 )
 
@@ -63,6 +65,7 @@ __all__ = [
     'query_metric_label_by_metric_id',
 
     'create_metric_measure',
+    'delete_metric_measure',
     'get_recnet_metric_measure',
 
     'create_metric',
@@ -75,4 +78,5 @@ __all__ = [
     'MetricNotFoundException',
     'DuplicatedMetricException',
     'MetricLabelNotFoundException',
+    'MetricMeasureNotFoundException',
 ]
