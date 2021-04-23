@@ -15,7 +15,7 @@ def cos_temp_credential():
     except (QCloudCOSGetCredentialError) as e:
         return error(str(e.message))
 
-    return ok(result)
+    return ok({'credential': result})
 
 
 @app.route('/sms_auth_code/', methods=['POST'])
