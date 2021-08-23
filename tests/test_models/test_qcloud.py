@@ -26,14 +26,11 @@ def get_cos_temp_credential_patch():
 def test_get_credential():
     ret = get_cos_temp_credential()
 
-    assert 'expiredTime' in ret
-    assert 'expiration' in ret
-    assert 'credentials' in ret
-    assert 'requestId' in ret
-    assert 'startTime' in ret
-    assert 'sessionToken' in ret.get('credentials')
-    assert 'tmpSecretId' in ret.get('credentials')
-    assert 'tmpSecretKey' in ret.get('credentials')
+    assert 'expired_time' in ret
+    assert 'start_time' in ret
+    assert 'token' in ret
+    assert 'secret_id' in ret
+    assert 'secret_key' in ret
 
 
 @pytest.fixture

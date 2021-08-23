@@ -91,3 +91,81 @@ CREATE TABLE `user_phone` (
   KEY `idx_phone` (`phone`),
   KEY `idx_status` (`status`)
 );
+
+--
+-- Table structure for table `chronic_condition_metric`
+--
+CREATE TABLE `chronic_condition_metric` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(64) NOT NULL,
+  `text` varchar(64) NOT NULL,
+  `unit` varchar(64) NOT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `_created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `_updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_name` (`name`),
+  KEY `idx_status` (`status`)
+);
+
+--
+-- Table structure for table `chronic_condition_metric_label`
+--
+CREATE TABLE `chronic_condition_metric_label` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `metric_id` int(10) NOT NULL,
+  `name` varchar(64) NOT NULL,
+  `text` varchar(64) NOT NULL,
+  `order` int(4) NOT NULL DEFAULT 0,
+  `status` tinyint(4) NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `_created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `_updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_name` (`name`),
+  KEY `idx_metric_id` (`metric_id`),
+  KEY `idx_order` (`order`),
+  KEY `idx_status` (`status`)
+);
+
+--
+-- Table structure for table `chronic_condition_user_metric`
+--
+CREATE TABLE `chronic_condition_user_metric` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) NOT NULL,
+  `metric_id` int(10) NOT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `_created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `_updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_user_id` (`user_id`),
+  KEY `idx_metric_id` (`metric_id`),
+  KEY `idx_status` (`status`)
+);
+
+--
+-- Table structure for table `chronic_condition_metric_measure`
+--
+CREATE TABLE `chronic_condition_metric_measure` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) NOT NULL,
+  `metric_id` int(10) NOT NULL,
+  `metric_label` varchar(64) NOT NULL,
+  `value` float NOT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `_created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `_updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_user_id` (`user_id`),
+  KEY `idx_metric_id` (`metric_id`),
+  KEY `idx_metric_label` (`metric_label`),
+  KEY `idx_status` (`status`)
+);

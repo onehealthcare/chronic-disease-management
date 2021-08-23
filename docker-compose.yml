@@ -10,12 +10,12 @@ services:
 
     environment:
      - TZ=Asia/Shanghai
-     - MYSQL_HOST=192.168.44.6
+     - MYSQL_HOST=0.0.0.0
      - MYSQL_PORT=3306
      - MYSQL_ROOT_PASSWORD=tonghs
      - MYSQL_USER=tonghs
      - MYSQL_PASSWORD=tonghs
-     - MYSQL_DB=web-template
+     - MYSQL_DB=web_template
     networks:
       default:
         aliases:
