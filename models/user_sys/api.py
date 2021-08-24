@@ -170,3 +170,20 @@ def create_user_by_phone(phone: str) -> UserDTO:
     UserPhoneDAO.create(user_id=user.id, phone=phone)
 
     return UserDTO.from_dao(user)
+
+
+def get_user_auth_by_user_id_and_provider(user_id: int, provider: int):
+    dao = UserAuthDAO.get_by_user_id_and_provider(user_id=user_id, provider=provider)
+    if not dao:
+        raise UserAuthNotFoundException()
+
+    return UserAuthDTO.from_dao(dao)
+
+
+def update_user_auth_by_user_id_and_provider(user_id: int, provider: int, access_token: str,
+                                             refresh_token: str, expires_date: datetime.datetime):
+    dao = UserAuthDAO.get_by_user_id_and_provider(user_id=user_id, provider=provider)
+    if not dao:
+        raise UserAuthNotFoundException()
+
+    dao.update_token(access_token=access_token, refresh_token=refresh_token, expires_date=expires_date)

@@ -21,6 +21,17 @@ def get_access_token_by_auth_code(auth_code: str, user_id: int) -> Dict:
     return tower_client.get_access_token_by_auth_code(auth_code=auth_code, redirect_uri=redirect_uri)
 
 
-def refresh_access_token():
-    pass
+def refresh_access_token(access_token: str, refresh_token: str, user_id: int):
+    """
+    刷新 access_token
+    :param access_token:
+    :param refresh_token:
+    :param user_id:
+    :return:
+    """
+    redirect_uri = f"{HOST}/tower/oauth_callback?user_id={user_id}"
+    return tower_client.refresh_access_token(
+        access_token=access_token, refresh_token=refresh_token,
+        redirect_uri=redirect_uri
+    )
 

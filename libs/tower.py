@@ -40,3 +40,18 @@ class TowerClient:
             return {}
 
         return r.json()
+
+    def refresh_access_token(self, access_token: str, refresh_token: str, redirect_uri: str):
+        data: Dict = {
+            "client_id": self.client_id,
+            "client_secret": self.secret_key,
+            "grant_type": "refresh_token",
+            "redirect_uri": redirect_uri,
+            "refresh_token": refresh_token
+        }
+        headers: Dict[str, str] = {"Authorization": f"Bearer {access_token}"}
+        r = self.post(url=self.auth_host, data=data, headers=headers)
+        if not r:
+            return {}
+
+        return r.json()

@@ -33,3 +33,9 @@ class UserAuthDAO(Base):
     def update_status(self, status: int):
         self.status = status
         self.save()
+
+    def update_token(self, access_token: str, refresh_token: str, expires_date: datetime.datetime):
+        self.access_token = access_token
+        self.refresh_token = refresh_token
+        self.expires_date = expires_date
+        self.save()
