@@ -18,7 +18,11 @@ class TowerClient:
         return self._session
 
     def get(self, url: str, headers: Dict):
-        pass
+        r = self.connection.get(url=url, headers=headers)
+        if r.status_code != requests.codes.ok:
+            return None
+
+        return r
 
     def post(self, url: str, data: Dict, headers: Dict={}):
         r = self.connection.post(url=url, data=data, headers=headers)
@@ -51,6 +55,15 @@ class TowerClient:
         }
         headers: Dict[str, str] = {"Authorization": f"Bearer {access_token}"}
         r = self.post(url=self.auth_host, data=data, headers=headers)
+        if not r:
+            return {}
+
+        return r.json()
+
+    def get_todo(self, todo_id: str, access_token: str):
+        headers: Dict[str, str] = {"Authorization": f"Bearer {access_token}"}
+        url: str = f"{self.api_host}/todos/{todo_id}"
+        r = self.get(url=url, headers=headers)
         if not r:
             return {}
 

@@ -1,5 +1,6 @@
 import datetime
 from typing import Dict
+from utils.datetime_utils import _datetime
 
 import simplejson
 
@@ -40,4 +41,21 @@ def refresh_access_token(user_id: int):
     )
 
     return access_token
+
+
+def get_todo(todo_id: str, user_id: int):
+    dto: UserAuthDTO = user_api.get_user_auth_by_user_id_and_provider(user_id=user_id, provider=UserAuthProvider.TOWER)
+    access_token: str = dto.access_token
+
+    if _datetime(dto.expires_date) < datetime.datetime.now():  # token 过期
+        data: Dict = tower_api.refresh_access_token(
+            access_token=dto.access_token,
+            refresh_token=dto.refresh_token,
+            user_id=user_id
+        )
+        access_token = data.get("access_token")
+
+    return tower_api.get_todo(todo_id=todo_id, access_token=access_token)
+
+
 

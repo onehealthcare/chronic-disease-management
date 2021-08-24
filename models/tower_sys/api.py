@@ -35,3 +35,12 @@ def refresh_access_token(access_token: str, refresh_token: str, user_id: int):
         redirect_uri=redirect_uri
     )
 
+
+def get_todo(todo_id: str, access_token: str):
+    """
+    获取任务信息
+    :param todo_id:
+    :param access_token:
+    :return:
+    """
+    return tower_client.get_todo(todo_id=todo_id, access_token=access_token)
