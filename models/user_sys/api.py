@@ -1,3 +1,4 @@
+import datetime
 import string
 
 import peewee
@@ -64,15 +65,22 @@ def delete_user(user_id: int):
 
 
 def create_user_auth(user_id: int, third_party_id: str,
-                     provider: int, detail_json: str) -> UserAuthDTO:
+                     provider: int, access_token: str,
+                     refresh_token: str, expires_date: datetime.datetime,
+                     detail_json: str) -> UserAuthDTO:
     user = UserDAO.get_by_id(user_id)
     if not user:
         raise UserNotFoundException()
 
-    return UserAuthDTO.from_dao(UserAuthDAO.create(user_id=user_id,
-                                                   third_party_id=third_party_id,
-                                                   provider=provider,
-                                                   detail_json=detail_json))
+    dao = UserAuthDAO.create(user_id=user_id,
+                             third_party_id=third_party_id,
+                             provider=provider,
+                             access_token=access_token,
+                             refresh_token=refresh_token,
+                             expires_date=expires_date,
+                             detail_json=detail_json)
+
+    return UserAuthDTO.from_dao(dao)
 
 
 def get_user_by_third_party_id(third_party_id: str, provider: int) -> UserDTO:

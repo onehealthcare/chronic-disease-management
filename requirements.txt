@@ -13,3 +13,4 @@ redis==3.5.3
 freezegun
 simplejson
 ipython
+requests

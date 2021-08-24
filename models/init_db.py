@@ -12,11 +12,14 @@ from config import (
     REDIS_URL,
     WXAPP_ID,
     WXAPP_SECRET,
+    TOWER_CLIENT_ID,
+    TOWER_SECRET_KEY
 )
 from libs.qcloud import QCloudCOSClient
 from playhouse.pool import PooledMySQLDatabase
 from wechatpy import WeChatClient
 from wechatpy.client.api import WeChatWxa
+from libs.tower import TowerClient
 
 
 db = PooledMySQLDatabase(MYSQL_DB, user=MYSQL_USER, password=MYSQL_PASSWD,
@@ -33,3 +36,6 @@ qcloud_cos_client = QCloudCOSClient(secret_id=QCLOUD_SECRET_ID,
 
 # redis
 redis_conn = redis.Redis.from_url(REDIS_URL, decode_responses=True)  # 存binary 数据，不需要 decode response
+
+# tower client
+tower_client = TowerClient(client_id=TOWER_CLIENT_ID, secret_key=TOWER_SECRET_KEY)
