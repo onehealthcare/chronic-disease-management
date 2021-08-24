@@ -134,3 +134,5 @@ htmlcov/
 .DS_Store
 
 config.py
+
+.idea/

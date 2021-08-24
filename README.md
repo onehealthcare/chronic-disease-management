@@ -22,6 +22,7 @@ make build-image && make run-dev-server
 ```
 配合小程序 Demo：https://github.com/tonghs/lab-x
 
+
 ## Online deploy
 ```shell
 make run-server
