@@ -170,6 +170,9 @@ def test_user_auth():
     user_auth_dto = create_user_auth(user_id=user.id,
                                      third_party_id=third_party_id,
                                      provider=provider,
+                                     access_token="",
+                                     refresh_token="",
+                                     expires_date=datetime.datetime.now(),
                                      detail_json=simplejson.dumps(detail))
     assert user_auth_dto.user_id == user.id
     assert user_auth_dto.status == CommonStatus.NORMAL
