@@ -270,12 +270,12 @@ class IncludedTodosCustomField(BaseModel):
 
         return {}
 
-    def get_related_member_id(self) -> List[str]:
+    def get_related_member_id(self) -> List:
         """
         获取相关人
         :return:
         """
-        return self._get_by_name("相关人").get('value', [])
+        return self._get_by_name("相关人").get('value', []) or []
 
     def get_status(self) -> str:
         """

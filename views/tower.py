@@ -28,7 +28,14 @@ def tower_webhook_handler(user_id):
             model: TodoPayloadModel = TodoPayloadModel.parse_obj(data)
             todo_id: str = model.data.todo.guid
             todo_id
-        except ValidationError:
-            logger.error(f"tower_webhook,invalid payload,{user_id} - {data}")
+
+            # from broker.tower_sys import get_todo
+            # from models.tower_sys.dataclass.api_data import TodoModel
+            # todo_info = get_todo(todo_id=todo_id, user_id=int(user_id))
+            # m = TodoModel.parse_obj(todo_info)
+            # print(m.name, m.url, m.status, m.related_member, m.priority, m.id)
+
+        except ValidationError as e:
+            logger.error(f"tower_webhook,invalid payload,{user_id} - {data} -{e}")
 
     return "ok"

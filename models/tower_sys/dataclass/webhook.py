@@ -14,7 +14,7 @@ class TodoModel(BaseModel):
     updated_at: str
     handler: MemberModel
     due_at: Optional[str]
-    assignee: MemberModel
+    assignee: Optional[MemberModel]
     labels: List[str]
     priority: str
 
