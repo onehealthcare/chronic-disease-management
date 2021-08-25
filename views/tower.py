@@ -32,8 +32,9 @@ def tower_webhook_handler(user_id):
         logger.info(f"tower_webhook,request,{user_id} - {data}")
         try:
             model: TodoPayloadModel = TodoPayloadModel.parse_obj(data)
-            todo_id: str = model.data.todo.guid
-            update_notion_task_by_tower_todo_id(todo_id=todo_id, user_id=int(user_id))
+            if model.action != "deleted":
+                todo_id: str = model.data.todo.guid
+                update_notion_task_by_tower_todo_id(todo_id=todo_id, user_id=int(user_id))
         except ValidationError as e:
             logger.error(f"tower_webhook,invalid payload,{user_id} - {data} -{e}")
 

@@ -18,9 +18,5 @@ RUN echo "Asia/Shanghai" > /etc/timezone && \
   dpkg-reconfigure -f noninteractive tzdata && \
   pip3 install -r /requirements.txt -i http://mirrors.aliyun.com/pypi/simple/ --extra-index-url https://pypi.python.org/simple --trusted-host mirrors.aliyun.com && \
   rm -rf /root/.cache && rm -rf /tmp/*
-COPY ci/cron /etc/cron.d/tower-cron
-RUN chmod 0644 /etc/cron.d/tower-cron
-RUN crontab /etc/cron.d/tower-cron
 WORKDIR /opt/code/
-CMD cron
 CMD ["sh", "-c", "gunicorn app:app --bind=$GUNICORN_BIND_ADDRESS --workers=$GUNICORN_WORKERS --log-level=$GUNICORN_LOG_LEVEL $GUNICORN_RELOAD --access-logfile=$GUNICORN_ACCESS_LOGFILE --worker-class gevent"]

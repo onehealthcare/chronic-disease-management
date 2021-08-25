@@ -5,7 +5,7 @@ services:
     volumes:
       - ./ci/nginx/conf.d/:/etc/nginx/conf.d/
       - ./ci/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - /var/log:/var/log
+      - /var/log/:/var/log/
     depends_on:
       - web
     ports:
@@ -16,7 +16,7 @@ services:
     command: bash -c './dev.sh'
     volumes:
       - .:/opt/code
-      - /var/log:/var/log
+      - /var/log/web-template/:/var/log/web-template/
     environment:
       - PYTHONPATH=/opt/code
       - DEBUG=1

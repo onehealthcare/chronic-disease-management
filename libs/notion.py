@@ -10,7 +10,7 @@ class NotionClient:
         self.client = Client(auth=token)
 
     def _gen_data(self, name: str, assign: List[str], priority: str, status: str, tower_id: int, tower_url: str):
-        return {
+        data = {
             "parent": {
                 "database_id": self.database_id
             },
@@ -34,11 +34,6 @@ class NotionClient:
                         "name": priority
                     }
                 },
-                "Status": {
-                    "select": {
-                        "name": status
-                    }
-                },
                 "Tower": {
                     "url": tower_url
                 },
@@ -47,6 +42,17 @@ class NotionClient:
                 }
             }
         }
+
+        if status:
+            data["properties"].update({  # type: ignore
+                "Status": {
+                    "select": {
+                        "name": status
+                    }
+                }
+            })
+
+        return data
 
     def create_task(self, name: str, assign: List[str], priority: str, status: str, tower_id: int, tower_url: str):
         data = self._gen_data(

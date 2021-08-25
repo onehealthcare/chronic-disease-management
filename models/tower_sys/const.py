@@ -1,5 +1,5 @@
 class TaskStatus:
-    NO_STATUS = "No Status"
+    NO_STATUS = ""
     ASSIGNED = "Assigned"
     IN_PROGRESS = "In Progress"
     COMPLETED = "Completed"
@@ -42,4 +42,25 @@ TaskTowerStatusMap = {
     TowerStatus.TESTING: TaskStatus.TESTING,
     TowerStatus.TESTED: TaskStatus.TESTING,
     TowerStatus.READY: TaskStatus.READY
+}
+
+
+class TaskPriority:
+    LOWER = "Low 💤"
+    NORMAL = "Medium 🔅"
+    HIGH = "High 🔥"
+
+
+class TowerPriority:
+    LOWER = "lower"
+    NORMAL = "normal"
+    HIGHER = "higher"
+    HIGHEST = "highest"
+
+
+TaskTowerPriorityMap = {
+    TowerPriority.HIGHEST: TaskPriority.HIGH,
+    TowerPriority.HIGHER: TaskPriority.HIGH,
+    TowerPriority.NORMAL: TaskPriority.NORMAL,
+    TowerPriority.LOWER: TaskPriority.LOWER,
 }

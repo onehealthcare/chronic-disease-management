@@ -9,6 +9,11 @@ def update_notion_task_by_tower_todo_id(todo_id: str, user_id: int):
     todo_info = get_todo(todo_id=todo_id, user_id=user_id)
     m = TodoModel.parse_obj(todo_info)
 
+    # 其他不相关的不同步到 notion
+    if not m.is_related_to_me:
+        return
+
+    # notion 是否创建过任务
     notion_task = _get_notion_task_by_tower_id(tower_id=m.id)
 
     # 如果没有找到则创建
@@ -96,6 +101,9 @@ def _get_notion_task_by_tower_id(tower_id: int) -> Dict:
     """
     resp: Dict = notion_client.get_by_tower_id(tower_id=tower_id)
     results: List = resp.get("results", [])
+    if not results:
+        return {}
+
     task: Dict = results[0]
     _tower_id: Optional[int] = task.get("properties", {}).get("Tower ID", {}).get("number")
     if results and _tower_id is not None and tower_id == _tower_id:

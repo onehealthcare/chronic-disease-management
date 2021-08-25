@@ -212,7 +212,9 @@ from typing import Dict, List, Optional, Union
 
 from config import TOWER_TEAM_ID
 from models.tower_sys.const import (
+    TaskPriority,
     TaskStatus,
+    TaskTowerPriorityMap,
     TaskTowerStatusMap,
     TowerStatus,
     TowerUserMap,
@@ -295,7 +297,7 @@ class IncludedComments(BaseModel):
 class TodoAttributesModel(BaseModel):
     team_wide_id: int
     content: str
-    desc: str
+    desc: Optional[str]
     is_active: bool
     is_completed: bool
     priority: str
@@ -364,10 +366,6 @@ class TodoModel(BaseModel):
         return self.attr.content
 
     @property
-    def priority(self) -> str:
-        return self.attr.priority
-
-    @property
     def id(self):
         return self.attr.team_wide_id
 
@@ -403,6 +401,10 @@ class TodoModel(BaseModel):
         return TaskStatus.NO_STATUS
 
     @property
+    def priority(self) -> str:
+        return TaskTowerPriorityMap.get(self.attr.priority, TaskPriority.NORMAL)
+
+    @property
     def is_related_to_me(self) -> bool:
         """
         是否跟我相关
@@ -420,7 +422,7 @@ class TodoModel(BaseModel):
         if me in self.related_member:
             return True
 
-        if me in self.attr.desc:
+        if self.attr.desc and me in self.attr.desc:
             return True
 
         return False
