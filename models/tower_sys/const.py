@@ -24,6 +24,8 @@ class TowerStatus:
     IN_PROGRESS = "开发中"
     COMPLETED = "已上线"
     TESTING = "测试中"
+    TESTED = "测试完成"
+    DESIGNING = "设计中"
     READY = "未启动"
 
     @classmethod
@@ -34,8 +36,10 @@ class TowerStatus:
 TaskTowerStatusMap = {
     TowerStatus.NO_STATUS: TaskStatus.NO_STATUS,
     TowerStatus.ASSIGNED: TaskStatus.ASSIGNED,
+    TowerStatus.DESIGNING: TaskStatus.ASSIGNED,
     TowerStatus.IN_PROGRESS: TaskStatus.IN_PROGRESS,
     TowerStatus.COMPLETED: TaskStatus.COMPLETED,
     TowerStatus.TESTING: TaskStatus.TESTING,
+    TowerStatus.TESTED: TaskStatus.TESTING,
     TowerStatus.READY: TaskStatus.READY
 }

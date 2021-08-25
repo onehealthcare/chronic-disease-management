@@ -1,6 +1,7 @@
+from broker.notion_sys import update_notion_task_by_tower_todo_id
 from broker.tower_sys import save_access_token
-from flask import Blueprint, request
-from models.tower_sys import TodoPayloadModel
+from flask import Blueprint, redirect, request
+from models.tower_sys import TodoPayloadModel, get_auth_url
 from pydantic import ValidationError
 from utils import logger as _logger
 
@@ -8,6 +9,11 @@ from utils import logger as _logger
 app = Blueprint("tower", __name__, url_prefix="/tower")
 
 logger = _logger("views.tower")
+
+
+@app.route("/user/<user_id>/login")
+def tower_login(user_id):
+    return redirect(location=get_auth_url(user_id=user_id))
 
 
 @app.route("/oauth_callback")
@@ -27,14 +33,7 @@ def tower_webhook_handler(user_id):
         try:
             model: TodoPayloadModel = TodoPayloadModel.parse_obj(data)
             todo_id: str = model.data.todo.guid
-            todo_id
-
-            # from broker.tower_sys import get_todo
-            # from models.tower_sys.dataclass.api_data import TodoModel
-            # todo_info = get_todo(todo_id=todo_id, user_id=int(user_id))
-            # m = TodoModel.parse_obj(todo_info)
-            # print(m.name, m.url, m.status, m.related_member, m.priority, m.id)
-
+            update_notion_task_by_tower_todo_id(todo_id=todo_id, user_id=int(user_id))
         except ValidationError as e:
             logger.error(f"tower_webhook,invalid payload,{user_id} - {data} -{e}")
 
