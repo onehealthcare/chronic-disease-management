@@ -1,10 +1,10 @@
 flask==1.1.2
-gunicorn==20.0.4
+# gunicorn==20.0.4
 peewee==3.14.0
 pydantic==1.7.3
 PyMySQL==1.0.2
 sentry-sdk[flask]==0.19.5
-gevent==21.1.2
+# gevent==21.1.2
 psutil==5.8.0
 wechatpy==1.8.14
 PyJWT==2.0.1
@@ -12,5 +12,5 @@ qcloud-python-sts==3.0.5
 redis==3.5.3
 freezegun
 simplejson
-ipython
+# ipython
 requests

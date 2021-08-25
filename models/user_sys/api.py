@@ -72,13 +72,20 @@ def create_user_auth(user_id: int, third_party_id: str,
     if not user:
         raise UserNotFoundException()
 
-    dao = UserAuthDAO.create(user_id=user_id,
-                             third_party_id=third_party_id,
-                             provider=provider,
-                             access_token=access_token,
-                             refresh_token=refresh_token,
-                             expires_date=expires_date,
-                             detail_json=detail_json)
+    dao = UserAuthDAO.get_by_user_id_and_provider(user_id=user_id, provider=provider)
+    if not dao:
+        dao = UserAuthDAO.create(user_id=user_id,
+                                 third_party_id=third_party_id,
+                                 provider=provider,
+                                 access_token=access_token,
+                                 refresh_token=refresh_token,
+                                 expires_date=expires_date,
+                                 detail_json=detail_json)
+    else:
+        dao.access_token = access_token
+        dao.refresh_token = refresh_token
+        dao.expires_date = expires_date
+        dao.save()
 
     return UserAuthDTO.from_dao(dao)
 

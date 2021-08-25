@@ -1,13 +1,16 @@
-import requests
 from typing import Dict
+
+import requests
 
 
 class TowerClient:
     def __init__(self, client_id: str, secret_key: str):
         self.client_id = client_id
         self.secret_key = secret_key
-        self.api_host = "https://tower.im/api/v1/"
-        self.auth_host = "https://tower.im/oauth/token"
+        self.api_host = "https://tower.im"
+        self.api_url = f"{self.api_host}/api/v1/"
+        self.auth_url = f"{self.api_host}/oauth/token"
+        self.auth_code_url = f"{self.api_host}/oauth/authorize"
         self._session = None
 
     @property
@@ -24,7 +27,7 @@ class TowerClient:
 
         return r
 
-    def post(self, url: str, data: Dict, headers: Dict={}):
+    def post(self, url: str, data: Dict, headers: Dict = {}):
         r = self.connection.post(url=url, data=data, headers=headers)
         if r.status_code != requests.codes.ok:
             return None
@@ -39,7 +42,7 @@ class TowerClient:
             "grant_type": "authorization_code",
             "redirect_uri": redirect_uri
         }
-        r = self.post(url=self.auth_host, data=data)
+        r = self.post(url=self.auth_url, data=data)
         if not r:
             return {}
 
@@ -54,7 +57,7 @@ class TowerClient:
             "refresh_token": refresh_token
         }
         headers: Dict[str, str] = {"Authorization": f"Bearer {access_token}"}
-        r = self.post(url=self.auth_host, data=data, headers=headers)
+        r = self.post(url=self.auth_url, data=data, headers=headers)
         if not r:
             return {}
 
@@ -62,7 +65,7 @@ class TowerClient:
 
     def get_todo(self, todo_id: str, access_token: str):
         headers: Dict[str, str] = {"Authorization": f"Bearer {access_token}"}
-        url: str = f"{self.api_host}/todos/{todo_id}"
+        url: str = f"{self.api_url}/todos/{todo_id}"
         r = self.get(url=url, headers=headers)
         if not r:
             return {}

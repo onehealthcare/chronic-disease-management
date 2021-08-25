@@ -1,6 +1,7 @@
 from typing import Dict
-from models.init_db import tower_client
+
 from config import HOST
+from models.init_db import tower_client
 
 
 def get_access_token_by_auth_code(auth_code: str, user_id: int) -> Dict:
@@ -34,6 +35,15 @@ def refresh_access_token(access_token: str, refresh_token: str, user_id: int):
         access_token=access_token, refresh_token=refresh_token,
         redirect_uri=redirect_uri
     )
+
+
+def get_auth_url(user_id: int) -> str:
+    """
+    oauth 跳转授权 URL
+    :param user_id:
+    :return:
+    """
+    return f"{tower_client.auth_code_url}?client_id={tower_client.client_id}&redirect_uri={HOST}/tower/oauth_callback?user_id={user_id}&response_type=code"
 
 
 def get_todo(todo_id: str, access_token: str):
