@@ -24,7 +24,7 @@ class UserAuthDAO(Base):
     def get_by_user_id_and_provider(cls, user_id: int, provider: int) -> 'UserAuthDAO':
         return UserAuthDAO.get(UserAuthDAO.user_id == user_id,
                                UserAuthDAO.provider == provider,
-                               status=CommonStatus.NORMAL)
+                               UserAuthDAO.status == CommonStatus.NORMAL)
 
     @classmethod
     def get_by_third_party_id_and_provider(cls, third_party_id: str, provider: int) -> 'UserAuthDAO':
