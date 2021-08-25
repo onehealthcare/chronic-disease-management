@@ -216,6 +216,7 @@ from models.tower_sys.const import (
     TaskTowerStatusMap,
     TowerStatus,
     TowerUserMap,
+    me,
 )
 from pydantic import BaseModel
 
@@ -400,3 +401,26 @@ class TodoModel(BaseModel):
             return TaskStatus.ASSIGNED
 
         return TaskStatus.NO_STATUS
+
+    @property
+    def is_related_to_me(self) -> bool:
+        """
+        是否跟我相关
+        1. 增值的任务
+        2. 分配给我的任务
+        3. 相关人是我的任务
+        4. 描述中提到我的
+
+        :return:
+        """
+        todolist = self.get_included_by_type("todolists")
+        if todolist.attributes.get('name') == "增值":
+            return True
+
+        if me in self.related_member:
+            return True
+
+        if me in self.attr.desc:
+            return True
+
+        return False

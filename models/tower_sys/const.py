@@ -9,9 +9,11 @@ class TaskStatus:
     NEED_REVIEW = "Need Review"
 
 
+me = "6954901637064852b24a2506f0c02e97"
+
 TowerUserMap = {
+    me: "tonghs",
     "f0fa08bc03134e3eb84b667644853eca": "zming",
-    "6954901637064852b24a2506f0c02e97": "tonghs",
     "9f3c65cad57290583954dfccc65e90b5": "chuck",
 }
 
