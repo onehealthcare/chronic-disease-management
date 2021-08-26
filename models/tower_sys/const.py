@@ -9,10 +9,21 @@ class TaskStatus:
     NEED_REVIEW = "Need Review"
 
 
-me = "6954901637064852b24a2506f0c02e97"
+class Member:
+    tonghs = "tonghs"
+    zming = "zming"
+    chuck = "chuck"
+
+    @classmethod
+    def get_all_members(cls):
+        return {cls.tonghs, cls.zming, cls.chuck}
+
+
+tower_me = "6954901637064852b24a2506f0c02e97"
+
 
 TowerUserMap = {
-    me: "tonghs",
+    tower_me: "tonghs",
     "f0fa08bc03134e3eb84b667644853eca": "zming",
     "9f3c65cad57290583954dfccc65e90b5": "chuck",
 }

@@ -27,7 +27,7 @@ class ProjectModel(BaseModel):
 class TodoListModel(BaseModel):
     guid: str
     title: str
-    desc: str
+    desc: Optional[str]
 
 
 class TodoPayloadDataModel(BaseModel):

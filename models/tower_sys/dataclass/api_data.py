@@ -212,13 +212,14 @@ from typing import Dict, List, Optional, Union
 
 from config import TOWER_TEAM_ID
 from models.tower_sys.const import (
+    Member,
     TaskPriority,
     TaskStatus,
     TaskTowerPriorityMap,
     TaskTowerStatusMap,
     TowerStatus,
     TowerUserMap,
-    me,
+    tower_me,
 )
 from pydantic import BaseModel
 
@@ -419,10 +420,10 @@ class TodoModel(BaseModel):
         if todolist.attributes.get('name') == "增值":
             return True
 
-        if me in self.related_member:
+        if Member.get_all_members() & set(self.related_member):
             return True
 
-        if self.attr.desc and me in self.attr.desc:
+        if self.attr.desc and tower_me in self.attr.desc:
             return True
 
         return False
