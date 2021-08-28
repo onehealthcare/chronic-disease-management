@@ -5,10 +5,10 @@ exclude: >
     libs/ec/priv_tool.py
   )$
 default_language_version:
-  python: python3.6
+  python: python3
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks.git
-    rev: v3.2.0
+    rev: v4.0.1
     hooks:
       - id: check-added-large-files
       - id: check-ast
@@ -38,7 +38,7 @@ repos:
         additional_dependencies:
           - flake8-print
   - repo: https://github.com/miki725/importanize/
-    rev: '0.7'
+    rev: '2a17314'
     hooks:
       - id: importanize
         name: Fix imports order
@@ -72,3 +72,11 @@ repos:
           - lxml
           - pydantic
           - peewee
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v2.14.0
+    hooks:
+      - id: pyupgrade
+        args:
+          - --py37-plus
+          - --keep-runtime-typing
+        language_version: python3

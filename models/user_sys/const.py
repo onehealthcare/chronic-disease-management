@@ -6,3 +6,4 @@ class UserAuthProvider(IntEnum):
     WEIBO: int = 2
     GOOGLE: int = 3
     GITHUB: int = 4
+    TOWER: int = 5

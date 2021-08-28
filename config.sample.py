@@ -3,6 +3,8 @@ import os
 
 DEBUG = bool(os.environ.get('DEBUG', False))
 
+HOST = "https://web.nps.motn.top"
+
 # MySQL
 MYSQL_HOST = os.environ.get('MYSQL_HOST', 'db')
 MYSQL_PORT = int(os.environ.get('MYSQL_PORT', 3306))
@@ -41,3 +43,12 @@ QCLOUD_CC_COS_URL_PATTERN = 'https://{}/{}{}'.format(QCLOUD_CC_COS_DOMAIN, '{}',
 # redis
 REDIS_DB = os.environ.get('REDIS_DB', 'test-redis')
 REDIS_URL = f'redis://{REDIS_DB}/0'
+
+# tower
+TOWER_CLIENT_ID = os.environ.get('TOWER_CLIENT_ID', 'tower-client-id')
+TOWER_SECRET_KEY = os.environ.get('TOWER_SECRET_KEY', 'tower-secret-key')
+TOWER_TEAM_ID = 158367
+
+# notion
+NOTION_TOKEN = os.environ.get('NOTION_TOKEN', 'notion-token')
+NOTION_DATABASE_ID = os.environ.get("NOTION_DB_ID", "notion-database-id")

@@ -1,3 +1,4 @@
+import datetime
 import string
 
 import peewee
@@ -64,15 +65,29 @@ def delete_user(user_id: int):
 
 
 def create_user_auth(user_id: int, third_party_id: str,
-                     provider: int, detail_json: str) -> UserAuthDTO:
+                     provider: int, access_token: str,
+                     refresh_token: str, expires_date: datetime.datetime,
+                     detail_json: str) -> UserAuthDTO:
     user = UserDAO.get_by_id(user_id)
     if not user:
         raise UserNotFoundException()
 
-    return UserAuthDTO.from_dao(UserAuthDAO.create(user_id=user_id,
-                                                   third_party_id=third_party_id,
-                                                   provider=provider,
-                                                   detail_json=detail_json))
+    dao = UserAuthDAO.get_by_user_id_and_provider(user_id=user_id, provider=provider)
+    if not dao:
+        dao = UserAuthDAO.create(user_id=user_id,
+                                 third_party_id=third_party_id,
+                                 provider=provider,
+                                 access_token=access_token,
+                                 refresh_token=refresh_token,
+                                 expires_date=expires_date,
+                                 detail_json=detail_json)
+    else:
+        dao.access_token = access_token
+        dao.refresh_token = refresh_token
+        dao.expires_date = expires_date
+        dao.save()
+
+    return UserAuthDTO.from_dao(dao)
 
 
 def get_user_by_third_party_id(third_party_id: str, provider: int) -> UserDTO:
@@ -162,3 +177,20 @@ def create_user_by_phone(phone: str) -> UserDTO:
     UserPhoneDAO.create(user_id=user.id, phone=phone)
 
     return UserDTO.from_dao(user)
+
+
+def get_user_auth_by_user_id_and_provider(user_id: int, provider: int):
+    dao = UserAuthDAO.get_by_user_id_and_provider(user_id=user_id, provider=provider)
+    if not dao:
+        raise UserAuthNotFoundException()
+
+    return UserAuthDTO.from_dao(dao)
+
+
+def update_user_auth_by_user_id_and_provider(user_id: int, provider: int, access_token: str,
+                                             refresh_token: str, expires_date: datetime.datetime):
+    dao = UserAuthDAO.get_by_user_id_and_provider(user_id=user_id, provider=provider)
+    if not dao:
+        raise UserAuthNotFoundException()
+
+    dao.update_token(access_token=access_token, refresh_token=refresh_token, expires_date=expires_date)

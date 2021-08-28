@@ -13,6 +13,8 @@ from models.user_sys.api import (
     rename_user,
     set_user_admin,
     update_status_by_user_id,
+    get_user_auth_by_user_id_and_provider,
+    update_user_auth_by_user_id_and_provider,
 )
 from models.user_sys.const import UserAuthProvider
 from models.user_sys.dto.user import UserDTO
@@ -41,6 +43,8 @@ __all__ = [
     'clear_user_admin',
     'get_user_by_phone',
     'create_user_by_phone',
+    'get_user_auth_by_user_id_and_provider',
+    "update_user_auth_by_user_id_and_provider",
 
     'UserAuthProvider',
 

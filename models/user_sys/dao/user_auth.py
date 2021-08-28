@@ -23,7 +23,8 @@ class UserAuthDAO(Base):
     @classmethod
     def get_by_user_id_and_provider(cls, user_id: int, provider: int) -> 'UserAuthDAO':
         return UserAuthDAO.get(UserAuthDAO.user_id == user_id,
-                               UserAuthDAO.provider == provider)
+                               UserAuthDAO.provider == provider,
+                               UserAuthDAO.status == CommonStatus.NORMAL)
 
     @classmethod
     def get_by_third_party_id_and_provider(cls, third_party_id: str, provider: int) -> 'UserAuthDAO':
@@ -32,4 +33,10 @@ class UserAuthDAO(Base):
 
     def update_status(self, status: int):
         self.status = status
+        self.save()
+
+    def update_token(self, access_token: str, refresh_token: str, expires_date: datetime.datetime):
+        self.access_token = access_token
+        self.refresh_token = refresh_token
+        self.expires_date = expires_date
         self.save()

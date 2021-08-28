@@ -1,0 +1,1 @@
+0 * * * * sudo docker exec -i web-template_web_1 /bin/bash -c "python3 /opt/code/scripts/refresh_tower_token.py"

@@ -5,7 +5,7 @@ from config import LOG_PATH
 
 
 def syslogger_handler(path, loglevel=logging.INFO):
-    formatter = logging.Formatter('{} %(levelname)s %(message)s'.format(path))
+    formatter = logging.Formatter(f'%(asctime)s {path} %(levelname)s %(message)s')
     if not os.path.exists(os.path.join(LOG_PATH, path)):
         os.makedirs(os.path.join(LOG_PATH, path))
     handler = logging.FileHandler(filename=os.path.join(LOG_PATH, path, 'log'))
