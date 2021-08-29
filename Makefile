@@ -2,7 +2,7 @@ build-image:
 	docker build . -t tonghs/web-template
 
 run-server:
-	docker-compose -f docker-compose.app.yml up -d
+	docker-compose -f docker-compose.app.yml up --scale web=4 -d
 
 run-dev-server:
 	docker build . -t tonghs/web-template

@@ -33,4 +33,3 @@ services:
       interval: 10s
       timeout: 30s
     restart: always
-    scale: 4

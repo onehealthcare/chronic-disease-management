@@ -10,6 +10,7 @@ wechatpy==1.8.14
 PyJWT==2.0.1
 qcloud-python-sts==3.0.5
 redis==3.5.3
+cryptography
 freezegun
 simplejson
 ipython
