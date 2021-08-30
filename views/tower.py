@@ -36,8 +36,8 @@ def tower_webhook_handler(user_id):
             if model.action != "deleted":
                 todo_id: str = model.data.todo.guid
                 update_notion_task_by_tower_todo_id(todo_id=todo_id, user_id=int(user_id))
-
-            logger.info(f"tower_webhook,request,{user_id} - ignore delete action.")
+            else:
+                logger.info(f"tower_webhook,request,{user_id} - ignore delete action - {data}")
         except ValidationError as e:
             error_data = {'error': str(e)}
             logger.error(f"tower_webhook,invalid payload,{user_id} - {data} - {simplejson.dumps(error_data)}")
