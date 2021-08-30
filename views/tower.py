@@ -1,3 +1,4 @@
+import simplejson
 from broker.notion_sys import update_notion_task_by_tower_todo_id
 from broker.tower_sys import save_access_token
 from flask import Blueprint, redirect, request
@@ -36,6 +37,7 @@ def tower_webhook_handler(user_id):
                 todo_id: str = model.data.todo.guid
                 update_notion_task_by_tower_todo_id(todo_id=todo_id, user_id=int(user_id))
         except ValidationError as e:
-            logger.error(f"tower_webhook,invalid payload,{user_id} - {data} -{e}")
+            error_data = {'error': str(e)}
+            logger.error(f"tower_webhook,invalid payload,{user_id} - {data} - {simplejson.dumps(error_data)}")
 
     return "ok"

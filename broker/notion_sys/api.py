@@ -3,10 +3,19 @@ from typing import Dict, List, Optional
 from broker.tower_sys import get_todo
 from models.init_db import notion_client
 from models.tower_sys.dataclass.api_data import TodoModel
+from utils import logger as _logger
+
+
+logger = _logger("broker.tower_sys.api")
 
 
 def update_notion_task_by_tower_todo_id(todo_id: str, user_id: int):
     todo_info = get_todo(todo_id=todo_id, user_id=user_id)
+
+    if not todo_info:
+        logger.error("update_notion_task_by_tower_todo_id,get_todo_error,tower token expired")
+        return
+
     m = TodoModel.parse_obj(todo_info)
 
     # 其他不相关的不同步到 notion
