@@ -13,13 +13,14 @@ def update_notion_task_by_tower_todo_id(todo_id: str, user_id: int):
     todo_info = get_todo(todo_id=todo_id, user_id=user_id)
 
     if not todo_info:
-        logger.error("update_notion_task_by_tower_todo_id,get_todo_error,tower token expired")
+        logger.error(f"update_notion_task_by_tower_todo_id,get_todo_error,tower token expired - {todo_id}")
         return
 
     m = TodoModel.parse_obj(todo_info)
 
     # 其他不相关的不同步到 notion
     if not m.is_related_to_me:
+        logger.warn(f"update_notion_task_by_tower_todo_id,sync fail,none of my business - {m.name} - {m.url}")
         return
 
     # notion 是否创建过任务
@@ -35,6 +36,7 @@ def update_notion_task_by_tower_todo_id(todo_id: str, user_id: int):
 
     # 设置了暂停同步
     if notion_task.get("properties", {}).get("暂停同步", {}).get("checkbox"):
+        logger.warn(f"update_notion_task_by_tower_todo_id,sync fail,pause status - {m.name} - {m.url}")
         return
     else:
         notion_client.update_task(
