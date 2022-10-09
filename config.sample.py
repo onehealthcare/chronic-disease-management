@@ -43,8 +43,3 @@ QCLOUD_CC_COS_URL_PATTERN = 'https://{}/{}{}'.format(QCLOUD_CC_COS_DOMAIN, '{}',
 # redis
 REDIS_DB = os.environ.get('REDIS_DB', 'test-redis')
 REDIS_URL = f'redis://{REDIS_DB}/0'
-
-# tower
-TOWER_CLIENT_ID = os.environ.get('TOWER_CLIENT_ID', 'tower-client-id')
-TOWER_SECRET_KEY = os.environ.get('TOWER_SECRET_KEY', 'tower-secret-key')
-TOWER_TEAM_ID = 158367
