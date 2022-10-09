@@ -26,21 +26,22 @@ def get_user_by_id(user_id: int) -> UserDTO:
     return UserDTO.from_dao(user)
 
 
-def find_avaliable_name(original_name):
+def find_available_name(original_name):
     name = original_name
     if not name:
         name = '用户'
+
     while True:
         randstr = random_str(4)
 
         for i in [''] + list(string.ascii_lowercase):
+            name = f'{name}_{randstr}{i}'
             if not UserDAO.get_by_name(name=name):
                 return name
-            name = '%s_%s%s' % (original_name, randstr, i)
 
 
 def create_user(name: str, ident: str = "") -> UserDTO:
-    name = find_avaliable_name(name)
+    name = find_available_name(name)
     try:
         user: UserDAO = UserDAO.create(name=name, ident=ident)
     except peewee.IntegrityError:

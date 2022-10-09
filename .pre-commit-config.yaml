@@ -26,15 +26,14 @@ repos:
       - id: end-of-file-fixer
         exclude: ^generated/.*$
       - id: trailing-whitespace
-  - repo: https://gitlab.com/pycqa/flake8
+  - repo: https://github.com/pycqa/flake8
     rev: 3.8.3
     hooks:
       - id: flake8
         args:
-          - --ignore=E722,E741,E501,E228,E226,E261,E266,E128,E402,W503,W605
+          - --ignore=E722,E741,E501,E203,E228,E226,E261,E266,E128,E402,W503,W605
           - --builtins=G,request
           - --jobs=1
-        exclude: ^generated/.*$
         additional_dependencies:
           - flake8-print
   - repo: https://github.com/miki725/importanize/
@@ -46,7 +45,7 @@ repos:
           - --verbose
         exclude: ^views/chronic_disease/__init__.py$
   - repo: https://github.com/xiachufang/py-find-injection
-    rev: 2fbeba25c1cc1b41c906a1db235d9a3b84151b68
+    rev: 2cb9f591fbaf2e9c1d15dde49e4239c12971e0c5
     hooks:
       - id: py-find-injection
         name: Check potential SQL injection
