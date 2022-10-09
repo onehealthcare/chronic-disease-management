@@ -1,0 +1,6 @@
+-r requirements.txt
+cryptography
+freezegun
+simplejson
+ipython
+requests

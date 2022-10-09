@@ -15,7 +15,6 @@ from views.chronic_condition import app as chronic_condition_app
 from views.common import ApiError
 from views.main import app as main_app
 from views.render import error
-from views.tower import app as tower_app
 
 
 sentry_sdk.init(
