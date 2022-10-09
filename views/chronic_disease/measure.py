@@ -3,6 +3,7 @@ from typing import List
 
 from flask import g, request
 from models.chronic_disease_sys import (
+    MetricDTO,
     MetricLabelNotFoundException,
     MetricMeasureDTO,
     MetricMeasureNotFoundException,
@@ -10,11 +11,12 @@ from models.chronic_disease_sys import (
     create_metric_measure,
     delete_metric_measure,
     get_recnet_metric_measure,
+    get_metric
 )
 from models.exceptions import AccessDeniedError
 from utils.datetime_utils import _datetime
 from views.chronic_disease import app
-from views.dumps.dump_metric_measure import dump_metric_measures
+from views.dumps.dump_metric_measure import dump_metric_measures, dump_avg_metric_measures
 from views.middleware.auth import need_login
 from views.render import error, ok
 
@@ -86,9 +88,20 @@ def measures_view():
 
     try:
         dtos: List[MetricMeasureDTO] = get_recnet_metric_measure(user_id=g.me.id, metric_id=metric_id, limit=limit)
+        metric: MetricDTO = get_metric(metric_id)
     except MetricNotFoundException as e:
         return error(e.message)
 
+    ref_value: float = 6.1
+    avg15, avg7, v = dump_avg_metric_measures(dtos)
     return ok({
-        "datas": dump_metric_measures(dtos)
+        "datas": dump_metric_measures(dtos, ref_value=ref_value),
+        "avg_data": {
+            "avg15": avg15,
+            "avg7": avg7,
+            "v": v
+        },
+        "ref_value": ref_value,
+        "metric_text": metric.text,
+        "metric_unit": metric.unit
     })

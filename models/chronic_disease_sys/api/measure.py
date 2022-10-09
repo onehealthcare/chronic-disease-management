@@ -2,7 +2,7 @@ import datetime
 from typing import List
 
 from models.chronic_disease_sys.api.metric import get_metric
-from models.chronic_disease_sys.dao.metric_measure import MetricMeasureDAO
+from models.chronic_disease_sys.dao.measure import MetricMeasureDAO
 from models.chronic_disease_sys.dto.metric import MetricDTO
 from models.chronic_disease_sys.dto.metric_measure import MetricMeasureDTO
 from models.chronic_disease_sys.exceptions import MetricMeasureNotFoundException
