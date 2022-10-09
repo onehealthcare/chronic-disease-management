@@ -1,7 +1,7 @@
 from typing import List
 
 import pytest
-from models.chronic_condition_sys import (
+from models.chronic_disease_sys import (
     DuplicatedMetricException,
     MetricDTO,
     MetricLabelDTO,

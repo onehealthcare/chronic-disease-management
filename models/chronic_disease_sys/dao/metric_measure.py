@@ -19,7 +19,7 @@ class MetricMeasureDAO(Base):
     updated_at = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
-        table_name = "chronic_condition_metric_measure"
+        table_name = "chronic_disease_metric_measure"
 
     @classmethod
     def query_recent_by_metric(cls, user_id: int, metric_id: int, limit: int) -> List['MetricMeasureDAO']:

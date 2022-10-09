@@ -14,6 +14,8 @@ def _dict_to_str(data: Dict):
             continue
 
         value = data[key]
+        if isinstance(value, list):
+            value = ','.join(value)
         params.append(f"{key}={value}")
 
     return '&'.join(params)

@@ -1,7 +1,7 @@
 import datetime
 from typing import List
 
-from config import QCLOUD_CC_COS_URL, QCLOUD_CC_COS_URL_PATTERN
+from config import QCLOUD_CDM_COS_URL, QCLOUD_CDM_COS_URL_PATTERN
 from models.base import Base
 from models.const import CommonStatus
 from peewee import CharField, DateTimeField, IntegerField, TextField
@@ -18,7 +18,7 @@ class DocPackageDAO(Base):
     updated_at = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
-        table_name = 'chronic_condition_doc_package'
+        table_name = 'chronic_disease_doc_package'
 
     def update_status(self, status: int):
         self.status = status
@@ -43,12 +43,12 @@ class DocPackageDAO(Base):
 
     @property
     def ident_urls(self) -> List[str]:
-        url: str = QCLOUD_CC_COS_URL
+        url: str = QCLOUD_CDM_COS_URL
         return [url.format(ident.ident) for ident in self.idents]
 
     @property
     def ident_pattern_urls(self) -> List[str]:
-        url: str = QCLOUD_CC_COS_URL_PATTERN
+        url: str = QCLOUD_CDM_COS_URL_PATTERN
         return [url.format(ident.ident) for ident in self.idents]
 
     @classmethod
@@ -73,7 +73,7 @@ class DocPackageIdentDAO(Base):
     updated_at = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
-        table_name = 'chronic_condition_doc_package_ident'
+        table_name = 'chronic_disease_doc_package_ident'
 
     @classmethod
     def get_by_id(cls, ident_id: int) -> 'DocPackageIdentDAO':

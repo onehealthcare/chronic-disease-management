@@ -1,16 +1,16 @@
 from typing import List
 
-from models.chronic_condition_sys.dao.metric import (
+from models.chronic_disease_sys.dao.metric import (
     MetricDAO,
     MetricLabelDAO,
     UserMetricDAO,
 )
-from models.chronic_condition_sys.dto.metric import (
+from models.chronic_disease_sys.dto.metric import (
     MetricDTO,
     MetricLabelDTO,
     UserMetricDTO,
 )
-from models.chronic_condition_sys.exceptions import (
+from models.chronic_disease_sys.exceptions import (
     DuplicatedMetricException,
     MetricLabelNotFoundException,
     MetricNotFoundException,

@@ -5,15 +5,11 @@ from config import (
     MYSQL_PASSWD,
     MYSQL_PORT,
     MYSQL_USER,
-    NOTION_DATABASE_ID,
-    NOTION_TOKEN,
-    QCLOUD_CC_COS_BUCKET,
-    QCLOUD_CC_COS_REGION,
+    QCLOUD_CDM_COS_BUCKET,
+    QCLOUD_CDM_COS_REGION,
     QCLOUD_SECRET_ID,
     QCLOUD_SECRET_KEY,
     REDIS_URL,
-    TOWER_CLIENT_ID,
-    TOWER_SECRET_KEY,
     WXAPP_ID,
     WXAPP_SECRET,
 )
@@ -31,8 +27,8 @@ wxapp_client = WeChatWxa(WeChatClient(WXAPP_ID, WXAPP_SECRET))
 # 存储用户单据
 qcloud_cos_client = QCloudCOSClient(secret_id=QCLOUD_SECRET_ID,
                                     secret_key=QCLOUD_SECRET_KEY,
-                                    bucket=QCLOUD_CC_COS_BUCKET,
-                                    region=QCLOUD_CC_COS_REGION,
+                                    bucket=QCLOUD_CDM_COS_BUCKET,
+                                    region=QCLOUD_CDM_COS_REGION,
                                     allow_prefix='*')
 
 # redis

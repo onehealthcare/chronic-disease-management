@@ -18,7 +18,7 @@ class MetricDAO(Base):
     updated_at = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
-        table_name = "chronic_condition_metric"
+        table_name = "chronic_disease_metric"
 
     @classmethod
     def get_by_id(cls, metric_id: int) -> 'MetricDAO':
@@ -47,7 +47,7 @@ class UserMetricDAO(Base):
     updated_at = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
-        table_name = "chronic_condition_user_metric"
+        table_name = "chronic_disease_user_metric"
 
     @classmethod
     def get_by_id(cls, metric_id: int) -> 'UserMetricDAO':
@@ -87,7 +87,7 @@ class MetricLabelDAO(Base):
     updated_at = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
-        table_name = "chronic_condition_metric_label"
+        table_name = "chronic_disease_metric_label"
 
     @classmethod
     def get_by_id(cls, metric_label_id: int) -> 'MetricLabelDAO':

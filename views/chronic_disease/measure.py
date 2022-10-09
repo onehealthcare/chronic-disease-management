@@ -2,7 +2,7 @@ import datetime
 from typing import List
 
 from flask import g, request
-from models.chronic_condition_sys import (
+from models.chronic_disease_sys import (
     MetricLabelNotFoundException,
     MetricMeasureDTO,
     MetricMeasureNotFoundException,
@@ -13,7 +13,7 @@ from models.chronic_condition_sys import (
 )
 from models.exceptions import AccessDeniedError
 from utils.datetime_utils import _datetime
-from views.chronic_condition import app
+from views.chronic_disease import app
 from views.dumps.dump_metric_measure import dump_metric_measures
 from views.middleware.auth import need_login
 from views.render import error, ok

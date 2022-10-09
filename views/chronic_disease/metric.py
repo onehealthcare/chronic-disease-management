@@ -1,6 +1,6 @@
 import simplejson
 from flask import g, request
-from models.chronic_condition_sys import (
+from models.chronic_disease_sys import (
     DuplicatedMetricException,
     MetricLabelNotFoundException,
     MetricNotFoundException,
@@ -14,7 +14,7 @@ from models.chronic_condition_sys import (
     query_user_metric_by_user_id,
 )
 from utils.logging import logger as _logger
-from views.chronic_condition import app
+from views.chronic_disease import app
 from views.dumps.dump_metric import (
     dump_metric,
     dump_metric_label,

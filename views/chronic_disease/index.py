@@ -2,7 +2,7 @@ from typing import List
 
 import simplejson
 from flask import g, request
-from models.chronic_condition_sys import (
+from models.chronic_disease_sys import (
     DocPackageDTO,
     DocPackageIdentNotFoundException,
     DocPackageNotFoundException,
@@ -16,13 +16,13 @@ from models.chronic_condition_sys import (
 from models.exceptions import AccessDeniedError
 from utils.cursor import get_next_cursor
 from utils.logging import logger as _logger
-from views.chronic_condition import app
+from views.chronic_disease import app
 from views.dumps.dump_doc_package import dump_doc_package, dump_doc_packages
 from views.middleware.auth import need_login
 from views.render import error, ok
 
 
-logger = _logger('views.chronic_condition.index')
+logger = _logger('views.chronic_disease.index')
 
 
 @app.route('/doc_packages/', methods=['GET'])

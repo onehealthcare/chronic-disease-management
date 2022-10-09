@@ -1,7 +1,7 @@
 from typing import List
 
 import pytest
-from models.chronic_condition_sys import (
+from models.chronic_disease_sys import (
     DocPackageIdentNotFoundException,
     DocPackageNotFoundException,
     create_doc_package,
@@ -62,7 +62,7 @@ def test_doc_package():
     update_doc_package_by_user_id_and_package_id(user_id=user_id, package_id=doc_package.id, data=data)
     dto = get_doc_package_by_id(package_id=doc_package.id)
     assert dto.desc == new_desc
-    assert set([ident.ident for ident in dto.idents]) == set(new_idents)
+    assert {ident.ident for ident in dto.idents} == set(new_idents)
 
     with pytest.raises(DocPackageIdentNotFoundException):
         delete_doc_ident_by_id(10000)

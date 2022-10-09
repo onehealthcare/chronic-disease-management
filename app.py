@@ -11,7 +11,7 @@ from sentry_sdk.integrations.flask import FlaskIntegration
 from utils.crypto import hmac_sha1_encode
 from views.account import app as account_app
 from views.auth import app as auth_app
-from views.chronic_condition import app as chronic_condition_app
+from views.chronic_disease import app as chronic_disease_app
 from views.common import ApiError
 from views.main import app as main_app
 from views.render import error
@@ -97,8 +97,7 @@ def close(e):
 app.register_blueprint(main_app)
 app.register_blueprint(account_app)
 app.register_blueprint(auth_app)
-app.register_blueprint(chronic_condition_app)
-app.register_blueprint(tower_app)
+app.register_blueprint(chronic_disease_app)
 
 
 if __name__ == '__main__':

@@ -1,10 +1,6 @@
 from typing import Dict, List, Optional
 
-from models.chronic_condition_sys import (
-    MetricDTO,
-    MetricLabelDTO,
-    UserMetricDTO,
-)
+from models.chronic_disease_sys import MetricDTO, MetricLabelDTO, UserMetricDTO
 
 
 def dump_user_metric(dto: UserMetricDTO) -> Optional[Dict]:
