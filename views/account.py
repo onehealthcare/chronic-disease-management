@@ -57,7 +57,7 @@ def login_via_wxapp():
 
 
 @app.route('/refresh_token/', methods=['POST'])
-def refresh_token():
+def refresh_token_view():
     refresh_token: str = request.get_json().get('refresh_token', '')
     if not refresh_token:
         return error(ApiError.invalid_token)
