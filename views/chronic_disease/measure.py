@@ -27,52 +27,44 @@ from views.middleware.auth import need_login
 from views.render import error, ok
 
 
-@app.route("/metric_measure/", methods=["POST", "DELETE"])
+@app.route("/metric_measure/", methods=["POST"])
 @need_login
 def measure_view():
     data = request.get_json()
+    _metric_id: str = data.get('metric_id', '')
+    metric_label: str = data.get('metric_label', '')
+    _value: str = data.get('value', "")
+    _created_at: str = data.get('created_at', "")
 
-    if request.method == "POST":
-        _metric_id: str = data.get('metric_id', '')
-        metric_label: str = data.get('metric_label', '')
-        _value: str = data.get('value', "")
-        _created_at: str = data.get('created_at', "")
+    if not _metric_id or not _value:
+        return error('all field required')
 
-        if not _metric_id or not _value:
-            return error('all field required')
+    try:
+        metric_id: int = int(_metric_id)
+        value: float = float(_value)
+        created_at: datetime.datetime = _datetime(_created_at)
+    except (ValueError, TypeError):
+        return error('invalid data')
 
-        try:
-            metric_id: int = int(_metric_id)
-            value: float = float(_value)
-            created_at: datetime.datetime = _datetime(_created_at)
-        except (ValueError, TypeError):
-            return error('invalid data')
+    try:
+        create_metric_measure(user_id=g.me.id, metric_id=metric_id,
+                              metric_label=metric_label,
+                              value=value, created_at=created_at)
+    except (MetricLabelNotFoundException, MetricNotFoundException) as e:
+        return error(e.message)
 
-        try:
-            create_metric_measure(user_id=g.me.id, metric_id=metric_id,
-                                  metric_label=metric_label,
-                                  value=value, created_at=created_at)
-        except (MetricLabelNotFoundException, MetricNotFoundException) as e:
-            return error(e.message)
+    return ok()
 
-        return ok()
-    elif request.method == "DELETE":
-        _metric_measure_id: str = data.get('metric_measure_id', '')
 
-        if not _metric_measure_id:
-            return error('all field required')
+@app.route("/metric_measure/<int:metric_measure_id>", methods=["DELETE"])
+@need_login
+def delete_measure_view(metric_measure_id):
+    try:
+        delete_metric_measure(metric_measure_id=metric_measure_id, user_id=g.me.id)
+    except (MetricMeasureNotFoundException, AccessDeniedError) as e:
+        return error(e.message)
 
-        try:
-            metric_measure_id: int = int(_metric_measure_id)
-        except (ValueError, TypeError):
-            return error('invalid data')
-
-        try:
-            delete_metric_measure(metric_measure_id=metric_measure_id, user_id=g.me.id)
-        except (MetricMeasureNotFoundException, AccessDeniedError) as e:
-            return error(e.message)
-
-        return ok()
+    return ok()
 
 
 @app.route("/metric_measures/recent", methods=["GET"])
