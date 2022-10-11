@@ -2,6 +2,7 @@ import datetime
 from typing import List
 
 from flask import g, request
+from metaclass.cursor import Pager
 from models.chronic_disease_sys import (
     MetricDTO,
     MetricLabelNotFoundException,
@@ -10,13 +11,18 @@ from models.chronic_disease_sys import (
     MetricNotFoundException,
     create_metric_measure,
     delete_metric_measure,
-    get_recnet_metric_measure,
-    get_metric
+    get_metric,
+    get_recent_metric_measure,
+    paged_metric_measure,
 )
 from models.exceptions import AccessDeniedError
+from utils.cursor import get_next_cursor
 from utils.datetime_utils import _datetime
 from views.chronic_disease import app
-from views.dumps.dump_metric_measure import dump_metric_measures, dump_avg_metric_measures
+from views.dumps.dump_metric_measure import (
+    dump_avg_metric_measures,
+    dump_metric_measures,
+)
 from views.middleware.auth import need_login
 from views.render import error, ok
 
@@ -69,25 +75,26 @@ def measure_view():
         return ok()
 
 
-@app.route("/metric_measures/", methods=["GET"])
+@app.route("/metric_measures/recent", methods=["GET"])
 @need_login
-def measures_view():
+def recent_measures_view():
     data = request.args
 
     _metric_id: str = data.get('metric_id', '')
-    _limit: str = data.get('limit', '15')
+    pager: Pager = g.pager
 
     if not _metric_id:
         return error('all field required')
 
     try:
         metric_id: int = int(_metric_id)
-        limit: int = int(_limit)
     except (ValueError, TypeError):
         return error('invalid data')
 
     try:
-        dtos: List[MetricMeasureDTO] = get_recnet_metric_measure(user_id=g.me.id, metric_id=metric_id, limit=limit)
+        dtos: List[MetricMeasureDTO] = get_recent_metric_measure(
+            user_id=g.me.id, metric_id=metric_id, size=pager.size
+        )
         metric: MetricDTO = get_metric(metric_id)
     except MetricNotFoundException as e:
         return error(e.message)
@@ -101,6 +108,41 @@ def measures_view():
             "avg7": avg7,
             "v": v
         },
+        "ref_value": ref_value,
+        "metric_text": metric.text,
+        "metric_unit": metric.unit
+    })
+
+
+@app.route("/metric_measures/", methods=["GET"])
+@need_login
+def measures_view():
+    data = request.args
+
+    _metric_id: str = data.get('metric_id', '')
+    pager: Pager = g.pager
+
+    if not _metric_id:
+        return error('all field required')
+
+    try:
+        metric_id: int = int(_metric_id)
+    except (ValueError, TypeError):
+        return error('invalid data')
+
+    try:
+        dtos: List[MetricMeasureDTO] = paged_metric_measure(
+            user_id=g.me.id, metric_id=metric_id, cursor=pager.cursor, size=pager.size
+        )
+        dtos, next_cursor = get_next_cursor(dtos, pager.size)
+        metric: MetricDTO = get_metric(metric_id)
+    except MetricNotFoundException as e:
+        return error(e.message)
+
+    ref_value: float = 6.1
+    return ok({
+        "datas": dump_metric_measures(dtos, ref_value=ref_value),
+        "next_cursor": next_cursor,
         "ref_value": ref_value,
         "metric_text": metric.text,
         "metric_unit": metric.unit

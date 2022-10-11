@@ -27,12 +27,10 @@ logger = _logger('views.chronic_disease.index')
 
 @app.route('/doc_packages/', methods=['GET'])
 @need_login
-def doc_packages():
+def doc_packages_view():
     user_id: int = g.me.id
     pager = g.pager
-    doc_packages: List[DocPackageDTO] = paged_doc_package_by_user_id(user_id=user_id, cursor=pager.cursor, size=pager.size)
-
-    next_cursor: str = ''
+    doc_packages: List[DocPackageDTO] = paged_doc_package_by_user_id(user_id=user_id, cursor=pager.cursor, size=pager.size + 1)
     doc_packages, next_cursor = get_next_cursor(doc_packages, pager.size)
 
     return ok({

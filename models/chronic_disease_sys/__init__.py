@@ -10,7 +10,8 @@ from models.chronic_disease_sys.api.doc_package import (
 from models.chronic_disease_sys.api.measure import (
     create_metric_measure,
     delete_metric_measure,
-    get_recnet_metric_measure,
+    get_recent_metric_measure,
+    paged_metric_measure,
 )
 from models.chronic_disease_sys.api.metric import (
     create_metric,
@@ -66,7 +67,8 @@ __all__ = [
 
     'create_metric_measure',
     'delete_metric_measure',
-    'get_recnet_metric_measure',
+    'get_recent_metric_measure',
+    'paged_metric_measure',
 
     'create_metric',
     'get_metric',

@@ -22,6 +22,7 @@ def dump_metric_measure(dto: MetricMeasureDTO, ref_value: float) -> Optional[Dic
         "value": dto.value,
         "color": _get_color(dto.value, ref_value),
         "created_at": dto.created_at.strftime("%m/%d %H:%M"),
+        "_created_at": dto.created_at.strftime("%Y-%m-%d %H:%M"),
         "metric_id": dto.metric_id,
         "metric_label": dto.metric_label
     }
@@ -31,7 +32,6 @@ def dump_metric_measures(dtos: List[MetricMeasureDTO], ref_value: float) -> List
     if not dtos:
         return []
 
-    dtos.sort(key=lambda x: x.created_at)
     return list(filter(None, [dump_metric_measure(dto, ref_value=ref_value) for dto in dtos]))
 
 
