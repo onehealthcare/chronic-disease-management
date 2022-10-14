@@ -1,6 +1,7 @@
 from typing import Dict, List, Optional, Tuple
 
 from models.chronic_disease_sys import MetricMeasureDTO
+from models.const import ColorEnum
 
 
 def _get_color(value: float, ref_value: float) -> str:
@@ -10,7 +11,7 @@ def _get_color(value: float, ref_value: float) -> str:
     :param ref_value: 参考值
     :return:
     """
-    return "#EE6666" if value > ref_value else "#91CB74"
+    return ColorEnum.WARN if value > ref_value else ColorEnum.NORMAL
 
 
 def dump_metric_measure(dto: MetricMeasureDTO, ref_value: float) -> Optional[Dict]:
