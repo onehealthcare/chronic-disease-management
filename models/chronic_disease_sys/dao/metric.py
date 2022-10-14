@@ -93,9 +93,9 @@ class MetricLabelDAO(Base):
     def get_by_id(cls, metric_label_id: int) -> 'MetricLabelDAO':
         return cls.get(cls.id == metric_label_id)
 
-    # @classmethod
-    # def get_by_name(cls, metric_id: int, name: str) -> 'MetricLabelDAO':
-    #     return cls.get(cls.name == name, cls.status == CommonStatus.NORMAL)
+    @classmethod
+    def get_by_name(cls, metric_id: int, name: str) -> 'MetricLabelDAO':
+        return cls.get(cls.name == name, cls.status == CommonStatus.NORMAL)
 
     @classmethod
     def query_by_metric_id(cls, metric_id: int) -> List['MetricLabelDAO']:

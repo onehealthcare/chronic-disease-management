@@ -1,6 +1,6 @@
 from typing import Dict, List, Optional, Tuple
 
-from models.chronic_disease_sys import MetricMeasureDTO
+from models.chronic_disease_sys import MetricMeasureDTO, get_metric_label
 from models.const import ColorEnum
 
 
@@ -25,7 +25,7 @@ def dump_metric_measure(dto: MetricMeasureDTO, ref_value: float) -> Optional[Dic
         "created_at": dto.created_at.strftime("%m/%d %H:%M"),
         "_created_at": dto.created_at.strftime("%Y-%m-%d %H:%M"),
         "metric_id": dto.metric_id,
-        "metric_label": dto.metric_label
+        "metric_label": get_metric_label(metric_id=dto.metric_id, label_name=dto.metric_label).text
     }
 
 

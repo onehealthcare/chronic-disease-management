@@ -21,6 +21,7 @@ from models.chronic_disease_sys.api.metric import (
     delete_metric_label,
     get_metric,
     get_metric_by_name,
+    get_metric_label,
     query_metric_label_by_metric_id,
     query_user_metric_by_user_id,
 )
@@ -73,6 +74,7 @@ __all__ = [
     'create_metric',
     'get_metric',
     'get_metric_by_name',
+    'get_metric_label',
     'delete_metric',
 
     'DocPackageNotFoundException',

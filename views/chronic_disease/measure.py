@@ -47,9 +47,11 @@ def measure_view():
         return error('invalid data')
 
     try:
-        create_metric_measure(user_id=g.me.id, metric_id=metric_id,
-                              metric_label=metric_label,
-                              value=value, created_at=created_at)
+        create_metric_measure(
+            user_id=g.me.id, metric_id=metric_id,
+            metric_label=metric_label,
+            value=value, created_at=created_at
+        )
     except (MetricLabelNotFoundException, MetricNotFoundException) as e:
         return error(e.message)
 

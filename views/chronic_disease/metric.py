@@ -94,15 +94,26 @@ def user_metric():
     return ok()
 
 
-@app.route("/metric_labels/", methods=['GET'])
-@need_admin
-def metric_labels_view():
-    data = request.args
-    try:
-        metric_id = data.get("metric_id", "0")
-    except (ValueError, TypeError):
-        return error("invalid metric id")
+# @app.route("/metric_labels/", methods=['GET'])
+# @need_admin
+# def metric_labels_view():
+#     data = request.args
+#     try:
+#         metric_id = data.get("metric_id", "0")
+#     except (ValueError, TypeError):
+#         return error("invalid metric id")
+#
+#     if not metric_id:
+#         return error("all field required")
+#
+#     dtos = query_metric_label_by_metric_id(metric_id=metric_id)
+#
+#     return ok({"metric_labels": dump_metric_labels(dtos)})
 
+
+@app.route("/metric/<int:metric_id>/labels/", methods=['GET'])
+@need_admin
+def metric_labels_view(metric_id):
     if not metric_id:
         return error("all field required")
 

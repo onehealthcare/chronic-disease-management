@@ -1,7 +1,7 @@
 import datetime
 from typing import List
 
-from models.chronic_disease_sys.api.metric import get_metric
+from models.chronic_disease_sys.api.metric import get_metric, get_metric_label
 from models.chronic_disease_sys.dao.measure import MetricMeasureDAO
 from models.chronic_disease_sys.dto.metric import MetricDTO
 from models.chronic_disease_sys.dto.metric_measure import MetricMeasureDTO
@@ -11,8 +11,7 @@ from models.exceptions import AccessDeniedError
 
 def create_metric_measure(user_id: int, metric_id: int, metric_label: str, value: float, created_at: datetime.datetime):
     metric: MetricDTO = get_metric(metric_id=metric_id)
-    # TODO
-    # get_metric_label()
+    get_metric_label(metric_id=metric_id, label_name=metric_label)
     dao = MetricMeasureDAO.create(
         user_id=user_id,
         metric_id=metric.id,

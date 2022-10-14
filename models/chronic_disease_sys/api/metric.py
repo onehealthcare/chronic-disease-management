@@ -75,6 +75,14 @@ def create_metric_label(metric_id: int, name: str, text: str, order: int = 0) ->
     return MetricLabelDTO.from_dao(dao)
 
 
+def get_metric_label(metric_id: int, label_name: str) -> MetricLabelDTO:
+    dao = MetricLabelDAO.get_by_name(metric_id=metric_id, name=label_name)
+    if not dao:
+        raise MetricLabelNotFoundException()
+
+    return MetricLabelDTO.from_dao(dao)
+
+
 def delete_metric_label(metric_label_id: int):
     dao = MetricLabelDAO.get_by_id(metric_label_id=metric_label_id)
     if not dao:
