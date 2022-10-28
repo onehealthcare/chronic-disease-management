@@ -81,7 +81,7 @@ def before_request():
             return error(ApiError.invalid_cursor)
 
         try:
-            size = int(request.args.get('size', request.get('limit', 15)))
+            size = int(request.args.get('size', request.args.get('limit', 15)))
         except (ValueError, TypeError):
             pass
 
