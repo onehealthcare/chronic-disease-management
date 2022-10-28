@@ -112,7 +112,7 @@ def user_metric():
 
 
 @app.route("/metric/<int:metric_id>/labels/", methods=['GET'])
-@need_admin
+@need_login
 def metric_labels_view(metric_id):
     if not metric_id:
         return error("all field required")
