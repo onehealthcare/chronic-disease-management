@@ -16,7 +16,7 @@ RUN echo "Asia/Shanghai" > /etc/timezone && \
   apt-get -y autoremove --purge && \
   apt-get -y clean && apt-get -y autoclean && \
   dpkg-reconfigure -f noninteractive tzdata && \
-  pip3 install -U pip3 && \
+  pip3 install -U pip && \
   pip3 install -r /requirements.txt -i http://mirrors.aliyun.com/pypi/simple/ --extra-index-url https://pypi.python.org/simple --trusted-host mirrors.aliyun.com && \
   rm -rf /root/.cache && rm -rf /tmp/*
 WORKDIR /opt/code/
