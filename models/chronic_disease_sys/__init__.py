@@ -22,8 +22,10 @@ from models.chronic_disease_sys.api.metric import (
     get_metric,
     get_metric_by_name,
     get_metric_label,
+    get_user_metric,
     query_metric_label_by_metric_id,
     query_user_metric_by_user_id,
+    set_user_metric_chart_type,
 )
 from models.chronic_disease_sys.dto.doc_package import (
     DocPackageDTO,
@@ -62,6 +64,8 @@ __all__ = [
     'delete_doc_ident_by_id',
     'create_user_metric',
     'query_user_metric_by_user_id',
+    'set_user_metric_chart_type',
+    'get_user_metric',
     'create_metric_label',
     'delete_metric_label',
     'query_metric_label_by_metric_id',

@@ -9,10 +9,12 @@ from models.chronic_disease_sys import (
     MetricMeasureDTO,
     MetricMeasureNotFoundException,
     MetricNotFoundException,
+    UserMetricDTO,
     create_metric_measure,
     delete_metric_measure,
     get_metric,
     get_recent_metric_measure,
+    get_user_metric,
     paged_metric_measure,
 )
 from models.exceptions import AccessDeniedError
@@ -95,6 +97,10 @@ def recent_measures_view():
 
     ref_value: float = 6.1
     avg15, avg7, v = dump_avg_metric_measures(dtos)
+
+    # 获取用户 metric 设置
+    user_metric: UserMetricDTO = get_user_metric(user_id=g.me.id, metric_id=metric_id)
+
     return ok({
         "datas": dump_metric_measures(dtos, ref_value=ref_value),
         "avg_data": {
@@ -102,6 +108,7 @@ def recent_measures_view():
             "avg7": avg7,
             "v": v
         },
+        "chart_type": user_metric.chart_type,
         "ref_value": ref_value,
         "metric_text": metric.text,
         "metric_unit": metric.unit
@@ -133,11 +140,15 @@ def measures_view():
     except MetricNotFoundException as e:
         return error(e.message)
 
+    # 获取用户 metric 设置
+    user_metric: UserMetricDTO = get_user_metric(user_id=g.me.id, metric_id=metric_id)
+
     ref_value: float = 6.1
     return ok({
         "datas": dump_metric_measures(dtos, ref_value=ref_value),
         "next_cursor": next_cursor,
         "ref_value": ref_value,
         "metric_text": metric.text,
-        "metric_unit": metric.unit
+        "metric_unit": metric.unit,
+        "chart_type": user_metric.chart_type
     })

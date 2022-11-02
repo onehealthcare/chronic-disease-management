@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from models.chronic_disease_sys.dao.metric import (
     MetricDAO,
@@ -67,6 +67,17 @@ def create_user_metric(user_id: int, metric_id: int) -> UserMetricDTO:
 def query_user_metric_by_user_id(user_id: int) -> List[UserMetricDTO]:
     daos = UserMetricDAO.query_by_user_id(user_id=user_id)
     return [UserMetricDTO.from_dao(dao) for dao in daos]
+
+
+def set_user_metric_chart_type(user_id: int, metric_id: int, chart_type: str):
+    UserMetricDAO.set_chart_type(user_id=user_id, metric_id=metric_id, chart_type=chart_type)
+
+
+def get_user_metric(user_id: int, metric_id: int) -> Optional[UserMetricDTO]:
+    dao = UserMetricDAO.get_by_user_id_metric_id(user_id=user_id, metric_id=metric_id)
+    if not dao:
+        return None
+    return UserMetricDTO.from_dao(dao)
 
 
 def create_metric_label(metric_id: int, name: str, text: str, order: int = 0) -> MetricLabelDTO:

@@ -12,6 +12,7 @@ from models.chronic_disease_sys import (
     delete_metric_label,
     query_metric_label_by_metric_id,
     query_user_metric_by_user_id,
+    set_user_metric_chart_type,
 )
 from utils.logging import logger as _logger
 from views.chronic_disease import app
@@ -21,7 +22,7 @@ from views.dumps.dump_metric import (
     dump_metric_labels,
     dump_user_metrics,
 )
-from views.middleware.auth import need_admin, need_login
+from views.middleware.auth import need_login
 from views.render import error, ok
 
 
@@ -29,7 +30,7 @@ logger = _logger('views.chronic_condition.metric')
 
 
 @app.route("/metric/", methods=['POST', 'DELETE'])
-@need_admin
+@need_login
 def metric_view():
     data = request.get_json()
 
@@ -123,7 +124,7 @@ def metric_labels_view(metric_id):
 
 
 @app.route("/metric_label/", methods=['POST', 'DELETE'])
-@need_admin
+@need_login
 def metric_label_view():
     data = request.get_json()
     if request.method == 'POST':
@@ -166,3 +167,31 @@ def metric_label_view():
             logger.info(f"delete_metric_label,metric_label_not_found,{simplejson.dumps(data)}")
             return error(e.message)
         return ok()
+
+
+@app.route("/metric/<int:metric_id>/chart_types/", methods=['GET', 'POST'])
+@need_login
+def metric_chart_types_view(metric_id: int):
+    if not metric_id:
+        return error("all field required")
+
+    if request.method == 'GET':
+        return ok({
+            "chart_types": [{
+                "name": "line",
+                "text": "折线"
+            }, {
+                "name": "column",
+                "text": "柱状"
+            }]
+        })
+    elif request.method == 'POST':
+        data = request.get_json()
+        chart_type: str = data.get('chart_type', '')
+        if not chart_type:
+            return error("all field required")
+
+        set_user_metric_chart_type(user_id=g.me.id, metric_id=metric_id, chart_type=chart_type)
+        return ok()
+
+    return ok()
