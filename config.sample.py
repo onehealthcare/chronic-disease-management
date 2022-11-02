@@ -34,11 +34,13 @@ QCLOUD_SECRET_ID = os.environ.get('QCLOUD_SECRET_ID', '')
 QCLOUD_SECRET_KEY = os.environ.get('QCLOUD_SECRET_KEY', '')
 
 # 慢病管理 bucket
-QCLOUD_CC_COS_BUCKET = os.environ.get('QCLOUD_CC_COS_BUCKET', '')
-QCLOUD_CC_COS_REGION = os.environ.get('QCLOUD_CC_COS_REGION', '')
-QCLOUD_CC_COS_DOMAIN = os.environ.get('QCLOUD_CC_COS_DOMAIN', 'cc.cos.motn.top')
-QCLOUD_CC_COS_URL = 'https://{}/{}{}'.format(QCLOUD_CC_COS_DOMAIN, '{}', '?imageView2/q/85')
-QCLOUD_CC_COS_URL_PATTERN = 'https://{}/{}{}'.format(QCLOUD_CC_COS_DOMAIN, '{}', '?imageMogr2/crop/#width#x#height#/gravity/center/rquality/85')
+QCLOUD_CDM_COS_BUCKET = os.environ.get('QCLOUD_CDM_COS_BUCKET', '')
+QCLOUD_CDM_COS_REGION = os.environ.get('QCLOUD_CDM_COS_REGION', '')
+QCLOUD_CDM_COS_DOMAIN = os.environ.get('QCLOUD_CDM_COS_DOMAIN', '')
+QCLOUD_CDM_COS_URL = 'https://{}/{}{}'.format(QCLOUD_CDM_COS_DOMAIN, '{}', '?imageView2/q/85')
+QCLOUD_CDM_COS_URL_PATTERN = 'https://{}/{}{}'.format(
+    QCLOUD_CDM_COS_DOMAIN, '{}', '?imageMogr2/crop/#width#x#height#/gravity/center/rquality/85'
+)
 
 # redis
 REDIS_DB = os.environ.get('REDIS_DB', 'test-redis')
