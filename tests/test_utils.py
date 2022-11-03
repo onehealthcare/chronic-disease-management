@@ -112,7 +112,7 @@ def test_logger():
     logger.error('test error')
 
     path = os.path.join(LOG_PATH, 'tests/test_utils/log')
-    f = open(path, 'r')
+    f = open(path)
     txt = f.read()
 
     assert 'INFO test info' in txt
@@ -126,7 +126,7 @@ def test_logger():
     logger2.warning('test warning2')
     logger2.error('test error2')
 
-    f = open(path, 'r')
+    f = open(path)
     txt = f.read()
 
     assert 'INFO test info2' in txt
@@ -138,8 +138,7 @@ def test_logger():
 
 def test_hmac_sha1():
     data: Dict[str, int] = {"b": 1, "a": 2}
-    assert hmac_sha1_encode(data) == "0412dfe6f19cb47335d9da7f7fd5692fb25dc8f4"
+    sign: str = hmac_sha1_encode(data)
 
     data = {"b": 1, "a": 2, "sign": 'xxxx'}
-    assert hmac_sha1_encode(data) == "0412dfe6f19cb47335d9da7f7fd5692fb25dc8f4"
-    assert hmac_sha1_encode(data) != data.get('sign')
+    assert hmac_sha1_encode(data) == sign

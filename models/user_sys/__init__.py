@@ -6,6 +6,7 @@ from models.user_sys.api import (
     create_user_by_phone,
     delete_user,
     delete_user_auth_by_user_id,
+    get_user_auth_by_user_id_and_provider,
     get_user_by_id,
     get_user_by_phone,
     get_user_by_third_party_id,
@@ -13,7 +14,6 @@ from models.user_sys.api import (
     rename_user,
     set_user_admin,
     update_status_by_user_id,
-    get_user_auth_by_user_id_and_provider,
     update_user_auth_by_user_id_and_provider,
 )
 from models.user_sys.const import UserAuthProvider
@@ -21,6 +21,7 @@ from models.user_sys.dto.user import UserDTO
 from models.user_sys.exceptions import (
     DuplicatedUserNameError,
     DuplicatedUserPhoneError,
+    EmptyUserNameError,
     UserAuthNotFoundException,
     UserNotFoundException,
 )
@@ -52,4 +53,5 @@ __all__ = [
     'UserAuthNotFoundException',
     'DuplicatedUserNameError',
     'DuplicatedUserPhoneError',
+    'EmptyUserNameError',
 ]

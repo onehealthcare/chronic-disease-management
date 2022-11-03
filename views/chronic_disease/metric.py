@@ -10,6 +10,7 @@ from models.chronic_disease_sys import (
     create_user_metric,
     delete_metric,
     delete_metric_label,
+    get_metric_chart_types,
     query_metric_label_by_metric_id,
     query_user_metric_by_user_id,
     set_user_metric_chart_type,
@@ -176,15 +177,7 @@ def metric_chart_types_view(metric_id: int):
         return error("all field required")
 
     if request.method == 'GET':
-        return ok({
-            "chart_types": [{
-                "name": "line",
-                "text": "折线"
-            }, {
-                "name": "column",
-                "text": "柱状"
-            }]
-        })
+        return ok({"chart_types": get_metric_chart_types()})
     elif request.method == 'POST':
         data = request.get_json()
         chart_type: str = data.get('chart_type', '')

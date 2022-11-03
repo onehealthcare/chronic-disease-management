@@ -5,6 +5,7 @@ import simplejson
 from models.const import CommonStatus
 from models.user_sys import (
     DuplicatedUserPhoneError,
+    EmptyUserNameError,
     UserAuthNotFoundException,
     UserAuthProvider,
     UserNotFoundException,
@@ -91,8 +92,8 @@ def test_user():
     assert user.bits == 0
 
     # empty user name
-    user = create_user(name='', ident=ident)
-    assert '用户' in user.name
+    with pytest.raises(EmptyUserNameError):
+        user = create_user(name='', ident=ident)
 
     # rename user
     new_user_name = 'tttt'

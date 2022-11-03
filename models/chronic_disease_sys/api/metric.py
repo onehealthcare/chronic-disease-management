@@ -1,5 +1,6 @@
-from typing import List, Optional
+from typing import Dict, List, Optional
 
+from models.chronic_disease_sys.const import ChartType
 from models.chronic_disease_sys.dao.metric import (
     MetricDAO,
     MetricLabelDAO,
@@ -104,3 +105,7 @@ def delete_metric_label(metric_label_id: int):
 def query_metric_label_by_metric_id(metric_id: int) -> List[MetricLabelDTO]:
     daos = MetricLabelDAO.query_by_metric_id(metric_id=metric_id)
     return [MetricLabelDTO.from_dao(dao) for dao in daos]
+
+
+def get_metric_chart_types() -> List[Dict[ChartType, str]]:
+    return ChartType.get_all()

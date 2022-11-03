@@ -62,7 +62,7 @@ def _get_user():
 @need_login
 def _new_user():
     data = request.get_json()
-    logger.info(f"create_user,requeset,{simplejson.dumps(data)}")
+    logger.info(f"create_user,request,{simplejson.dumps(data)}")
     name: str = data.get('name', '')
     if not name:
         return error("name is required")
@@ -71,7 +71,7 @@ def _new_user():
     try:
         user = create_user(name=name, ident=ident)
     except DuplicatedUserNameError as e:
-        logger.warn(f"create_user,dumplicated_user_name,{simplejson.dumps(data)}")
+        logger.warn(f"create_user,duplicated_user_name,{simplejson.dumps(data)}")
         return error(e.message, 500)
 
     logger.info(f"create_user,ok,{simplejson.dumps(data)}")
