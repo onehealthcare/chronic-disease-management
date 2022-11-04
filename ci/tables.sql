@@ -160,7 +160,7 @@ CREATE TABLE `chronic_disease_metric_measure` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) NOT NULL,
   `metric_id` int(10) NOT NULL,
-  `metric_label` varchar(64) NOT NULL,
+  `metric_label` varchar(64) NOT NULL DEFAULT '',
   `value` float NOT NULL,
   `status` tinyint(4) NOT NULL DEFAULT '0',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,

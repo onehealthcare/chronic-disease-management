@@ -1,11 +1,18 @@
 from typing import Dict, List, Optional, Union
 
-from models.chronic_disease_sys import MetricDTO, MetricLabelDTO, UserMetricDTO
+from models.chronic_disease_sys import (
+    MetricDTO,
+    MetricLabelDTO,
+    UserMetricDTO,
+    query_metric_label_by_metric_id,
+)
 
 
 def dump_user_metric(dto: UserMetricDTO) -> Optional[Dict]:
     if not dto:
         return None
+
+    labels = query_metric_label_by_metric_id(metric_id=dto.metric_id)
 
     return {
         "user_id": dto.user_id,
@@ -15,7 +22,8 @@ def dump_user_metric(dto: UserMetricDTO) -> Optional[Dict]:
         "metric_text": dto.metric.text,
         "ref_value": dto.ref_value,
         "chart_type": dto.chart_type,
-        "default_selected": dto.default_selected
+        "default_selected": dto.default_selected,
+        "labels": dump_metric_labels(labels)
     }
 
 

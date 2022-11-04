@@ -12,7 +12,7 @@ class MetricMeasureDAO(Base):
     """
     user_id = IntegerField(index=True)
     metric_id = IntegerField(index=True)
-    metric_label = CharField(index=True)
+    metric_label = CharField(index=True, default="")
     value = FloatField()
     status = IntegerField(index=True, default=CommonStatus.NORMAL)
     created_at = DateTimeField(default=datetime.datetime.now)
