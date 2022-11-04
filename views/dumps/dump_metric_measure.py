@@ -44,7 +44,7 @@ def dump_avg_metric_measures(dtos: List[MetricMeasureDTO]) -> Tuple[float, float
 
     dtos.sort(key=lambda x: x.created_at)
     return (
-        round(sum([o.value for o in dtos[: 15]]) / len(dtos[: 15]), 2),
-        round(sum([o.value for o in dtos[: 7]]) / len(dtos[: 7]), 2),
+        round(sum([o.value for o in dtos[-15:]]) / len(dtos[-15:]), 2),
+        round(sum([o.value for o in dtos[-7:]]) / len(dtos[-7:]), 2),
         round(dtos[-1].value, 2),
     )

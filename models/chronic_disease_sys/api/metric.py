@@ -80,6 +80,17 @@ def remove_user_metric(user_id: int, metric_id: int):
         dao.delete()
 
 
+def set_default_user_metric(user_id: int, metric_id: int):
+    """
+    设置用户的主要用的指标
+    """
+    UserMetricDAO.set_default_selected(user_id=user_id, metric_id=metric_id)
+
+
+def set_user_metric_ref_value(user_id: int, metric_id: int, ref_value: float):
+    UserMetricDAO.set_ref_value(user_id=user_id, metric_id=metric_id, ref_value=ref_value)
+
+
 def query_user_metric_by_user_id(user_id: int) -> List[UserMetricDTO]:
     daos = UserMetricDAO.query_by_user_id(user_id=user_id)
     return [UserMetricDTO.from_dao(dao) for dao in daos]

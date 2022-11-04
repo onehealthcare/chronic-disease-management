@@ -19,7 +19,9 @@ from models.chronic_disease_sys import (
     query_metric_label_by_metric_id,
     query_user_metric_by_user_id,
     remove_user_metric,
+    set_default_user_metric,
     set_user_metric_chart_type,
+    set_user_metric_ref_value,
 )
 from utils.logging import logger as _logger
 from views.chronic_disease import app
@@ -107,10 +109,28 @@ def get_user_metric_view(metric_id: int):
     })
 
 
-@app.route('/user_metric/<int:metric_id>/deafult_selected', methods=['POST', 'DELETE'])
+@app.route('/user_metric/<int:metric_id>/default_selected/', methods=['POST'])
 @need_login
 def user_metric_default_selected(metric_id: int):
-    pass
+    user_id: int = g.me.id
+    set_default_user_metric(user_id=user_id, metric_id=metric_id)
+
+    return ok()
+
+
+@app.route('/user_metric/<int:metric_id>/ref_value/', methods=['POST'])
+@need_login
+def user_metric_ref_value(metric_id: int):
+    user_id: int = g.me.id
+    data = request.json
+    try:
+        ref_value = float(data.get('ref_value'))
+    except ValueError:
+        return error("格式错误")
+
+    set_user_metric_ref_value(user_id=user_id, metric_id=metric_id, ref_value=ref_value)
+
+    return ok()
 
 
 @app.route('/user_metric/<int:metric_id>/', methods=['POST', 'DELETE'])

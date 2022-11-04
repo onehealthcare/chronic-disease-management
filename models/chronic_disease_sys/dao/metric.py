@@ -4,6 +4,7 @@ from typing import List, Optional
 from models.base import Base
 from models.chronic_disease_sys.const import ChartType
 from models.const import CommonStatus
+from models.init_db import db
 from peewee import CharField, DateTimeField, FloatField, IntegerField
 
 
@@ -74,8 +75,21 @@ class UserMetricDAO(Base):
         return cls.get(cls.id == metric_id)
 
     @classmethod
+    @db.atomic()
+    def set_default_selected(cls, user_id: int, metric_id: int):
+        cls.update(default_selected=0).where(cls.user_id == user_id, cls.default_selected == 1).execute()
+        cls.update(default_selected=1).where(cls.user_id == user_id, cls.metric_id == metric_id, cls.status == CommonStatus.NORMAL).execute()
+
+    @classmethod
     def get_by_user_id_metric_id(cls, user_id: int, metric_id: int) -> "UserMetricDAO":
         return cls.get(cls.user_id == user_id, cls.metric_id == metric_id, cls.status == CommonStatus.NORMAL)
+
+    @classmethod
+    def set_ref_value(cls, user_id: int, metric_id: int, ref_value: float):
+        dao = cls.get_by_user_id_metric_id(user_id=user_id, metric_id=metric_id)
+        if dao:
+            dao.ref_value = ref_value
+            dao.save()
 
     @classmethod
     def query_by_user_id(cls, user_id: int) -> List['UserMetricDAO']:
