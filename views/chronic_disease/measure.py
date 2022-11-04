@@ -146,6 +146,5 @@ def measures_view():
         "next_cursor": next_cursor,
         "ref_value": user_metric.ref_value,
         "metric_text": metric.text,
-        "metric_unit": metric.unit,
-        "chart_type": user_metric.chart_type
+        "metric_unit": metric.unit
     })

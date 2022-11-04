@@ -12,7 +12,10 @@ def dump_user_metric(dto: UserMetricDTO) -> Optional[Dict]:
         "metric_id": dto.metric_id,
         "metric_name": dto.metric.name,
         "metric_unit": dto.metric.unit,
-        "metric_text": dto.metric.text
+        "metric_text": dto.metric.text,
+        "ref_value": dto.ref_value,
+        "chart_type": dto.chart_type,
+        "default_selected": dto.default_selected
     }
 
 

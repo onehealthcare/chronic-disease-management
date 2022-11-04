@@ -141,6 +141,7 @@ CREATE TABLE `chronic_disease_user_metric` (
   `metric_id` int(10) NOT NULL,
   `chart_type` varchar(32) NOT NULL,
   `ref_value` float DEFAULT NULL,
+  `default_selected` tinyint(4) NOT NULL DEFAULT '0',
   `status` tinyint(4) NOT NULL DEFAULT '0',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

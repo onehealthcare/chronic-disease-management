@@ -15,6 +15,7 @@ from models.chronic_disease_sys import (
     delete_metric_label,
     get_all_metrics,
     get_metric_chart_types,
+    get_user_metric,
     query_metric_label_by_metric_id,
     query_user_metric_by_user_id,
     remove_user_metric,
@@ -27,6 +28,7 @@ from views.dumps.dump_metric import (
     dump_metric_label,
     dump_metric_labels,
     dump_metrics,
+    dump_user_metric,
     dump_user_metrics,
 )
 from views.middleware.auth import need_login
@@ -92,6 +94,23 @@ def user_metrics():
     return ok({
         'user_metrics': dump_user_metrics(dtos)
     })
+
+
+@app.route('/user_metric/<int:metric_id>/', methods=['GET'])
+@need_login
+def get_user_metric_view(metric_id: int):
+    user_id: int = g.me.id
+    dto: Optional[UserMetricDTO] = get_user_metric(user_id=user_id, metric_id=metric_id)
+
+    return ok({
+        'user_metric': dump_user_metric(dto) if dto else {}
+    })
+
+
+@app.route('/user_metric/<int:metric_id>/deafult_selected', methods=['POST', 'DELETE'])
+@need_login
+def user_metric_default_selected(metric_id: int):
+    pass
 
 
 @app.route('/user_metric/<int:metric_id>/', methods=['POST', 'DELETE'])
@@ -200,7 +219,10 @@ def metric_chart_types_view(metric_id: int):
         return error("all field required")
 
     if request.method == 'GET':
-        return ok({"chart_types": get_metric_chart_types()})
+        all_chart_types = get_metric_chart_types()
+        # 获取用户 metric 设置
+        user_metric_dto: Optional[UserMetricDTO] = get_user_metric(user_id=g.me.id, metric_id=metric_id)
+        return ok({"chart_types": all_chart_types, "selected": user_metric_dto.chart_type if user_metric_dto else None})
     elif request.method == 'POST':
         data = request.get_json()
         chart_type: str = data.get('chart_type', '')

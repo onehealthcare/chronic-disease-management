@@ -50,6 +50,7 @@ class UserMetricDAO(Base):
     metric_id = IntegerField(index=True)
     chart_type = CharField(default=ChartType.COLUMN.value)
     ref_value = FloatField()  # 用户自定义的参考值
+    default_selected = IntegerField(default=0)  # 是否默认选中
     status = IntegerField(index=True, default=CommonStatus.NORMAL)
     created_at = DateTimeField(default=datetime.datetime.now)
     updated_at = DateTimeField(default=datetime.datetime.now)

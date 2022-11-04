@@ -34,6 +34,7 @@ class UserMetricDTO(BaseModel):
     metric: MetricDTO
     chart_type: str
     ref_value: Optional[float]
+    default_selected: int
     status: int
     created_at: datetime.datetime
 
@@ -45,6 +46,7 @@ class UserMetricDTO(BaseModel):
             metric_id=dao.metric_id,
             chart_type=dao.chart_type,
             ref_value=dao.ref_value,
+            default_selected=dao.default_selected,
             metric=MetricDTO.from_dao(dao.metric),
             status=dao.status,
             created_at=_datetime(dao.created_at)
