@@ -11,6 +11,8 @@ def _get_color(value: float, ref_value: float) -> str:
     :param ref_value: 参考值
     :return:
     """
+    if not ref_value:
+        return ColorEnum.BLUE
     return ColorEnum.WARN if value > ref_value else ColorEnum.NORMAL
 
 
