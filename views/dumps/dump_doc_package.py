@@ -1,6 +1,6 @@
 from typing import Dict, List
 
-from models.chronic_condition_sys import DocPackageDTO
+from models.chronic_disease_sys import DocPackageDTO
 
 
 def dump_doc_package(doc_package: DocPackageDTO) -> Dict:

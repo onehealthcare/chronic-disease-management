@@ -19,26 +19,28 @@ class MetricMeasureDAO(Base):
     updated_at = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
-        table_name = "chronic_condition_metric_measure"
+        table_name = "chronic_disease_metric_measure"
 
     @classmethod
-    def query_recent_by_metric(cls, user_id: int, metric_id: int, limit: int) -> List['MetricMeasureDAO']:
+    def query_recent_by_metric(cls, user_id: int, metric_id: int, size: int) -> List['MetricMeasureDAO']:
         q = cls.select().where(
             cls.user_id == user_id,
             cls.metric_id == metric_id,
             cls.status == CommonStatus.NORMAL
-        ).order_by(cls.created_at.desc()).limit(limit)
+        ).order_by(cls.created_at.desc()).limit(size)
 
-        return list(sorted([o for o in q], key=lambda dao: dao.created_at, reverse=True))
+        return list(q)
 
     @classmethod
-    def query_recent_by_metric_and_time(cls, user_id: int, metric_id: int, time: datetime.datetime) -> List['MetricMeasureDAO']:
-        return cls.select().where(
+    def paged_by_metric(cls, user_id: int, metric_id: int, cursor: int, size: int) -> List['MetricMeasureDAO']:
+        q = cls.select().where(
             cls.user_id == user_id,
             cls.metric_id == metric_id,
             cls.status == CommonStatus.NORMAL,
-            cls.created_at >= time
-        )
+            cls.id >= cursor
+        ).order_by(cls.id.desc()).limit(size)
+
+        return list(q)
 
     @classmethod
     def get_by_id(cls, measure_id: int) -> 'MetricMeasureDAO':

@@ -18,7 +18,7 @@ class MetricDAO(Base):
     updated_at = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
-        table_name = "chronic_condition_metric"
+        table_name = "chronic_disease_metric"
 
     @classmethod
     def get_by_id(cls, metric_id: int) -> 'MetricDAO':
@@ -42,16 +42,21 @@ class UserMetricDAO(Base):
     """
     user_id = IntegerField(index=True)
     metric_id = IntegerField(index=True)
+    chart_type = CharField(default='column')
     status = IntegerField(index=True, default=CommonStatus.NORMAL)
     created_at = DateTimeField(default=datetime.datetime.now)
     updated_at = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
-        table_name = "chronic_condition_user_metric"
+        table_name = "chronic_disease_user_metric"
 
     @classmethod
     def get_by_id(cls, metric_id: int) -> 'UserMetricDAO':
         return cls.get(cls.id == metric_id)
+
+    @classmethod
+    def get_by_user_id_metric_id(cls, user_id: int, metric_id: int) -> "UserMetricDAO":
+        return cls.get(cls.user_id == user_id, cls.metric_id == metric_id, cls.status == CommonStatus.NORMAL)
 
     @classmethod
     def query_by_user_id(cls, user_id: int) -> List['UserMetricDAO']:
@@ -73,6 +78,13 @@ class UserMetricDAO(Base):
     def delete(self):
         self.update_status(status=CommonStatus.DELETED)
 
+    @classmethod
+    def set_chart_type(cls, user_id: int, metric_id: int, chart_type: str):
+        dao = cls.get(cls.user_id == user_id, cls.metric_id == metric_id)
+        if dao:
+            dao.chart_type = chart_type
+            dao.save()
+
 
 class MetricLabelDAO(Base):
     """
@@ -87,15 +99,15 @@ class MetricLabelDAO(Base):
     updated_at = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
-        table_name = "chronic_condition_metric_label"
+        table_name = "chronic_disease_metric_label"
 
     @classmethod
     def get_by_id(cls, metric_label_id: int) -> 'MetricLabelDAO':
         return cls.get(cls.id == metric_label_id)
 
-    # @classmethod
-    # def get_by_name(cls, metric_id: int, name: str) -> 'MetricLabelDAO':
-    #     return cls.get(cls.name == name, cls.status == CommonStatus.NORMAL)
+    @classmethod
+    def get_by_name(cls, metric_id: int, name: str) -> 'MetricLabelDAO':
+        return cls.get(cls.name == name, cls.status == CommonStatus.NORMAL)
 
     @classmethod
     def query_by_metric_id(cls, metric_id: int) -> List['MetricLabelDAO']:

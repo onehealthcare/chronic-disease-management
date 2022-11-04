@@ -1,6 +1,6 @@
 import simplejson
 from flask import g, request
-from models.chronic_condition_sys import (
+from models.chronic_disease_sys import (
     DuplicatedMetricException,
     MetricLabelNotFoundException,
     MetricNotFoundException,
@@ -10,18 +10,20 @@ from models.chronic_condition_sys import (
     create_user_metric,
     delete_metric,
     delete_metric_label,
+    get_metric_chart_types,
     query_metric_label_by_metric_id,
     query_user_metric_by_user_id,
+    set_user_metric_chart_type,
 )
 from utils.logging import logger as _logger
-from views.chronic_condition import app
+from views.chronic_disease import app
 from views.dumps.dump_metric import (
     dump_metric,
     dump_metric_label,
     dump_metric_labels,
     dump_user_metrics,
 )
-from views.middleware.auth import need_admin, need_login
+from views.middleware.auth import need_login
 from views.render import error, ok
 
 
@@ -29,7 +31,7 @@ logger = _logger('views.chronic_condition.metric')
 
 
 @app.route("/metric/", methods=['POST', 'DELETE'])
-@need_admin
+@need_login
 def metric_view():
     data = request.get_json()
 
@@ -94,15 +96,26 @@ def user_metric():
     return ok()
 
 
-@app.route("/metric_labels/", methods=['GET'])
-@need_admin
-def metric_labels_view():
-    data = request.args
-    try:
-        metric_id = data.get("metric_id", "0")
-    except (ValueError, TypeError):
-        return error("invalid metric id")
+# @app.route("/metric_labels/", methods=['GET'])
+# @need_admin
+# def metric_labels_view():
+#     data = request.args
+#     try:
+#         metric_id = data.get("metric_id", "0")
+#     except (ValueError, TypeError):
+#         return error("invalid metric id")
+#
+#     if not metric_id:
+#         return error("all field required")
+#
+#     dtos = query_metric_label_by_metric_id(metric_id=metric_id)
+#
+#     return ok({"metric_labels": dump_metric_labels(dtos)})
 
+
+@app.route("/metric/<int:metric_id>/labels/", methods=['GET'])
+@need_login
+def metric_labels_view(metric_id):
     if not metric_id:
         return error("all field required")
 
@@ -112,7 +125,7 @@ def metric_labels_view():
 
 
 @app.route("/metric_label/", methods=['POST', 'DELETE'])
-@need_admin
+@need_login
 def metric_label_view():
     data = request.get_json()
     if request.method == 'POST':
@@ -155,3 +168,23 @@ def metric_label_view():
             logger.info(f"delete_metric_label,metric_label_not_found,{simplejson.dumps(data)}")
             return error(e.message)
         return ok()
+
+
+@app.route("/metric/<int:metric_id>/chart_types/", methods=['GET', 'POST'])
+@need_login
+def metric_chart_types_view(metric_id: int):
+    if not metric_id:
+        return error("all field required")
+
+    if request.method == 'GET':
+        return ok({"chart_types": get_metric_chart_types()})
+    elif request.method == 'POST':
+        data = request.get_json()
+        chart_type: str = data.get('chart_type', '')
+        if not chart_type:
+            return error("all field required")
+
+        set_user_metric_chart_type(user_id=g.me.id, metric_id=metric_id, chart_type=chart_type)
+        return ok()
+
+    return ok()

@@ -40,9 +40,9 @@ CREATE TABLE `user_auth` (
 );
 
 --
--- Table structure for table `chronic_condition_doc_package`
+-- Table structure for table `chronic_disease_doc_package`
 --
-CREATE TABLE `chronic_condition_doc_package` (
+CREATE TABLE `chronic_disease_doc_package` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
   `desc` TEXT NOT NULL,
@@ -58,9 +58,9 @@ CREATE TABLE `chronic_condition_doc_package` (
 );
 
 --
--- Table structure for table `chronic_condition_doc_package_ident`
+-- Table structure for table `chronic_disease_doc_package_ident`
 --
-CREATE TABLE `chronic_condition_doc_package_ident` (
+CREATE TABLE `chronic_disease_doc_package_ident` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `package_id` int(10) unsigned NOT NULL,
   `ident` varchar(256) NOT NULL,
@@ -93,9 +93,9 @@ CREATE TABLE `user_phone` (
 );
 
 --
--- Table structure for table `chronic_condition_metric`
+-- Table structure for table `chronic_disease_metric`
 --
-CREATE TABLE `chronic_condition_metric` (
+CREATE TABLE `chronic_disease_metric` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL,
   `text` varchar(64) NOT NULL,
@@ -111,9 +111,9 @@ CREATE TABLE `chronic_condition_metric` (
 );
 
 --
--- Table structure for table `chronic_condition_metric_label`
+-- Table structure for table `chronic_disease_metric_label`
 --
-CREATE TABLE `chronic_condition_metric_label` (
+CREATE TABLE `chronic_disease_metric_label` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `metric_id` int(10) NOT NULL,
   `name` varchar(64) NOT NULL,
@@ -132,12 +132,13 @@ CREATE TABLE `chronic_condition_metric_label` (
 );
 
 --
--- Table structure for table `chronic_condition_user_metric`
+-- Table structure for table `chronic_disease_user_metric`
 --
-CREATE TABLE `chronic_condition_user_metric` (
+CREATE TABLE `chronic_disease_user_metric` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) NOT NULL,
   `metric_id` int(10) NOT NULL,
+  `chart_type` varchar(32) NOT NULL,
   `status` tinyint(4) NOT NULL DEFAULT '0',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -150,9 +151,9 @@ CREATE TABLE `chronic_condition_user_metric` (
 );
 
 --
--- Table structure for table `chronic_condition_metric_measure`
+-- Table structure for table `chronic_disease_metric_measure`
 --
-CREATE TABLE `chronic_condition_metric_measure` (
+CREATE TABLE `chronic_disease_metric_measure` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) NOT NULL,
   `metric_id` int(10) NOT NULL,

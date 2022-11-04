@@ -1,4 +1,4 @@
-flask==1.1.2
+flask==2.1.0
 gunicorn==20.0.4
 peewee==3.14.0
 pydantic==1.7.3
@@ -10,9 +10,4 @@ wechatpy==1.8.14
 PyJWT==2.0.1
 qcloud-python-sts==3.0.5
 redis==3.5.3
-cryptography
-freezegun
-simplejson
-ipython
-requests
-notion-client
+simplejson==3.17.6

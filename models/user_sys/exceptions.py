@@ -22,3 +22,8 @@ class DuplicatedUserNameError(Exception):
 class DuplicatedUserPhoneError(Exception):
     def __init__(self, message="该手机号已经注册"):
         self.message = message
+
+
+class EmptyUserNameError(Exception):
+    def __init__(self, message="用户名为空"):
+        self.message = message

@@ -137,3 +137,5 @@ htmlcov/
 config.py
 
 .idea/
+
+init_env.sh

@@ -1,11 +1,11 @@
 from typing import Dict, List, Optional
 
-from models.chronic_condition_sys.dao.doc_package import (
+from models.chronic_disease_sys.dao.doc_package import (
     DocPackageDAO,
     DocPackageIdentDAO,
 )
-from models.chronic_condition_sys.dto.doc_package import DocPackageDTO
-from models.chronic_condition_sys.exceptions import (
+from models.chronic_disease_sys.dto.doc_package import DocPackageDTO
+from models.chronic_disease_sys.exceptions import (
     DocPackageIdentNotFoundException,
     DocPackageNotFoundException,
 )
