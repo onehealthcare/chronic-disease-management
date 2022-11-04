@@ -20,11 +20,11 @@ from models.const import CommonStatus
 from models.init_db import db
 
 
-def create_metric(name: str, text: str, unit: str) -> MetricDTO:
+def create_metric(name: str, text: str, unit: str, ref_value: Optional[float] = None) -> MetricDTO:
     dao = MetricDAO.get_by_name(name=name)
     if dao:
         raise DuplicatedMetricException()
-    dao = MetricDAO.create(name=name, text=text, unit=unit)
+    dao = MetricDAO.create(name=name, text=text, unit=unit, ref_value=ref_value)
     return MetricDTO.from_dao(dao)
 
 
@@ -34,6 +34,11 @@ def get_metric(metric_id: int) -> MetricDTO:
         raise MetricNotFoundException()
 
     return MetricDTO.from_dao(dao)
+
+
+def get_all_metrics() -> List[MetricDTO]:
+    daos = MetricDAO.get_all()
+    return [MetricDTO.from_dao(dao) for dao in daos]
 
 
 def get_metric_by_name(name: str) -> MetricDTO:
@@ -60,9 +65,19 @@ def delete_metric(metric_id: int):
 
 
 def create_user_metric(user_id: int, metric_id: int) -> UserMetricDTO:
-    get_metric(metric_id=metric_id)
-    dao = UserMetricDAO.create(user_id=user_id, metric_id=metric_id)
+    metric: MetricDTO = get_metric(metric_id=metric_id)
+    dao = UserMetricDAO.create(user_id=user_id, metric_id=metric_id, ref_value=metric.ref_value)
     return UserMetricDTO.from_dao(dao)
+
+
+def remove_user_metric(user_id: int, metric_id: int):
+    dao = UserMetricDAO.get(
+        UserMetricDAO.user_id == user_id,
+        UserMetricDAO.metric_id == metric_id,
+        UserMetricDAO.status == CommonStatus.NORMAL
+    )
+    if dao:
+        dao.delete()
 
 
 def query_user_metric_by_user_id(user_id: int) -> List[UserMetricDTO]:

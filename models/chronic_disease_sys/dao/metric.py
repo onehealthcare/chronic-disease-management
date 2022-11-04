@@ -1,9 +1,10 @@
 import datetime
-from typing import List
+from typing import List, Optional
 
 from models.base import Base
+from models.chronic_disease_sys.const import ChartType
 from models.const import CommonStatus
-from peewee import CharField, DateTimeField, IntegerField
+from peewee import CharField, DateTimeField, FloatField, IntegerField
 
 
 class MetricDAO(Base):
@@ -13,6 +14,7 @@ class MetricDAO(Base):
     name = CharField(index=True)
     text = CharField()
     unit = CharField()
+    ref_value = FloatField()  # 推荐的参考值
     status = IntegerField(index=True, default=CommonStatus.NORMAL)
     created_at = DateTimeField(default=datetime.datetime.now)
     updated_at = DateTimeField(default=datetime.datetime.now)
@@ -28,6 +30,10 @@ class MetricDAO(Base):
     def get_by_name(cls, name: str) -> 'MetricDAO':
         return cls.get(cls.name == name, cls.status == CommonStatus.NORMAL)
 
+    @classmethod
+    def get_all(cls):
+        return cls.select().where(cls.status == CommonStatus.NORMAL)
+
     def update_status(self, status: int):
         self.status = status
         self.save()
@@ -42,13 +48,25 @@ class UserMetricDAO(Base):
     """
     user_id = IntegerField(index=True)
     metric_id = IntegerField(index=True)
-    chart_type = CharField(default='column')
+    chart_type = CharField(default=ChartType.COLUMN.value)
+    ref_value = FloatField()  # 用户自定义的参考值
     status = IntegerField(index=True, default=CommonStatus.NORMAL)
     created_at = DateTimeField(default=datetime.datetime.now)
     updated_at = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
         table_name = "chronic_disease_user_metric"
+
+    @classmethod
+    def create(cls, user_id: int, metric_id: int, ref_value: Optional[float] = None) -> 'UserMetricDAO':
+        dao = cls.get(cls.user_id == user_id, cls.metric_id == metric_id)
+        if not dao:
+            dao = cls(user_id=user_id, metric_id=metric_id, ref_value=ref_value)
+            dao.save()
+        elif dao.status != CommonStatus.NORMAL:
+            dao.update_status(status=CommonStatus.NORMAL)
+
+        return dao
 
     @classmethod
     def get_by_id(cls, metric_id: int) -> 'UserMetricDAO':

@@ -19,6 +19,7 @@ from models.chronic_disease_sys.api.metric import (
     create_user_metric,
     delete_metric,
     delete_metric_label,
+    get_all_metrics,
     get_metric,
     get_metric_by_name,
     get_metric_chart_types,
@@ -26,6 +27,7 @@ from models.chronic_disease_sys.api.metric import (
     get_user_metric,
     query_metric_label_by_metric_id,
     query_user_metric_by_user_id,
+    remove_user_metric,
     set_user_metric_chart_type,
 )
 from models.chronic_disease_sys.dto.doc_package import (
@@ -64,6 +66,8 @@ __all__ = [
     'paged_search_doc_package_by_user_id',
     'delete_doc_ident_by_id',
     'create_user_metric',
+    'remove_user_metric',
+    'get_all_metrics',
     'query_user_metric_by_user_id',
     'set_user_metric_chart_type',
     'get_metric_chart_types',

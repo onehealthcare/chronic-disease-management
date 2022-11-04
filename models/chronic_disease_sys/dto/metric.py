@@ -1,4 +1,5 @@
 import datetime
+from typing import Optional
 
 from pydantic import BaseModel
 from utils.datetime_utils import _datetime
@@ -9,6 +10,7 @@ class MetricDTO(BaseModel):
     name: str
     text: str
     unit: str
+    ref_value: Optional[float]
     status: int
     created_at: datetime.datetime
 
@@ -19,6 +21,7 @@ class MetricDTO(BaseModel):
             name=dao.name,
             text=dao.text,
             unit=dao.unit,
+            ref_value=dao.ref_value,
             status=dao.status,
             created_at=_datetime(dao.created_at)
         )
@@ -30,6 +33,7 @@ class UserMetricDTO(BaseModel):
     metric_id: int
     metric: MetricDTO
     chart_type: str
+    ref_value: Optional[float]
     status: int
     created_at: datetime.datetime
 
@@ -40,6 +44,7 @@ class UserMetricDTO(BaseModel):
             user_id=dao.user_id,
             metric_id=dao.metric_id,
             chart_type=dao.chart_type,
+            ref_value=dao.ref_value,
             metric=MetricDTO.from_dao(dao.metric),
             status=dao.status,
             created_at=_datetime(dao.created_at)
