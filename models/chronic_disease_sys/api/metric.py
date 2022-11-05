@@ -66,7 +66,7 @@ def delete_metric(metric_id: int):
 
 def create_user_metric(user_id: int, metric_id: int) -> UserMetricDTO:
     metric: MetricDTO = get_metric(metric_id=metric_id)
-    dao = UserMetricDAO.create(user_id=user_id, metric_id=metric_id, ref_value=metric.ref_value)
+    dao = UserMetricDAO.create_one(user_id=user_id, metric_id=metric_id, ref_value=metric.ref_value)
     return UserMetricDTO.from_dao(dao)
 
 

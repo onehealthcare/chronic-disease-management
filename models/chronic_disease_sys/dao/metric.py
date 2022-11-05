@@ -60,19 +60,28 @@ class UserMetricDAO(Base):
         table_name = "chronic_disease_user_metric"
 
     @classmethod
-    def create(cls, user_id: int, metric_id: int, ref_value: Optional[float] = None) -> 'UserMetricDAO':
+    @db.atomic()
+    def create_one(cls, user_id: int, metric_id: int, ref_value: Optional[float] = None) -> 'UserMetricDAO':
         dao = cls.get(cls.user_id == user_id, cls.metric_id == metric_id)
         if not dao:
-            dao = cls(user_id=user_id, metric_id=metric_id, ref_value=ref_value)
+            dao = cls.create(user_id=user_id, metric_id=metric_id, ref_value=ref_value)
             dao.save()
         elif dao.status != CommonStatus.NORMAL:
             dao.update_status(status=CommonStatus.NORMAL)
+
+        if not cls.has_default_selected(user_id=user_id):
+            dao.default_selected = 1
+            dao.save()
 
         return dao
 
     @classmethod
     def get_by_id(cls, metric_id: int) -> 'UserMetricDAO':
         return cls.get(cls.id == metric_id)
+
+    @classmethod
+    def has_default_selected(cls, user_id: int) -> bool:
+        return cls.select().where(cls.user_id == user_id, cls.default_selected == 1, cls.status == CommonStatus.NORMAL).count() > 0
 
     @classmethod
     @db.atomic()
@@ -101,7 +110,7 @@ class UserMetricDAO(Base):
 
     @property
     def metric(self):
-        metric_id: int = self.id
+        metric_id: int = self.metric_id
         return MetricDAO.get_by_id(metric_id=metric_id)
 
     def update_status(self, status: int):
