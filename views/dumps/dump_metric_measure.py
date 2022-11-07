@@ -11,6 +11,8 @@ def _get_color(value: float, ref_value: float) -> str:
     :param ref_value: 参考值
     :return:
     """
+    if not ref_value:
+        return ColorEnum.BLUE
     return ColorEnum.WARN if value > ref_value else ColorEnum.NORMAL
 
 
@@ -25,7 +27,7 @@ def dump_metric_measure(dto: MetricMeasureDTO, ref_value: float) -> Optional[Dic
         "created_at": dto.created_at.strftime("%m/%d %H:%M"),
         "_created_at": dto.created_at.strftime("%Y-%m-%d %H:%M"),
         "metric_id": dto.metric_id,
-        "metric_label": get_metric_label(metric_id=dto.metric_id, label_name=dto.metric_label).text
+        "metric_label": get_metric_label(metric_id=dto.metric_id, label_name=dto.metric_label).text if dto.metric_label else "",
     }
 
 
@@ -42,7 +44,7 @@ def dump_avg_metric_measures(dtos: List[MetricMeasureDTO]) -> Tuple[float, float
 
     dtos.sort(key=lambda x: x.created_at)
     return (
-        round(sum([o.value for o in dtos[: 15]]) / len(dtos[: 15]), 2),
-        round(sum([o.value for o in dtos[: 7]]) / len(dtos[: 7]), 2),
+        round(sum([o.value for o in dtos[-15:]]) / len(dtos[-15:]), 2),
+        round(sum([o.value for o in dtos[-7:]]) / len(dtos[-7:]), 2),
         round(dtos[-1].value, 2),
     )

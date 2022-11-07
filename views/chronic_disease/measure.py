@@ -95,21 +95,20 @@ def recent_measures_view():
     except MetricNotFoundException as e:
         return error(e.message)
 
-    ref_value: float = 6.1
     avg15, avg7, v = dump_avg_metric_measures(dtos)
 
     # 获取用户 metric 设置
     user_metric: UserMetricDTO = get_user_metric(user_id=g.me.id, metric_id=metric_id)
 
     return ok({
-        "datas": dump_metric_measures(dtos, ref_value=ref_value),
+        "datas": dump_metric_measures(dtos, ref_value=user_metric.ref_value),
         "avg_data": {
             "avg15": avg15,
             "avg7": avg7,
             "v": v
         },
         "chart_type": user_metric.chart_type,
-        "ref_value": ref_value,
+        "ref_value": user_metric.ref_value,
         "metric_text": metric.text,
         "metric_unit": metric.unit
     })
@@ -142,13 +141,10 @@ def measures_view():
 
     # 获取用户 metric 设置
     user_metric: UserMetricDTO = get_user_metric(user_id=g.me.id, metric_id=metric_id)
-
-    ref_value: float = 6.1
     return ok({
-        "datas": dump_metric_measures(dtos, ref_value=ref_value),
+        "datas": dump_metric_measures(dtos, ref_value=user_metric.ref_value),
         "next_cursor": next_cursor,
-        "ref_value": ref_value,
+        "ref_value": user_metric.ref_value,
         "metric_text": metric.text,
-        "metric_unit": metric.unit,
-        "chart_type": user_metric.chart_type
+        "metric_unit": metric.unit
     })

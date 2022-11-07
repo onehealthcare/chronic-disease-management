@@ -16,3 +16,4 @@ class Role:
 class ColorEnum:
     NORMAL = "#91CB74"
     WARN = "#EE6666"
+    BLUE = "#1890FF"

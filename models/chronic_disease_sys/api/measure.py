@@ -11,7 +11,8 @@ from models.exceptions import AccessDeniedError
 
 def create_metric_measure(user_id: int, metric_id: int, metric_label: str, value: float, created_at: datetime.datetime):
     metric: MetricDTO = get_metric(metric_id=metric_id)
-    get_metric_label(metric_id=metric_id, label_name=metric_label)
+    if metric_label:
+        get_metric_label(metric_id=metric_id, label_name=metric_label)
     dao = MetricMeasureDAO.create(
         user_id=user_id,
         metric_id=metric.id,

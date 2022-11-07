@@ -1,9 +1,11 @@
 import datetime
-from typing import List
+from typing import List, Optional
 
 from models.base import Base
+from models.chronic_disease_sys.const import ChartType
 from models.const import CommonStatus
-from peewee import CharField, DateTimeField, IntegerField
+from models.init_db import db
+from peewee import CharField, DateTimeField, FloatField, IntegerField
 
 
 class MetricDAO(Base):
@@ -13,6 +15,7 @@ class MetricDAO(Base):
     name = CharField(index=True)
     text = CharField()
     unit = CharField()
+    ref_value = FloatField()  # 推荐的参考值
     status = IntegerField(index=True, default=CommonStatus.NORMAL)
     created_at = DateTimeField(default=datetime.datetime.now)
     updated_at = DateTimeField(default=datetime.datetime.now)
@@ -28,6 +31,10 @@ class MetricDAO(Base):
     def get_by_name(cls, name: str) -> 'MetricDAO':
         return cls.get(cls.name == name, cls.status == CommonStatus.NORMAL)
 
+    @classmethod
+    def get_all(cls):
+        return cls.select().where(cls.status == CommonStatus.NORMAL)
+
     def update_status(self, status: int):
         self.status = status
         self.save()
@@ -42,7 +49,9 @@ class UserMetricDAO(Base):
     """
     user_id = IntegerField(index=True)
     metric_id = IntegerField(index=True)
-    chart_type = CharField(default='column')
+    chart_type = CharField(default=ChartType.COLUMN.value)
+    ref_value = FloatField()  # 用户自定义的参考值
+    default_selected = IntegerField(default=0)  # 是否默认选中
     status = IntegerField(index=True, default=CommonStatus.NORMAL)
     created_at = DateTimeField(default=datetime.datetime.now)
     updated_at = DateTimeField(default=datetime.datetime.now)
@@ -51,12 +60,36 @@ class UserMetricDAO(Base):
         table_name = "chronic_disease_user_metric"
 
     @classmethod
+    def create(cls, user_id: int, metric_id: int, ref_value: Optional[float] = None) -> 'UserMetricDAO':
+        dao = cls.get(cls.user_id == user_id, cls.metric_id == metric_id)
+        if not dao:
+            dao = cls(user_id=user_id, metric_id=metric_id, ref_value=ref_value)
+            dao.save()
+        elif dao.status != CommonStatus.NORMAL:
+            dao.update_status(status=CommonStatus.NORMAL)
+
+        return dao
+
+    @classmethod
     def get_by_id(cls, metric_id: int) -> 'UserMetricDAO':
         return cls.get(cls.id == metric_id)
 
     @classmethod
+    @db.atomic()
+    def set_default_selected(cls, user_id: int, metric_id: int):
+        cls.update(default_selected=0).where(cls.user_id == user_id, cls.default_selected == 1).execute()
+        cls.update(default_selected=1).where(cls.user_id == user_id, cls.metric_id == metric_id, cls.status == CommonStatus.NORMAL).execute()
+
+    @classmethod
     def get_by_user_id_metric_id(cls, user_id: int, metric_id: int) -> "UserMetricDAO":
         return cls.get(cls.user_id == user_id, cls.metric_id == metric_id, cls.status == CommonStatus.NORMAL)
+
+    @classmethod
+    def set_ref_value(cls, user_id: int, metric_id: int, ref_value: float):
+        dao = cls.get_by_user_id_metric_id(user_id=user_id, metric_id=metric_id)
+        if dao:
+            dao.ref_value = ref_value
+            dao.save()
 
     @classmethod
     def query_by_user_id(cls, user_id: int) -> List['UserMetricDAO']:
