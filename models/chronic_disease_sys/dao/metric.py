@@ -101,7 +101,7 @@ class UserMetricDAO(Base):
 
     @property
     def metric(self):
-        metric_id: int = self.id
+        metric_id: int = self.metric_id
         return MetricDAO.get_by_id(metric_id=metric_id)
 
     def update_status(self, status: int):
