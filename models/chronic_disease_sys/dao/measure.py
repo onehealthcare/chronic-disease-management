@@ -37,8 +37,11 @@ class MetricMeasureDAO(Base):
             cls.user_id == user_id,
             cls.metric_id == metric_id,
             cls.status == CommonStatus.NORMAL,
-            cls.id >= cursor
-        ).order_by(cls.id.desc()).limit(size)
+        )
+        if cursor:
+            q = q.where(cls.id <= cursor)
+
+        q = q.order_by(cls.id.desc()).limit(size)
 
         return list(q)
 

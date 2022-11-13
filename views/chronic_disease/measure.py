@@ -132,7 +132,7 @@ def measures_view():
 
     try:
         dtos: List[MetricMeasureDTO] = paged_metric_measure(
-            user_id=g.me.id, metric_id=metric_id, cursor=pager.cursor, size=pager.size
+            user_id=g.me.id, metric_id=metric_id, cursor=pager.cursor, size=pager.size + 1
         )
         dtos, next_cursor = get_next_cursor(dtos, pager.size)
         metric: MetricDTO = get_metric(metric_id)
