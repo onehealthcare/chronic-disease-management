@@ -17,37 +17,33 @@ jobs:
       - run: sed -i 's/--cov-report=html/--cov-report=xml/g' ci/run_test.sh
       - run: cp config.sample.py config.py && docker-compose -f docker-compose.yml up -d
       - run: make test
-      - uses: codecov/codecov-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          name: codecov-umbrella # optional
-          fail_ci_if_error: true # optional (default = false)
-          verbose: true # optional (default = false)
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
 
-  login_build_and_push_docker_image:
-    name: login docker hub, build docker image and push to docker hub
-    runs-on: ubuntu-latest
-    steps:
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      -
-        name: Login to registry
-        uses: docker/login-action@v1
-        with:
-          registry: ${{ secrets.REGISTRY_URL }}
-          username: ${{ secrets.REGISTRY_USERNAME }}
-          password: ${{ secrets.REGISTRY_PASSWORD }}
-      -
-        name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          tags: ${{ secrets.REGISTRY_URL }}/tonghs/web-template:latest
-      -
-        name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
+#  login_build_and_push_docker_image:
+#    name: login docker hub, build docker image and push to docker hub
+#    runs-on: ubuntu-latest
+#    steps:
+#      -
+#        name: Set up QEMU
+#        uses: docker/setup-qemu-action@v1
+#      -
+#        name: Set up Docker Buildx
+#        uses: docker/setup-buildx-action@v1
+#      -
+#        name: Login to registry
+#        uses: docker/login-action@v1
+#        with:
+#          registry: ${{ secrets.REGISTRY_URL }}
+#          username: ${{ secrets.REGISTRY_USERNAME }}
+#          password: ${{ secrets.REGISTRY_PASSWORD }}
+#      -
+#        name: Build and push
+#        id: docker_build
+#        uses: docker/build-push-action@v2
+#        with:
+#          push: true
+#          tags: ${{ secrets.REGISTRY_URL }}/tonghs/web-template:latest
+#      -
+#        name: Image digest
+#        run: echo ${{ steps.docker_build.outputs.digest }}
