@@ -2,8 +2,9 @@
 
 ![build](https://github.com/onehealthcare/chronic-disease-management/actions/workflows/test_and_build_image.yml/badge.svg)
 ![CodeFactor](https://www.codefactor.io/repository/github/onehealthcare/chronic-disease-management/badge)
-[![codecov](https://codecov.io/gh/tonghs/web-template/branch/main/graph/badge.svg?token=TTTHQMSIII)](https://codecov.io/gh/tonghs/web-template)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/763634f8270a4ceba96543bddd223592)](https://www.codacy.com/gh/tonghs/web-template/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=tonghs/web-template&amp;utm_campaign=Badge_Grade)
+![codecov](https://codecov.io/gh/onehealthcare/chronic-disease-management//branch/main/graph/badge.svg?token=TTTHQMSIII)
+
+[//]: # ([![Codacy Badge]&#40;https://app.codacy.com/project/badge/Grade/763634f8270a4ceba96543bddd223592&#41;]&#40;https://www.codacy.com/gh/tonghs/web-template/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=tonghs/web-template&amp;utm_campaign=Badge_Grade&#41;)
 
 Website template, based Python3 and Flask：
 - Python3
