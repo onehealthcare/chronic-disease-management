@@ -2,6 +2,7 @@ from typing import List
 
 import simplejson
 from flask import Blueprint, g, request
+from models.init_db import db
 from models.user_sys import (
     DuplicatedUserNameError,
     UserDTO,
@@ -11,6 +12,7 @@ from models.user_sys import (
     get_user_by_id,
     paged_get_user_list,
     rename_user,
+    update_user_ident,
 )
 from utils.cursor import get_next_cursor
 from utils.logging import logger as _logger
@@ -100,14 +102,24 @@ def _update_user():
     if not user_name:
         return error("name is required")
 
-    try:
-        rename_user(user_id=user_id, user_name=user_name)
-    except DuplicatedUserNameError as e:
-        logger.warn(f"update_user,dumplicated_user_name,{simplejson.dumps(data)}")
-        return error(e.message)
-    except UserNotFoundException as e:
-        logger.warn(f"update_user,user_not_found,{simplejson.dumps(data)}")
-        return error(e.message)
+    with db.atomic() as transaction:
+        try:
+            rename_user(user_id=user_id, user_name=user_name)
+        except DuplicatedUserNameError as e:
+            logger.warn(f"update_user,dumplicated_user_name,{simplejson.dumps(data)}")
+            return error(e.message)
+        except UserNotFoundException as e:
+            logger.warn(f"update_user,user_not_found,{simplejson.dumps(data)}")
+            return error(e.message)
+
+        user_ident: str = data.get('user_ident', '')
+        if user_ident:
+            try:
+                update_user_ident(user_id=user_id, user_ident=user_ident)
+            except UserNotFoundException as e:
+                logger.warn(f"update_user,user_not_found,{simplejson.dumps(data)}")
+                transaction.rollback()
+                return error(e.message)
 
     logger.info(f"update_user,ok,{simplejson.dumps(data)}")
     return ok()
