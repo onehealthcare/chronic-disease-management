@@ -2,6 +2,7 @@ import datetime
 
 from models.const import Role
 from pydantic import BaseModel
+from utils.cos_ident import get_url_by_ident
 from utils.datetime_utils import _datetime
 
 
@@ -29,3 +30,7 @@ class UserDTO(BaseModel):
 
     def is_admin(self):
         return bool(self.check_bit(Role.BITS_ROLE_ADMIN))
+
+    @property
+    def ident_url(self):
+        return get_url_by_ident(self.ident, 320, 320)
