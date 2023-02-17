@@ -11,5 +11,6 @@ def dump_user(user: UserDTO) -> Dict[str, str]:
     return {
         'user_id': str(user.id),
         'user_name': user.name,
-        'is_admin': user.is_admin()
+        'is_admin': user.is_admin(),
+        'avatar_url': user.ident_url,
     }

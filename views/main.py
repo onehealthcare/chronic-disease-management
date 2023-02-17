@@ -122,7 +122,8 @@ def _update_user():
                 return error(e.message)
 
     logger.info(f"update_user,ok,{simplejson.dumps(data)}")
-    return ok()
+    user = get_user_by_id(user_id=user_id)
+    return ok(dump_user(user))
 
 
 @need_admin
