@@ -41,6 +41,7 @@ def login_via_wxapp():
 
     third_party_id: str = data.get('openid', '')
     user: UserDTO
+
     try:
         user = get_user_by_third_party_id(third_party_id=third_party_id,
                                           provider=UserAuthProvider.WXAPP)

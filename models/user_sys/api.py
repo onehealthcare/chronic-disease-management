@@ -160,6 +160,15 @@ def rename_user(user_id: int, user_name: str):
         raise DuplicatedUserNameError()
 
 
+def update_user_ident(user_id: int, user_ident: str):
+    user = UserDAO.get_by_id(user_id)
+    if not user:
+        raise UserNotFoundException()
+
+    user.ident = user_ident
+    user.save()
+
+
 def get_user_by_phone(phone: str) -> UserDTO:
     dao = UserPhoneDAO.get_by_phone(phone=phone)
 

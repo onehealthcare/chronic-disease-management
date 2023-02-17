@@ -15,6 +15,7 @@ from models.user_sys.api import (
     set_user_admin,
     update_status_by_user_id,
     update_user_auth_by_user_id_and_provider,
+    update_user_ident,
 )
 from models.user_sys.const import UserAuthProvider
 from models.user_sys.dto.user import UserDTO
@@ -41,6 +42,7 @@ __all__ = [
     'set_user_admin',
     'paged_get_user_list',
     'rename_user',
+    'update_user_ident',
     'clear_user_admin',
     'get_user_by_phone',
     'create_user_by_phone',

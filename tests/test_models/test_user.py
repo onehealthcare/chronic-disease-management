@@ -23,6 +23,7 @@ from models.user_sys import (
     rename_user,
     set_user_admin,
     update_status_by_user_id,
+    update_user_ident,
 )
 from models.user_sys.dao.user import UserDAO
 from models.user_sys.dao.user_auth import UserAuthDAO
@@ -211,3 +212,15 @@ def test_user_phone():
 
     with pytest.raises(DuplicatedUserPhoneError):
         create_user_by_phone(phone=phone)
+
+
+def test_update_user_ident():
+    user = create_user(name='tonghs', ident='xxx')
+    assert user.ident == 'xxx'
+
+    update_user_ident(user.id, 'yyy')
+    user = get_user_by_id(user.id)
+    assert user.ident == 'yyy'
+
+    with pytest.raises(UserNotFoundException):
+        update_user_ident(10100, 'yyy')

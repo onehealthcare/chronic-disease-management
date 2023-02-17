@@ -16,5 +16,8 @@ jobs:
       - run: sed -i 's/gunicorn==.*//g' requirements.txt
       - run: sed -i 's/gevent==.*//g' requirements.txt
       - run: sed -i 's/psutil==.*//g' requirements.txt
+      - run: sed -i 's/--cov-report=html/--cov-report=xml/g' ci/run_test.sh
       - run: cp config.sample.py config.py &&  docker-compose -f docker-compose.yml up -d
       - run: make test
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
