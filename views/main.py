@@ -83,7 +83,7 @@ def _new_user():
 @need_login
 def _update_user():
     data = request.get_json()
-    logger.info(f"update_user,requeset,{simplejson.dumps(data)}")
+    logger.info(f"update_user,request,{simplejson.dumps(data)}")
     data = request.get_json()
     try:
         user_id: int = int(data.get('user_id', '0'))
