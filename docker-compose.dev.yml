@@ -27,6 +27,7 @@ services:
       - GUNICORN_ACCESS_LOGFILE=-
       - PYTHONUNBUFFERED=TRUE
       - LOG_PATH=/var/log/web-template
+      - MYSQL_DB=cdm-dev
 
     healthcheck:
       test: "curl -f http://localhost:5000/ping || exit 1"
