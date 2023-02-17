@@ -9,8 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
       - run: sed -i 's/COPY ci\/sources.list \/etc\/apt\/sources.list//g' Dockerfile
       - run: sed -i 's/-i http:\/\/mirrors.aliyun.com\/pypi\/simple\/ --extra-index-url https:\/\/pypi.python.org\/simple --trusted-host mirrors.aliyun.com/ /g' Dockerfile
       - run: sed -i 's/-i http:\/\/mirrors.aliyun.com\/pypi\/simple\/ --extra-index-url https:\/\/pypi.python.org\/simple --trusted-host mirrors.aliyun.com/ /g' docker-compose.test.yml
@@ -20,3 +18,5 @@ jobs:
       - run: sed -i 's/psutil==.*//g' requirements.txt
       - run: cp config.sample.py config.py &&  docker-compose -f docker-compose.yml up -d
       - run: make test
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
