@@ -22,12 +22,15 @@ def delete_sms_auth_code(phone: str):
     return redis_conn.delete(key)
 
 
-def send_code_freq_limit(phone: str) -> bool:
+def send_code_freq_limit(phone: str) -> int:
     key = RedisKeys.send_code_freq_limit.format(phone=phone)
-    value = redis_conn.get(key)
-    if value:
-        return True
+    _value = redis_conn.get(key)
+    if _value:
+        redis_conn.incr(key)
+        value = int(_value)
+        redis_conn.expire(key, 60 * value)
+        return value
 
-    redis_conn.set(key, 1)
+    redis_conn.incr(key)
     redis_conn.expire(key, 60)
-    return False
+    return 0

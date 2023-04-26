@@ -186,7 +186,7 @@ def create_user_by_phone(phone: str) -> UserDTO:
     if dao:
         raise DuplicatedUserPhoneError()
 
-    user = create_user(name=phone[-4:])
+    user = create_user(name=f"手机用户{phone[-4:]}")
     UserPhoneDAO.create(user_id=user.id, phone=phone)
 
     return UserDTO.from_dao(user)

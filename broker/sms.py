@@ -18,14 +18,19 @@ def send_wxapp_login_sms(
     """
     ret = False
     msg = "获取回执失败"
-    if send_code_freq_limit(phone_number):
-        return ret, "频率过快，请 1 分钟后重试"
+    cnt: int = send_code_freq_limit(phone_number)  # 次数
+    if cnt:
+        return ret, f"频率过快，请 {cnt} 分钟后重试"
 
     full_phone_number: str = f"+{country_code}{phone_number}"
     resp: SendSmsResponse = wxapp_sms_login_client.send_sms([full_phone_number], [code, str(expires_mins)])
     send_status: SendStatus
     for send_status in resp.SendStatusSet:
         if send_status.PhoneNumber == full_phone_number:
-            return send_status.Code == "Ok", ""
+            if send_status.Code == "Ok":
+                ret = True
+                msg = ""
+            else:
+                msg = send_status.Message
 
     return ret, msg
