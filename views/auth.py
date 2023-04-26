@@ -3,7 +3,7 @@ from flask import Blueprint, request
 from libs.qcloud import QCloudCOSGetCredentialError
 from libs.sms import QCloudSMSReqError
 from models.qcloud import get_cos_temp_credential
-from models.sms_sys import generate_and_send_auth_code
+from models.sms_sys import generate_auth_code
 from views.render import error, ok
 
 
@@ -28,7 +28,7 @@ def sys_auth_code():
     if not phone:
         return error('请输入手机号')
 
-    code: str = generate_and_send_auth_code(phone=phone)
+    code: str = generate_auth_code(phone=phone)
     try:
         ret, msg = send_wxapp_login_sms(country_code="86", phone_number=phone, code=code, expires_mins=5)
         if not ret:

@@ -9,7 +9,7 @@ from models.redis import (
 )
 
 
-def generate_and_send_auth_code(phone: str, length: int = 4) -> str:
+def generate_auth_code(phone: str, length: int = 4) -> str:
     _auth_code: str = get_sms_auth_code(phone=phone)
     if _auth_code:
         return _auth_code
