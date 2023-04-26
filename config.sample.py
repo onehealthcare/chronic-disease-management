@@ -47,6 +47,6 @@ REDIS_DB = os.environ.get('REDIS_DB', 'test-redis')
 REDIS_URL = f'redis://{REDIS_DB}/0'
 
 # qcloud SMS
-SMS_SDK_APP_ID = "",
-SMS_SIGN_NAME = "",
+SMS_SDK_APP_ID = ""
+SMS_SIGN_NAME = ""
 SMS_WXAPP_LOGIN_TEMPLATE_ID = ""
