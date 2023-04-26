@@ -11,3 +11,4 @@ PyJWT==2.0.1
 qcloud-python-sts==3.0.5
 redis==3.5.3
 simplejson==3.17.6
+# tencentcloud-sdk-python==3.0.882
