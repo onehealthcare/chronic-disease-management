@@ -30,8 +30,8 @@ JWT_SECRET = os.environ.get('JWT_SECRET', 'your-secret')
 API_SECRET = os.environ.get('API_SECRET', 'your-secret')
 
 # qcloud
-QCLOUD_SECRET_ID = os.environ.get('QCLOUD_SECRET_ID', '')
-QCLOUD_SECRET_KEY = os.environ.get('QCLOUD_SECRET_KEY', '')
+QCLOUD_SECRET_ID = os.environ.get('QCLOUD_SECRET_ID', '<QCLOUD_SECRET_ID>')
+QCLOUD_SECRET_KEY = os.environ.get('QCLOUD_SECRET_KEY', '<QCLOUD_SECRET_KEY>')
 
 # 慢病管理 bucket
 QCLOUD_CDM_COS_BUCKET = os.environ.get('QCLOUD_CDM_COS_BUCKET', '')
@@ -47,6 +47,6 @@ REDIS_DB = os.environ.get('REDIS_DB', 'test-redis')
 REDIS_URL = f'redis://{REDIS_DB}/0'
 
 # qcloud SMS
-SMS_SDK_APP_ID = ""
-SMS_SIGN_NAME = ""
-SMS_WXAPP_LOGIN_TEMPLATE_ID = ""
+SMS_SDK_APP_ID = "<SMS_SDK_APP_ID>"
+SMS_SIGN_NAME = "<SMS_SIGN_NAME>"
+SMS_WXAPP_LOGIN_TEMPLATE_ID = "<SMS_SIGN_NAME>"
