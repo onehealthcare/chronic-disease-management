@@ -6,7 +6,7 @@ run-server:
 
 run-dev-server:
 	docker build . -t tonghs/web-template
-	docker-compose -f docker-compose.dev.yml up --scale web=1
+	docker-compose -f docker-compose.dev.yml up --remove-orphans --scale web=1
 
 scale:
 	docker-compose -f docker-compose.app.yml scale web=4
