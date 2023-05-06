@@ -17,7 +17,7 @@ HOSTS: List[str] = UBUNTU_HOSTS + MACOS_HOST
 @task
 def deploy(c):
     hosts: List[Group] = Group(*UBUNTU_HOSTS)
-    path: str = "/home/tonghs/app/web-template"
+    path: str = "/home/tonghs/app/cdm"
     # git sync
     results = hosts.run(f'cd {path} && git checkout . && git pull --rebase')
 
@@ -36,7 +36,7 @@ def deploy(c):
 @task
 def restart(c):
     hosts: List[Group] = Group(*UBUNTU_HOSTS)
-    path: str = "/home/tonghs/app/web-template"
+    path: str = "/home/tonghs/app/cdm"
     # git sync
     # hosts.run(f'cd {path} && git checkout . && git pull --rebase')
 

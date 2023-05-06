@@ -15,7 +15,7 @@ MYSQL_DB = os.environ.get('MYSQL_DB', 'web-template')
 # sentry
 SENTRY_DSN = "https://ad8effa8e62040b6826c8a44b025ad6c@o327962.ingest.sentry.io/5624232"
 
-LOG_PATH = os.environ.get('LOG_PATH', "/var/log/web-template")
+LOG_PATH = os.environ.get('LOG_PATH', "/var/log/cdm")
 
 
 # 微信小程序
