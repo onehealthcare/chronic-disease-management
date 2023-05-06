@@ -25,6 +25,7 @@ from models.user_sys import (
     update_status_by_user_id,
     update_user_ident,
 )
+from models.user_sys.api import bind_phone
 from models.user_sys.dao.user import UserDAO
 from models.user_sys.dao.user_auth import UserAuthDAO
 from models.user_sys.dao.user_phone import UserPhoneDAO
@@ -224,3 +225,12 @@ def test_update_user_ident():
 
     with pytest.raises(UserNotFoundException):
         update_user_ident(10100, 'yyy')
+
+
+def test_bind_phone():
+    user = create_user(name='tonghsxxx', ident='yyy')
+    phone = "123456"
+    bind_phone(user_id=user.id, phone=phone)
+
+    with pytest.raises(DuplicatedUserPhoneError):
+        bind_phone(user_id=user.id, phone=phone)
