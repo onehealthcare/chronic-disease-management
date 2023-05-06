@@ -3,7 +3,7 @@
   remote_user: tonghs
   tasks:
   - name: update web repo
-    shell: cd /home/tonghs/app/web-template && git pull --rebase
+    shell: cd /home/tonghs/app/cdm && git pull --rebase
 
   - name: start web service
-    shell: cd /home/tonghs/app/web-template && sudo make run-server
+    shell: cd /home/tonghs/app/cdm && sudo make run-server

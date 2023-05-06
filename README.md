@@ -1,4 +1,4 @@
-# web-template
+# CDM
 
 ![build](https://github.com/onehealthcare/chronic-disease-management/actions/workflows/test_and_build_image.yml/badge.svg)
 ![CodeFactor](https://www.codefactor.io/repository/github/onehealthcare/chronic-disease-management/badge)

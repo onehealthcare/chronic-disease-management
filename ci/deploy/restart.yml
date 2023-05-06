@@ -3,4 +3,4 @@
   remote_user: tonghs
   tasks:
   - name: update web repo and restart
-    shell: cd /home/tonghs/app/web-template && git pull --rebase && sudo bash ./restart.sh
+    shell: cd /home/tonghs/app/cdm && git pull --rebase && sudo bash ./restart.sh

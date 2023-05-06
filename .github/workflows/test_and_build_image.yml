@@ -43,7 +43,7 @@ jobs:
 #        uses: docker/build-push-action@v2
 #        with:
 #          push: true
-#          tags: ${{ secrets.REGISTRY_URL }}/tonghs/web-template:latest
+#          tags: ${{ secrets.REGISTRY_URL }}/tonghs/cdm:latest
 #      -
 #        name: Image digest
 #        run: echo ${{ steps.docker_build.outputs.digest }}

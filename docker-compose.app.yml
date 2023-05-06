@@ -12,7 +12,7 @@ services:
       - "8079:8080"
   web:
     build: .
-    image: tonghs/web-template
+    image: tonghs/cdm
     volumes:
       - .:/opt/code
       - /var/log:/var/log
@@ -25,7 +25,7 @@ services:
       - GUNICORN_LOG_LEVEL=WARN
       - GUNICORN_RELOAD=
       - GUNICORN_ACCESS_LOGFILE=-
-      - LOG_PATH=/var/log/web-template
+      - LOG_PATH=/var/log/cdm
 
     healthcheck:
       test: "curl -f http://localhost:5000/ping || exit 1"

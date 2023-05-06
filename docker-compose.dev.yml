@@ -12,11 +12,11 @@ services:
       - "8079:8080"
   web:
     build: .
-    image: tonghs/web-template
+    image: tonghs/cdm
     command: bash -c './dev.sh'
     volumes:
       - .:/opt/code
-      - /var/log/web-template/:/var/log/web-template/
+      - /var/log/cdm/:/var/log/cdm/
     environment:
       - PYTHONPATH=/opt/code
       - DEBUG=1
@@ -26,7 +26,7 @@ services:
       - GUNICORN_RELOAD=--reload
       - GUNICORN_ACCESS_LOGFILE=-
       - PYTHONUNBUFFERED=TRUE
-      - LOG_PATH=/var/log/web-template
+      - LOG_PATH=/var/log/cdm
       - MYSQL_DB=cdm-dev
 
     healthcheck:
