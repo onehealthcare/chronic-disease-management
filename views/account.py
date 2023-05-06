@@ -1,11 +1,12 @@
 from typing import Dict
 
 import simplejson
-from flask import Blueprint, request
+from flask import Blueprint, g, request
 from metaclass.wxapp.session import Code2SessionData
 from models.sms_sys import verify_auth_code
 from models.token import decode_jwt, get_jwt, is_token_valid
 from models.user_sys import (
+    DuplicatedUserPhoneError,
     UserAuthProvider,
     UserDTO,
     UserNotFoundException,
@@ -15,10 +16,12 @@ from models.user_sys import (
     get_user_by_phone,
     get_user_by_third_party_id,
 )
+from models.user_sys.api import bind_phone
 from models.wxapp import InvalidAuthCodeError, code_to_session
 from utils import logger as _logger
 from views.common import ApiError
 from views.dumps.dump_account import dump_account
+from views.middleware.auth import need_login
 from views.render import error, ok
 
 
@@ -77,8 +80,33 @@ def refresh_token_view():
     return ok(dump_account(user, access_token, refresh_token))
 
 
+@app.route('/bind_phone/', methods=['POST'])
+@need_login
+def bind_phone_view():
+    user_id: int = g.me.id
+    data = request.get_json() or {}
+
+    auth_code: str = data.get('auth_code', '')
+    phone: str = data.get('phone', '')
+
+    if not auth_code:
+        return error(ApiError.invalid_sms_auth_code)
+
+    result: bool = verify_auth_code(phone=phone, auth_code=auth_code)
+    if not result:
+        return error("验证码错误")
+
+    user: UserDTO
+
+    try:
+        bind_phone(user_id=user_id, phone=phone)
+    except DuplicatedUserPhoneError:
+        return error("手机号已存在，请更换手机号重试")
+    return ok()
+
+
 @app.route('/signin_via_phone/', methods=['POST'])
-def login_via_phone():
+def signin_via_phone():
     data = request.get_json() or {}
 
     auth_code: str = data.get('auth_code', '')

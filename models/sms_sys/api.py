@@ -10,10 +10,14 @@ from models.redis import (
 
 
 def generate_auth_code(phone: str, length: int = 4) -> str:
+    _auth_code: str = get_sms_auth_code(phone=phone)
+    if _auth_code:
+        return _auth_code
+
     seeds: str = "0123456789"
     codes: List[str] = []
 
-    for i in range(4):
+    for i in range(length):
         codes.append(random.choice(seeds))
 
     auth_code: str = ''.join(codes)
