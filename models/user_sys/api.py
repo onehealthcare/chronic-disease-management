@@ -192,6 +192,14 @@ def create_user_by_phone(phone: str) -> UserDTO:
     return UserDTO.from_dao(user)
 
 
+def bind_phone(user_id: int, phone: str):
+    dao = UserPhoneDAO.get_by_phone(phone=phone)
+    if dao:
+        raise DuplicatedUserPhoneError()
+
+    UserPhoneDAO.create(user_id=user_id, phone=phone)
+
+
 def get_user_auth_by_user_id_and_provider(user_id: int, provider: int):
     dao = UserAuthDAO.get_by_user_id_and_provider(user_id=user_id, provider=provider)
     if not dao:
