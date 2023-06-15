@@ -14,6 +14,7 @@ from views.auth import app as auth_app
 from views.chronic_disease import app as chronic_disease_app
 from views.common import ApiError
 from views.main import app as main_app
+from views.oauth import app as oauth_app
 from views.render import error
 
 
@@ -98,6 +99,7 @@ app.register_blueprint(main_app)
 app.register_blueprint(account_app)
 app.register_blueprint(auth_app)
 app.register_blueprint(chronic_disease_app)
+app.register_blueprint(oauth_app)
 
 
 if __name__ == '__main__':

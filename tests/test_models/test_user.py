@@ -10,12 +10,12 @@ from models.user_sys import (
     UserAuthProvider,
     UserNotFoundException,
     clear_user_admin,
-    create_oauth_user,
     create_user,
     create_user_auth,
     create_user_by_phone,
     delete_user,
     delete_user_auth_by_user_id,
+    get_or_create_oauth_user,
     get_user_by_id,
     get_user_by_phone,
     get_user_by_third_party_id,
@@ -139,10 +139,10 @@ def test_user_auth():
         get_user_by_third_party_id(third_party_id=third_party_id,
                                    provider=UserAuthProvider.WEIBO)
 
-    _user = create_oauth_user(name=user_name, ident="",
-                              third_party_id=third_party_id,
-                              provider=provider,
-                              detail_json=simplejson.dumps(detail))
+    _user = get_or_create_oauth_user(name=user_name, ident="",
+                                     third_party_id=third_party_id,
+                                     provider=provider,
+                                     detail_json=simplejson.dumps(detail))
 
     user = get_user_by_id(_user.id)
     assert user.name == user_name

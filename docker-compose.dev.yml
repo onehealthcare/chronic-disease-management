@@ -19,15 +19,13 @@ services:
       - /var/log/cdm/:/var/log/cdm/
     environment:
       - PYTHONPATH=/opt/code
+      - PYTHONUNBUFFERED=TRUE
       - DEBUG=1
       - GUNICORN_WORKERS=1
       - GUNICORN_BIND_ADDRESS=0.0.0.0:5000
       - GUNICORN_LOG_LEVEL=DEBUG
       - GUNICORN_RELOAD=--reload
       - GUNICORN_ACCESS_LOGFILE=-
-      - PYTHONUNBUFFERED=TRUE
-      - LOG_PATH=/var/log/cdm
-      - MYSQL_DB=cdm-dev
 
     healthcheck:
       test: "curl -f http://localhost:5000/ping || exit 1"

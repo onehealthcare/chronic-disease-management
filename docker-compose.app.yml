@@ -25,7 +25,6 @@ services:
       - GUNICORN_LOG_LEVEL=WARN
       - GUNICORN_RELOAD=
       - GUNICORN_ACCESS_LOGFILE=-
-      - LOG_PATH=/var/log/cdm
 
     healthcheck:
       test: "curl -f http://localhost:5000/ping || exit 1"
