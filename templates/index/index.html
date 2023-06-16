@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block body %}
+{% raw %}
+{{ message }}
+<br/>
+<button @click="change">click me</button>
+{% endraw %}
+{% endblock %}
+
+{% block footer %}
+<script src="{{STATIC_HOST}}/index/index.js"></script>
+{% endblock %}

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}{% block title %}{% endblock %}</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="{{STATIC_HOST}}/util.js"></script>
+    {% block header %}
+    {% endblock %}
+</head>
+<body>
+<div id="app">
+    {% block body %}
+    {% endblock %}
+</div>
+</body>
+{% block footer %}
+{% endblock %}
+</html>

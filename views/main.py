@@ -1,7 +1,7 @@
 from typing import List
 
 import simplejson
-from flask import Blueprint, g, request
+from flask import Blueprint, g, render_template, request
 from models.init_db import db
 from models.user_sys import (
     DuplicatedUserNameError,
@@ -28,7 +28,7 @@ logger = _logger('views.main')
 
 @app.route('/')
 def hello_world():
-    return ok('hello world')
+    return render_template('index/index.html', title="home")
 
 
 @app.route('/users/')

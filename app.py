@@ -1,7 +1,7 @@
 import base64
 
 import sentry_sdk
-from config import DEBUG, SENTRY_DSN
+from config import DEBUG, SENTRY_DSN, STATIC_HOST
 from flask import Flask, g, request, url_for
 from metaclass.cursor import Pager
 from models.init_db import db
@@ -24,6 +24,7 @@ sentry_sdk.init(
 )
 
 app = Flask(__name__)
+app.jinja_env.globals['STATIC_HOST'] = STATIC_HOST
 
 
 @app.errorhandler(500)

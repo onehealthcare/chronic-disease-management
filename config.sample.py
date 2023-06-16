@@ -3,7 +3,9 @@ import os
 
 DEBUG = bool(os.environ.get('DEBUG', False))
 
-HOST = "https://web.nps.motn.top"
+DOMAIN = "nps.motn.top"
+HOST = f"https://web.{DOMAIN}"
+STATIC_HOST = f"https://static.{DOMAIN}"
 
 # MySQL
 MYSQL_HOST = 'db'
