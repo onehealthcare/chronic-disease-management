@@ -1,0 +1,39 @@
+#conn-to-strava {
+    display: block;
+    width: 200px;
+    height: 50px;
+    border: 0;
+    background-color: transparent;
+    background-image: url("https://static-file-1252348210.cos.ap-beijing.myqcloud.com/btn_strava_connectwith_orange%402x.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    text-decoration: none;
+    margin: auto;
+}
+
+#conn-to-strava:hover {
+    cursor: pointer;
+}
+
+html, body, #app {
+    height: 100%;
+}
+
+.left-bg {
+    background-color: #f54c04;
+}
+
+.slogan {
+    color: #fff;
+    font-size: 80px;
+    padding-right: 80px;
+}
+
+.slogan p {
+    margin: 0;
+}
+
+.slogan .bold {
+    font-weight: 600;
+}

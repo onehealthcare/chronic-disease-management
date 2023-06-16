@@ -31,6 +31,11 @@ def hello_world():
     return render_template('index/index.html', title="home")
 
 
+@app.route('/login')
+def login():
+    return render_template('login/login.html', title="home")
+
+
 @app.route('/users/')
 @need_admin
 def paged_users():

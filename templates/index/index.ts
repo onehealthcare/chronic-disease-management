@@ -6,7 +6,7 @@ NewApp({
     },
     methods: {
         greeting() {
-            this.message = 'Hello Vue.js!'
+            this.message = 'Hello World'
         },
         change() {
             this.message = this.message + 1

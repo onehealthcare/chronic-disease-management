@@ -1,4 +1,5 @@
 import base64
+import os
 
 import sentry_sdk
 from config import DEBUG, SENTRY_DSN, STATIC_HOST
@@ -24,7 +25,11 @@ sentry_sdk.init(
 )
 
 app = Flask(__name__)
-app.jinja_env.globals['STATIC_HOST'] = STATIC_HOST
+app.jinja_env.globals['CSS_HOST'] = STATIC_HOST
+app.jinja_env.globals['JS_HOST'] = os.path.join(STATIC_HOST, 'dist')
+if DEBUG:
+    app.jinja_env.auto_reload = True
+    app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 
 @app.errorhandler(500)
