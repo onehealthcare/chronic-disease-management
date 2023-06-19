@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<link rel="stylesheet" href="{{CSS_HOST}}/index/index.css">
+{% endblock %}
+
+{% block body %}
+{% raw %}
+{{ message }}
+<br/>
+<button @click="change"> click </button>
+
+{% endraw %}
+{% endblock %}
+
+{% block footer %}
+<script src="{{JS_HOST}}/index/index.js"></script>
+{% endblock %}

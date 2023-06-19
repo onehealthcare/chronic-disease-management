@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<link rel="stylesheet" href="{{CSS_HOST}}/login/login.css">
+{% endblock %}
+
+{% block body %}
+{% raw %}
+<div class="h-100">
+    <div class="row h-100">
+        <div class="col-sm-4 h-100 left-bg justify-content-end align-items-center d-flex">
+            <div class="slogan">
+                <p class="text-end bold">Science</p>
+                <p class="text-end"><i>of</i></p>
+                <p class="text-end bold">Speed</p>
+            </div>
+        </div>
+        <div class="col-sm-8 h-100 justify-content-center align-items-center d-flex">
+            <a href="/oauth/strava" id="conn-to-strava">&nbsp;</a>
+        </div>
+    </div>
+</div>
+{% endraw %}
+{% endblock %}
+
+{% block footer %}
+<script src="{{JS_HOST}}/login/login.js"></script>
+{% endblock %}

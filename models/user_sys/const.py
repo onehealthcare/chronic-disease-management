@@ -7,3 +7,4 @@ class UserAuthProvider(IntEnum):
     GOOGLE: int = 3
     GITHUB: int = 4
     TOWER: int = 5
+    STRAVA: int = 6

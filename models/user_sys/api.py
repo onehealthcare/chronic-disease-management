@@ -107,8 +107,12 @@ def get_user_by_third_party_id(third_party_id: str, provider: int) -> UserDTO:
 
 
 @db.atomic()
-def create_oauth_user(name: str, ident: str, third_party_id: str,
-                      provider: int, detail_json: str) -> UserDTO:
+def get_or_create_oauth_user(name: str, ident: str, third_party_id: str,
+                             provider: int, detail_json: str) -> UserDTO:
+
+    dao = UserAuthDAO.get_by_third_party_id_and_provider(third_party_id=third_party_id, provider=provider)
+    if dao and dao.status == CommonStatus.NORMAL:
+        return get_user_by_id(dao.user_id)
 
     user = create_user(name=name, ident=ident)
     UserAuthDAO.create(user_id=user.id,

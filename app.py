@@ -1,19 +1,19 @@
 import base64
+import os
 
 import sentry_sdk
-from config import DEBUG, SENTRY_DSN
+from config import DEBUG, SENTRY_DSN, STATIC_HOST
 from flask import Flask, g, request, url_for
 from metaclass.cursor import Pager
 from models.init_db import db
 from models.token import InvalidTokenError, decode_jwt
 from models.user_sys import get_user_by_id
+from router import app as router_app
 from sentry_sdk.integrations.flask import FlaskIntegration
 from utils.crypto import hmac_sha1_encode
-from views.account import app as account_app
 from views.auth import app as auth_app
 from views.chronic_disease import app as chronic_disease_app
 from views.common import ApiError
-from views.main import app as main_app
 from views.render import error
 
 
@@ -23,6 +23,11 @@ sentry_sdk.init(
 )
 
 app = Flask(__name__)
+app.jinja_env.globals['CSS_HOST'] = STATIC_HOST
+app.jinja_env.globals['JS_HOST'] = os.path.join(STATIC_HOST, 'dist')
+if DEBUG:
+    app.jinja_env.auto_reload = True
+    app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 
 @app.errorhandler(500)
@@ -94,10 +99,9 @@ def close(e):
         db.close()
 
 
-app.register_blueprint(main_app)
-app.register_blueprint(account_app)
-app.register_blueprint(auth_app)
 app.register_blueprint(chronic_disease_app)
+app.register_blueprint(router_app)
+app.register_blueprint(auth_app)
 
 
 if __name__ == '__main__':

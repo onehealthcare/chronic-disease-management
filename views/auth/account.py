@@ -10,8 +10,8 @@ from models.user_sys import (
     UserAuthProvider,
     UserDTO,
     UserNotFoundException,
-    create_oauth_user,
     create_user_by_phone,
+    get_or_create_oauth_user,
     get_user_by_id,
     get_user_by_phone,
     get_user_by_third_party_id,
@@ -50,10 +50,10 @@ def login_via_wxapp():
                                           provider=UserAuthProvider.WXAPP)
     except UserNotFoundException:
         detail: Dict[str, str] = {'session_key': data.get('session_key', '')}
-        user = create_oauth_user(name=user_name, ident='',
-                                 third_party_id=third_party_id,
-                                 provider=UserAuthProvider.WXAPP,
-                                 detail_json=simplejson.dumps(detail))
+        user = get_or_create_oauth_user(name=user_name, ident='',
+                                        third_party_id=third_party_id,
+                                        provider=UserAuthProvider.WXAPP,
+                                        detail_json=simplejson.dumps(detail))
 
     access_token, refresh_token = get_jwt(user_id=user.id, user_name=user.name)
 

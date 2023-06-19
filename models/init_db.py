@@ -13,11 +13,14 @@ from config import (
     SMS_SDK_APP_ID,
     SMS_SIGN_NAME,
     SMS_WXAPP_LOGIN_TEMPLATE_ID,
+    STRAVA_CLIENT_ID,
+    STRAVA_CLIENT_SECRET,
     WXAPP_ID,
     WXAPP_SECRET,
 )
 from libs.qcloud import QCloudCOSClient
 from libs.sms import SMSClient
+from libs.strava import StravaClient
 from playhouse.pool import PooledMySQLDatabase
 from wechatpy import WeChatClient
 from wechatpy.client.api import WeChatWxa
@@ -50,3 +53,5 @@ wxapp_sms_login_client = SMSClient(
     sign_name=SMS_SIGN_NAME,
     template_id=SMS_WXAPP_LOGIN_TEMPLATE_ID
 )
+
+strava_client = StravaClient(client_id=STRAVA_CLIENT_ID, client_secret=STRAVA_CLIENT_SECRET)
