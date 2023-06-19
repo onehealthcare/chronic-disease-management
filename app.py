@@ -8,14 +8,12 @@ from metaclass.cursor import Pager
 from models.init_db import db
 from models.token import InvalidTokenError, decode_jwt
 from models.user_sys import get_user_by_id
+from router import app as router_app
 from sentry_sdk.integrations.flask import FlaskIntegration
 from utils.crypto import hmac_sha1_encode
-from views.account import app as account_app
 from views.auth import app as auth_app
 from views.chronic_disease import app as chronic_disease_app
 from views.common import ApiError
-from views.main import app as main_app
-from views.oauth import app as oauth_app
 from views.render import error
 
 
@@ -101,11 +99,9 @@ def close(e):
         db.close()
 
 
-app.register_blueprint(main_app)
-app.register_blueprint(account_app)
-app.register_blueprint(auth_app)
 app.register_blueprint(chronic_disease_app)
-app.register_blueprint(oauth_app)
+app.register_blueprint(router_app)
+app.register_blueprint(auth_app)
 
 
 if __name__ == '__main__':

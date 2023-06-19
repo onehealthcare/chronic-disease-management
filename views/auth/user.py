@@ -1,7 +1,7 @@
 from typing import List
 
 import simplejson
-from flask import Blueprint, g, render_template, request
+from flask import Blueprint, g, request
 from models.init_db import db
 from models.user_sys import (
     DuplicatedUserNameError,
@@ -22,18 +22,8 @@ from views.middleware.auth import need_admin, need_login
 from views.render import error, ok
 
 
-app = Blueprint('main_app', __name__)
-logger = _logger('views.main')
-
-
-@app.route('/')
-def hello_world():
-    return render_template('index/index.html', title="home")
-
-
-@app.route('/login')
-def login():
-    return render_template('login/login.html', title="home")
+app = Blueprint('user_app', __name__)
+logger = _logger('views.auth.user')
 
 
 @app.route('/users/')
@@ -176,8 +166,3 @@ def _user():
 @app.route('/update_user/', methods=['POST'])
 def update_user():
     return _update_user()
-
-
-@app.route('/ping')
-def ping():
-    return 'ok'
