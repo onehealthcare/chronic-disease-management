@@ -21,3 +21,12 @@ jobs:
       - run: make test
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
+      - uses: anc95/ChatGPT-CodeReview@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          # Optional
+          LANGUAGE: Chinese
+          MODEL:
+          top_p: 1
+          temperature: 1
