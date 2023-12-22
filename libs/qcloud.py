@@ -1,6 +1,6 @@
 import simplejson
 from sts.sts import Sts
-from utils.logging import logger as _logger
+from utils.logging import file_logger as _logger
 
 
 logger = _logger('libs.qcloud')
@@ -11,7 +11,7 @@ class QCloudCOSGetCredentialError(Exception):
         self.message = message
 
 
-class QCloudCOSClient(object):
+class QCloudCOSClient:
     def __init__(self,
                  secret_id, secret_key,
                  bucket, region, allow_prefix,

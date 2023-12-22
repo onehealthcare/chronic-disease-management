@@ -38,7 +38,7 @@ def handle_404(e):
 
 @app.before_request
 def before_request():
-    # api sign
+    # api.py sign
     if request.method == 'GET':
         data = request.args
     else:

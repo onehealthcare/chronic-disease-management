@@ -15,7 +15,7 @@ from models.chronic_disease_sys import (
 )
 from models.exceptions import AccessDeniedError
 from utils.cursor import get_next_cursor
-from utils.logging import logger as _logger
+from utils.logging import file_logger as _logger
 from views.chronic_disease import app
 from views.dumps.dump_doc_package import dump_doc_package, dump_doc_packages
 from views.middleware.auth import need_login

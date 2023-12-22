@@ -5,7 +5,7 @@ from typing import Dict
 
 import pytest
 from config import LOG_PATH
-from utils import logger as _logger
+from utils import file_logger as _logger
 from utils.crypto import hmac_sha1_encode
 from utils.datetime_utils import (
     _date,

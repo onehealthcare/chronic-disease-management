@@ -15,7 +15,7 @@ from models.user_sys import (
     update_user_ident,
 )
 from utils.cursor import get_next_cursor
-from utils.logging import logger as _logger
+from utils.logging import file_logger as _logger
 from views.common import ApiError
 from views.dumps.dump_user import dump_user, dump_users
 from views.middleware.auth import need_admin, need_login

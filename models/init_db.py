@@ -1,5 +1,7 @@
 import redis
 from config import (
+    AZURE_VISION_ENDPOINT,
+    AZURE_VISION_KEY,
     MYSQL_DB,
     MYSQL_HOST,
     MYSQL_PASSWD,
@@ -16,6 +18,7 @@ from config import (
     WXAPP_ID,
     WXAPP_SECRET,
 )
+from libs.azure_vision import AzureVisionClient
 from libs.qcloud import QCloudCOSClient
 from libs.sms import SMSClient
 from playhouse.pool import PooledMySQLDatabase
@@ -50,3 +53,6 @@ wxapp_sms_login_client = SMSClient(
     sign_name=SMS_SIGN_NAME,
     template_id=SMS_WXAPP_LOGIN_TEMPLATE_ID
 )
+
+# azure client
+azure_vision = AzureVisionClient(key=AZURE_VISION_KEY, endpoint=AZURE_VISION_ENDPOINT)
