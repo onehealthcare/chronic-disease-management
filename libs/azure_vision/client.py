@@ -15,7 +15,7 @@ class AzureVisionClient:
 
     def analyze_read_from_img_url(self, img_url: str) -> Result:
         """
-        POST https://*.cognitiveservices.azure.com/computervision/imageanalysis:analyze?api.py-version=2023-02-01-preview&features=read&gender-neutral-caption=False HTTP/1.1
+        POST https://*.cognitiveservices.azure.com/computervision/imageanalysis:analyze?api-version=2023-02-01-preview&features=read&gender-neutral-caption=False HTTP/1.1
         Host: *.cognitiveservices.azure.com
         Content-Type: application/json
         Ocp-Apim-Subscription-Key: •••
