@@ -17,6 +17,9 @@ def img_ocr(img_url_or_path: str) -> str:
     if not img_url_or_path:
         raise ValueError("img_url_or_path is empty")
 
+    if not isinstance(img_url_or_path, str):
+        raise ValueError("img_url_or_path is not str")
+
     if not is_image_file(img_url_or_path):
         raise ValueError("img_url_or_path is not an image file")
 
@@ -30,6 +33,21 @@ def img_ocr(img_url_or_path: str) -> str:
             with open(img_url_or_path, 'rb') as f:
                 img_data = f.read()
             result = azure_vision.analyze_read_by_img_data(img_data=img_data)
+    except HTTPError:
+        raise RequestException()
+
+    return result.readResult.content
+
+
+def img_data_ocr(img_data: bytes) -> str:
+    if not img_data:
+        raise ValueError("img_url_or_path is empty")
+
+    if not isinstance(img_data, bytes):
+        raise ValueError("img_data is not bytes")
+
+    try:
+        result = azure_vision.analyze_read_by_img_data(img_data=img_data)
     except HTTPError:
         raise RequestException()
 
