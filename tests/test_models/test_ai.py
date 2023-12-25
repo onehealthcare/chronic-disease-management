@@ -34,7 +34,7 @@ def azure_vision_mock():
 
 
 @pytest.fixture
-def azure_vision_errormock():
+def azure_vision_error_mock():
     def _azure_vision_mock(*arg, **kwargs):
         raise HTTPError()
     setattr(azure_vision, 'analyze_read_from_img_url', _azure_vision_mock)
@@ -78,7 +78,7 @@ def test_img_ocr(azure_vision_mock):
     os.remove(img_path)
 
 
-def test_img_ocr_error(azure_vision_mock):
+def test_img_ocr_error(azure_vision_error_mock):
     img_url = "https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png"
     img_path = "test.png"
     if os.path.exists(img_path):
