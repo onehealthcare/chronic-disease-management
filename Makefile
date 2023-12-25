@@ -21,6 +21,7 @@ restart:
 test:
 	docker build . -t tonghs/cdm
 	docker-compose -f docker-compose.yml -f docker-compose.test.yml run --rm test
+	docker-compose -f docker-compose.yml -f docker-compose.test.yml down --remove-orphans
 
 deploy:
 	git pull --rebase && fab deploy

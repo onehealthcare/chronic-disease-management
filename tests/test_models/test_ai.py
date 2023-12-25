@@ -25,7 +25,7 @@ mocked_result: Result = Result(
 
 @pytest.fixture
 def azure_vision_mock():
-    def _azure_vision_mock():
+    def _azure_vision_mock(*arg, **kwargs):
         return mocked_result
     setattr(azure_vision, 'analyze_read_from_img_url', _azure_vision_mock)
     setattr(azure_vision, 'analyze_read_by_img_data', _azure_vision_mock)
@@ -34,6 +34,8 @@ def azure_vision_mock():
 def test_img_ocr(azure_vision_mock):
     img_url = "https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png"
     img_path = "test.png"
+    if os.path.exists(img_path):
+        os.remove(img_path)
 
     with pytest.raises(ValueError):
         img_ocr("")
@@ -44,7 +46,7 @@ def test_img_ocr(azure_vision_mock):
     with pytest.raises(ValueError):
         img_ocr("https://baidu.com")
 
-    with pytest.raises(FileExistsError):
+    with pytest.raises(FileNotFoundError):
         img_ocr(img_path)
 
     r = requests.get(img_url)
