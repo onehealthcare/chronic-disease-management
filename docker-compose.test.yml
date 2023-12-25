@@ -14,7 +14,7 @@ services:
       - MYSQL_PORT=3306
       - MYSQL_USER=root
       - MYSQL_PASSWD=tonghs
-      - MYSQL_DB=web_template
+      - MYSQL_DB=cdm
       - REDIS_DB=test-redis
     depends_on:
       - db
