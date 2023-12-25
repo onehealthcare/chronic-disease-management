@@ -43,7 +43,7 @@ repos:
         name: Fix imports order
         args:
           - --verbose
-        exclude: ^views/chronic_disease/__init__.py$
+        exclude: ^views/.*?/__init__.py$
   - repo: https://github.com/xiachufang/py-find-injection
     rev: 2cb9f591fbaf2e9c1d15dde49e4239c12971e0c5
     hooks:

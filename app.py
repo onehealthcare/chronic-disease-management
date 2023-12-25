@@ -13,6 +13,7 @@ from views.account import app as account_app
 from views.auth import app as auth_app
 from views.chronic_disease import app as chronic_disease_app
 from views.common import ApiError
+from views.fujix import app as fujix_app
 from views.main import app as main_app
 from views.render import error
 
@@ -39,9 +40,13 @@ def handle_404(e):
 @app.before_request
 def before_request():
     # api sign
+    content_type = request.headers.get('Content-Type')
+
     if request.method == 'GET':
         data = request.args
-    else:
+    elif request.method == 'POST' and 'application/json' not in content_type:
+        data = request.form
+    elif request.method == 'POST' and 'application/json' in content_type:
         data = request.json
 
     if not DEBUG:
@@ -98,6 +103,7 @@ app.register_blueprint(main_app)
 app.register_blueprint(account_app)
 app.register_blueprint(auth_app)
 app.register_blueprint(chronic_disease_app)
+app.register_blueprint(fujix_app)
 
 
 if __name__ == '__main__':

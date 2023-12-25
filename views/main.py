@@ -129,7 +129,7 @@ def _update_user():
 @need_admin
 def _delete_user():
     data = request.get_json()
-    logger.info(f"delete_user,requeset,{simplejson.dumps(data)}")
+    logger.info(f"delete_user,request,{simplejson.dumps(data)}")
     data = request.get_json()
     try:
         user_id: int = int(data.get('user_id', '0'))
