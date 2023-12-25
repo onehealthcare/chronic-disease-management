@@ -37,9 +37,7 @@ def handle_404(e):
     return error(error='Not Found', status_code=404)
 
 
-@app.before_request
-def before_request():
-    # api sign
+def _get_data():
     content_type = request.headers.get('Content-Type')
 
     if request.method == 'GET':
@@ -48,16 +46,10 @@ def before_request():
         data = request.form
     elif request.method == 'POST' and 'application/json' in content_type:
         data = request.json
+    return data
 
-    if not DEBUG:
-        if request.path != url_for('main_app.ping'):
-            if 'sign' not in data or hmac_sha1_encode(data) != data.get('sign'):
-                return error(ApiError.invalid_api_sign)
 
-    # db conn
-    if db.is_closed():
-        db.connect()
-
+def _auth():
     # set g.me
     g.me = None
 
@@ -72,6 +64,8 @@ def before_request():
         except InvalidTokenError:
             pass
 
+
+def _set_pager(data):
     # pager
     if request.method == 'GET':
         size: int = 20
@@ -91,6 +85,23 @@ def before_request():
             pass
 
         g.pager = Pager(cursor=cursor, size=size)
+
+
+@app.before_request
+def before_request():
+    # api sign
+    data = _get_data()
+    if not DEBUG:
+        if request.path != url_for('main_app.ping'):
+            if 'sign' not in data or hmac_sha1_encode(data) != data.get('sign'):
+                return error(ApiError.invalid_api_sign)
+
+    # db conn
+    if db.is_closed():
+        db.connect()
+
+    _auth()
+    _set_pager(data)
 
 
 @app.teardown_request
