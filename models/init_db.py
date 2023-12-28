@@ -1,5 +1,7 @@
 import redis
 from config import (
+    AZURE_OPEN_AI_ENDPOINT,
+    AZURE_OPEN_AI_KEY,
     AZURE_VISION_ENDPOINT,
     AZURE_VISION_KEY,
     MYSQL_DB,
@@ -19,6 +21,7 @@ from config import (
     WXAPP_SECRET,
 )
 from libs.azure_vision import AzureVisionClient
+from libs.openai.client import OpenAIClient
 from libs.qcloud import QCloudCOSClient
 from libs.sms import SMSClient
 from playhouse.pool import PooledMySQLDatabase
@@ -56,3 +59,12 @@ wxapp_sms_login_client = SMSClient(
 
 # azure client
 azure_vision = AzureVisionClient(key=AZURE_VISION_KEY, endpoint=AZURE_VISION_ENDPOINT)
+
+# azure open ai
+azure_open_ai = OpenAIClient(
+    api_type='azure',
+    api_base=f'https://{AZURE_OPEN_AI_ENDPOINT}/',
+    api_engine="t-gpt-35-turbo",
+    api_version='2023-12-01-preview',
+    api_key=AZURE_OPEN_AI_KEY
+)

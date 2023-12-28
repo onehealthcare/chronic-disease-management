@@ -12,5 +12,4 @@ qcloud-python-sts==3.0.5
 redis==3.5.3
 simplejson==3.17.6
 tencentcloud-sdk-python==3.0.882
-openai==1.6.0
 requests==2.28.1
