@@ -58,7 +58,7 @@ wxapp_sms_login_client = SMSClient(
 )
 
 # azure client
-azure_vision = AzureVisionClient(key=AZURE_VISION_KEY, endpoint=AZURE_VISION_ENDPOINT)
+azure_vision = AzureVisionClient(key=AZURE_VISION_KEY, endpoint=AZURE_VISION_ENDPOINT, timeout=4)
 
 # azure open ai
 azure_open_ai = OpenAIClient(
@@ -66,5 +66,6 @@ azure_open_ai = OpenAIClient(
     api_base=f'https://{AZURE_OPEN_AI_ENDPOINT}/',
     api_engine="t-gpt-35-turbo",
     api_version='2023-12-01-preview',
-    api_key=AZURE_OPEN_AI_KEY
+    api_key=AZURE_OPEN_AI_KEY,
+    timeout=4
 )

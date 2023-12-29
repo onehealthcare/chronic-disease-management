@@ -7,11 +7,12 @@ logger = _logger('libs.azure_vision.client')
 
 
 class AzureVisionClient:
-    def __init__(self, key: str, endpoint: str):
+    def __init__(self, key: str, endpoint: str, timeout: int = 2):
         self.key = key
         self.endpoint = endpoint
         self.analyze_uri = "/computervision/imageanalysis:analyze"
         self.api_version = "2023-02-01-preview"
+        self.timeout = timeout
 
     def analyze_read_from_img_url(self, img_url: str) -> Result:
         """
@@ -30,7 +31,7 @@ class AzureVisionClient:
             'Content-Type': 'application/json'
         }
         url = f"https://{self.endpoint}{self.analyze_uri}?api-version={self.api_version}&features=read"
-        resp = requests.post(url, headers=headers, json={"url": img_url})
+        resp = requests.post(url, headers=headers, json={"url": img_url}, timeout=self.timeout)
         if not resp.ok:
             logger.error(f"analyze_read_by_img_data, error, status_code:{resp.status_code} - resp:{resp.text} - img_url:{img_url}")
             resp.raise_for_status()
@@ -47,7 +48,7 @@ class AzureVisionClient:
             'Content-Type': 'application/octet-stream'
         }
         url = f"https://{self.endpoint}{self.analyze_uri}?api-version={self.api_version}&features=read"
-        resp = requests.post(url, headers=headers, data=img_data)
+        resp = requests.post(url, headers=headers, data=img_data, timeout=self.timeout)
 
         if not resp.ok:
             logger.error(f"analyze_read_from_img_data, error, status_code:{resp.status_code} - resp:{resp.text}")
