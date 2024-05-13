@@ -13,6 +13,7 @@ from views.account import app as account_app
 from views.auth import app as auth_app
 from views.chronic_disease import app as chronic_disease_app
 from views.common import ApiError
+from views.fujix import app as fujix_app
 from views.main import app as main_app
 from views.render import error
 
@@ -36,23 +37,19 @@ def handle_404(e):
     return error(error='Not Found', status_code=404)
 
 
-@app.before_request
-def before_request():
-    # api sign
+def _get_data():
+    content_type = request.headers.get('Content-Type')
+
     if request.method == 'GET':
         data = request.args
-    else:
+    elif request.method == 'POST' and 'application/json' not in content_type:
+        data = request.form
+    elif request.method in ('POST', 'DELETE', 'PUT') and 'application/json' in content_type:
         data = request.json
+    return data
 
-    if not DEBUG:
-        if request.path != url_for('main_app.ping'):
-            if 'sign' not in data or hmac_sha1_encode(data) != data.get('sign'):
-                return error(ApiError.invalid_api_sign)
 
-    # db conn
-    if db.is_closed():
-        db.connect()
-
+def _auth():
     # set g.me
     g.me = None
 
@@ -67,6 +64,8 @@ def before_request():
         except InvalidTokenError:
             pass
 
+
+def _set_pager(data):
     # pager
     if request.method == 'GET':
         size: int = 20
@@ -88,6 +87,23 @@ def before_request():
         g.pager = Pager(cursor=cursor, size=size)
 
 
+@app.before_request
+def before_request():
+    # api sign
+    data = _get_data()
+    if not DEBUG:
+        if request.path != url_for('main_app.ping'):
+            if 'sign' not in data or hmac_sha1_encode(data) != data.get('sign'):
+                return error(ApiError.invalid_api_sign)
+
+    # db conn
+    if db.is_closed():
+        db.connect()
+
+    _auth()
+    _set_pager(data)
+
+
 @app.teardown_request
 def close(e):
     if not db.is_closed():
@@ -98,6 +114,7 @@ app.register_blueprint(main_app)
 app.register_blueprint(account_app)
 app.register_blueprint(auth_app)
 app.register_blueprint(chronic_disease_app)
+app.register_blueprint(fujix_app)
 
 
 if __name__ == '__main__':

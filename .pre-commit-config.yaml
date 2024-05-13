@@ -43,7 +43,7 @@ repos:
         name: Fix imports order
         args:
           - --verbose
-        exclude: ^views/chronic_disease/__init__.py$
+        exclude: ^views/.*?/__init__.py$
   - repo: https://github.com/xiachufang/py-find-injection
     rev: 2cb9f591fbaf2e9c1d15dde49e4239c12971e0c5
     hooks:
@@ -60,13 +60,16 @@ repos:
           - --select=W504
         exclude: ^generated/.*$
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v0.782
+    rev: v1.4.1
     hooks:
       - id: mypy
         name: Check type annotations w/ mypy
         args:
+          - --install-types
+          - --non-interactive
           - --txt-report=ci/
           - --ignore-missing-imports
+          - --explicit-package-bases
         additional_dependencies:
           - lxml
           - pydantic

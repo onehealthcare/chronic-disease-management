@@ -15,7 +15,7 @@ from models.chronic_disease_sys import (
 )
 from models.exceptions import AccessDeniedError
 from utils.cursor import get_next_cursor
-from utils.logging import logger as _logger
+from utils.logging import file_logger as _logger
 from views.chronic_disease import app
 from views.dumps.dump_doc_package import dump_doc_package, dump_doc_packages
 from views.middleware.auth import need_login
@@ -68,7 +68,7 @@ def doc_package():
     user_id: int = g.me.id
     if request.method == 'POST':
         data = request.get_json()
-        logger.info(f"upload_docs,requeset,{user_id}-{simplejson.dumps(data)}")
+        logger.info(f"upload_docs,request,{user_id}-{simplejson.dumps(data)}")
 
         idents: List[str] = data.get('idents', [])
         if not idents:
@@ -90,7 +90,7 @@ def doc_package():
         return ok({'doc_package': dump_doc_package(doc_package)})
     elif request.method == 'DELETE':
         data = request.get_json()
-        logger.info(f"delete_doc_package,requeset,{user_id}-{simplejson.dumps(data)}")
+        logger.info(f"delete_doc_package,request,{user_id}-{simplejson.dumps(data)}")
         try:
             package_id: int = int(data.get('package_id', '0'))
         except (ValueError, TypeError):
@@ -110,7 +110,7 @@ def doc_package():
 def update_doc_package():
     user_id: int = g.me.id
     data = request.get_json()
-    logger.info(f"update_doc_package,requeset,{user_id}-{simplejson.dumps(data)}")
+    logger.info(f"update_doc_package,request,{user_id}-{simplejson.dumps(data)}")
 
     try:
         update_doc_package_by_user_id_and_package_id(user_id, data.get('id', 0), data)

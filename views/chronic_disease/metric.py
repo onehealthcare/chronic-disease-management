@@ -23,7 +23,7 @@ from models.chronic_disease_sys import (
     set_user_metric_chart_type,
     set_user_metric_ref_value,
 )
-from utils.logging import logger as _logger
+from utils.logging import file_logger as _logger
 from views.chronic_disease import app
 from views.dumps.dump_metric import (
     dump_metric,

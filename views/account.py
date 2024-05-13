@@ -18,7 +18,7 @@ from models.user_sys import (
 )
 from models.user_sys.api import bind_phone
 from models.wxapp import InvalidAuthCodeError, code_to_session
-from utils import logger as _logger
+from utils import file_logger as _logger
 from views.common import ApiError
 from views.dumps.dump_account import dump_account
 from views.middleware.auth import need_login

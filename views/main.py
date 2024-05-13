@@ -15,7 +15,7 @@ from models.user_sys import (
     update_user_ident,
 )
 from utils.cursor import get_next_cursor
-from utils.logging import logger as _logger
+from utils.logging import file_logger as _logger
 from views.common import ApiError
 from views.dumps.dump_user import dump_user, dump_users
 from views.middleware.auth import need_admin, need_login
@@ -129,7 +129,7 @@ def _update_user():
 @need_admin
 def _delete_user():
     data = request.get_json()
-    logger.info(f"delete_user,requeset,{simplejson.dumps(data)}")
+    logger.info(f"delete_user,request,{simplejson.dumps(data)}")
     data = request.get_json()
     try:
         user_id: int = int(data.get('user_id', '0'))
