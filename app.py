@@ -44,7 +44,7 @@ def _get_data():
         data = request.args
     elif request.method == 'POST' and 'application/json' not in content_type:
         data = request.form
-    elif request.method == 'POST' and 'application/json' in content_type:
+    elif request.method in ('POST', 'DELETE', 'PUT') and 'application/json' in content_type:
         data = request.json
     return data
 
