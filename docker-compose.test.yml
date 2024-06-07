@@ -13,9 +13,9 @@ services:
       - MYSQL_HOST=test-db
       - MYSQL_PORT=3306
       - MYSQL_USER=root
-      - MYSQL_PASSWD=tonghs
-      - MYSQL_DB=cdm
-      - REDIS_DB=test-redis
+      - MYSQL_PASSWORD=tonghs
+      - MYSQL_DATABASE=cdm
+      - REDIS_HOST=test-redis
     depends_on:
       - db
       - redis

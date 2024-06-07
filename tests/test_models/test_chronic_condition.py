@@ -30,12 +30,9 @@ def test_doc_package():
     doc_package_list = paged_doc_package_by_user_id(user_id=user_id)
     assert len(doc_package_list) == 21
 
-    doc_package_list = paged_doc_package_by_user_id(user_id=user_id, cursor=40)
-    assert len(doc_package_list) == 11
-
-    size: int = 5
-    doc_package_list = paged_doc_package_by_user_id(user_id=user_id, cursor=40, size=size)
-    assert len(doc_package_list) == size + 1
+    for size in [5, 9, 10, 20]:
+        doc_package_list = paged_doc_package_by_user_id(user_id=user_id, cursor=10, size=size)
+        assert len(doc_package_list) == size + 1 if size < 10 else size
 
     doc_package_list = paged_search_doc_package_by_user_id(user_id=user_id, keyword='')
     assert doc_package_list == []

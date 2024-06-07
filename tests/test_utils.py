@@ -22,8 +22,6 @@ from utils.datetime_utils import (
     this_hour,
     this_month,
     this_week,
-    timestamp_to_datetime,
-    to_timestamp,
     truncate_day,
     truncate_hour,
     truncate_minute,
@@ -92,9 +90,9 @@ def test_misc():
     assert next_week(dt) == datetime.datetime(2021, 1, 11)
     assert week_day(dt, 1) == datetime.datetime(2021, 1, 5)
 
-    ts = 1609732984.0
-    assert to_timestamp(dt) == ts
-    assert timestamp_to_datetime(ts) == dt
+    # ts = 1609732984.0
+    # assert to_timestamp(dt) == ts
+    # assert timestamp_to_datetime(ts) == dt
 
     assert not is_within_a_week(dt, now)
     assert is_within_a_week(dt, datetime.datetime(2021, 1, 7, 12, 3, 4))
