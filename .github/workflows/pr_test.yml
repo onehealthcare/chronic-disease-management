@@ -37,7 +37,7 @@ jobs:
           --health-retries 3
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python
+      - name: set up python
         uses: actions/setup-python@v2
         with:
           python-version: "3.7"
@@ -62,7 +62,8 @@ jobs:
           mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -h db_host -e "DROP DATABASE IF EXISTS ${MYSQL_DATABASE};"
           mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -h db_host -e "CREATE DATABASE ${MYSQL_DATABASE} CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;"
           mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -h db_host $MYSQL_DATABASE <ci/tables.sql
-      - run: |
+      - name: run test
+        run: |
           pip3 install pytest pytest-mock pytest-cov freezegun
           py.test --cache-clear -vv -s --cov=models --cov=utils --cov-report=xml tests/
       - name: Upload coverage reports to Codecov
