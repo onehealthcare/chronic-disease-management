@@ -15,7 +15,7 @@ services:
      - MYSQL_ROOT_PASSWORD=tonghs
      - MYSQL_USER=tonghs
      - MYSQL_PASSWORD=tonghs
-     - MYSQL_DB=web_template
+     - MYSQL_DATABASE=web_template
     networks:
       default:
         aliases:
