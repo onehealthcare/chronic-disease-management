@@ -37,6 +37,10 @@ jobs:
           --health-retries 3
     steps:
       - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.7"
       - run: |
           sed -i 's/ipython//g' requirements.txt
           sed -i 's/gunicorn==.*//g' requirements.txt
