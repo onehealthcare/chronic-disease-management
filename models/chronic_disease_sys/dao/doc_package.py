@@ -33,9 +33,12 @@ class DocPackageDAO(Base):
 
     @classmethod
     def paged_by_user_id(cls, user_id: int, cursor: int, size: int = 20) -> List['DocPackageDAO']:
-        return cls.select().where(cls.user_id == user_id,
-                                  cls.status == CommonStatus.NORMAL,
-                                  cls.id >= cursor).order_by(cls.created_at.desc()).limit(size + 1)
+        q = cls.select().where(cls.user_id == user_id, cls.status == CommonStatus.NORMAL)
+        if cursor:
+            q = q.where(cls.id <= cursor)
+        q = q.order_by(cls.id.desc()).limit(size + 1)
+
+        return list(q)
 
     @property
     def idents(self) -> List['DocPackageIdentDAO']:
