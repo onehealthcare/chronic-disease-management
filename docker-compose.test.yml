@@ -15,7 +15,7 @@ services:
       - MYSQL_USER=root
       - MYSQL_PASSWORD=tonghs
       - MYSQL_DATABASE=cdm
-      - REDIS_DB=test-redis
+      - REDIS_HOST=test-redis
     depends_on:
       - db
       - redis

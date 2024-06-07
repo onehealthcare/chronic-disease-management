@@ -67,6 +67,7 @@ jobs:
         env:
           LOG_PATH: "./log/"
           MYSQL_HOST: "db_host"
+          REDIS_HOST: "db_host"
           MYSQL_USER: "user"
           MYSQL_PASSWORD: "pwd"
           MYSQL_DATABASE: "db"

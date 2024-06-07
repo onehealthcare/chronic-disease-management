@@ -43,8 +43,8 @@ QCLOUD_CDM_COS_URL_PATTERN = 'https://{}/{}{}'.format(
 )
 
 # redis
-REDIS_DB = os.environ.get('REDIS_DB', 'test-redis')
-REDIS_URL = f'redis://{REDIS_DB}/0'
+REDIS_HOST = os.environ.get('REDIS_HOST', 'test-redis')
+REDIS_URL = f'redis://{REDIS_HOST}/0'
 
 # qcloud SMS
 SMS_SDK_APP_ID = "<SMS_SDK_APP_ID>"
