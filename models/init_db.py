@@ -6,7 +6,7 @@ from config import (
     AZURE_VISION_KEY,
     MYSQL_DATABASE,
     MYSQL_HOST,
-    MYSQL_PASSWD,
+    MYSQL_PASSWORD,
     MYSQL_PORT,
     MYSQL_USER,
     QCLOUD_CDM_COS_BUCKET,
@@ -30,7 +30,7 @@ from wechatpy.client.api import WeChatWxa
 
 
 db = PooledMySQLDatabase(
-    MYSQL_DATABASE, user=MYSQL_USER, password=MYSQL_PASSWD,
+    MYSQL_DATABASE, user=MYSQL_USER, password=MYSQL_PASSWORD,
     host=MYSQL_HOST, port=MYSQL_PORT
 )
 

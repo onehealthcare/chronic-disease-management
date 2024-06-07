@@ -9,7 +9,7 @@ HOST = "https://web.nps.motn.top"
 MYSQL_HOST = os.environ.get('MYSQL_HOST', 'db')
 MYSQL_PORT = int(os.environ.get('MYSQL_PORT', 3306))
 MYSQL_USER = os.environ.get('MYSQL_USER', 'tonghs')
-MYSQL_PASSWD = os.environ.get('MYSQL_PASSWD', 'tonghs')
+MYSQL_PASSWORD = os.environ.get('MYSQL_PASSWORD', 'tonghs')
 MYSQL_DATABASE = os.environ.get('MYSQL_DATABASE', 'web-template')
 
 # sentry
