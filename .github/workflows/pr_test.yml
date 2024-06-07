@@ -7,6 +7,36 @@ on:
 jobs:
   run-test:
     runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis:4
+        ports:
+          - 6379:6379
+        # Set health checks to wait until redis has started
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 3
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_HOST: "%"
+          MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+          TZ: "Asia/Shanghai"
+          MYSQL_HOST: "0.0.0.0"
+          MYSQL_PORT: "3306"
+          MYSQL_ROOT_PASSWORD: "tonghs"
+          MYSQL_USER: "tonghs"
+          MYSQL_PASSWORD: "tonghs"
+          MYSQL_DB: "web_template"
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 3
     steps:
       - uses: actions/checkout@v2
       - run: |
@@ -19,6 +49,21 @@ jobs:
           sed -i 's/psutil==.*//g' requirements.txt
           sed -i 's/--cov-report=html/--cov-report=xml/g' ci/run_test.sh
           cp config.sample.py config.py &&  docker-compose -f docker-compose.yml up -d
-      - run: make test
+      - name: init db
+        env:
+          MYSQL_USER: "tonghs"
+          MYSQL_PASSWORD: "tonghs"
+          MYSQL_DB: "web_template"
+        run: |
+          # init ci hosts
+          cat <<EOF | sudo tee -a /etc/hosts
+          127.0.0.1 db_host
+          EOF
+          mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -h db_host -e "DROP DATABASE IF EXISTS ${MYSQL_DATABASE};"
+          mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -h db_host -e "CREATE DATABASE ${MYSQL_DATABASE} CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;"
+          mysql -u $MYSQL_USER -p$MYSQL_PASS
+      - run: |
+          pip3 install pytest pytest-mock pytest-cov freezegun
+          py.test --cache-clear -vv -s --cov=models --cov=utils --cov-report=html tests/
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
