@@ -2,6 +2,7 @@ FROM ubuntu:18.04
 
 # MAINTAINER tonghs <tonghuashuai@gmail.com>
 
+ENV CODEDIR=/opt/code/
 # 更新源 && 安装必要软件
 # COPY ci/sources.list /etc/apt/sources.list
 COPY requirements.txt /requirements.txt
@@ -20,5 +21,6 @@ RUN echo "Asia/Shanghai" > /etc/timezone && \
 #   pip3 install -r /requirements.txt -i http://mirrors.aliyun.com/pypi/simple/ --extra-index-url https://pypi.python.org/simple --trusted-host mirrors.aliyun.com && \
   pip3 install -r /requirements.txt && \
   rm -rf /root/.cache && rm -rf /tmp/*
-WORKDIR /opt/code/
+WORKDIR "${CODEDIR}"
+COPY . "${CODEDIR}"
 CMD ["sh", "-c", "gunicorn app:app --bind=$GUNICORN_BIND_ADDRESS --workers=$GUNICORN_WORKERS --log-level=$GUNICORN_LOG_LEVEL $GUNICORN_RELOAD --access-logfile=$GUNICORN_ACCESS_LOGFILE --worker-class gevent"]
