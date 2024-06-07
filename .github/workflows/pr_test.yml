@@ -40,15 +40,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: |
-          sed -i 's/COPY ci\/sources.list \/etc\/apt\/sources.list//g' Dockerfile
-          sed -i 's/-i http:\/\/mirrors.aliyun.com\/pypi\/simple\/ --extra-index-url https:\/\/pypi.python.org\/simple --trusted-host mirrors.aliyun.com/ /g' Dockerfile
-          sed -i 's/-i http:\/\/mirrors.aliyun.com\/pypi\/simple\/ --extra-index-url https:\/\/pypi.python.org\/simple --trusted-host mirrors.aliyun.com/ /g' docker-compose.test.yml
           sed -i 's/ipython//g' requirements.txt
           sed -i 's/gunicorn==.*//g' requirements.txt
           sed -i 's/gevent==.*//g' requirements.txt
           sed -i 's/psutil==.*//g' requirements.txt
-          sed -i 's/--cov-report=html/--cov-report=xml/g' ci/run_test.sh
-          cp config.sample.py config.py &&  docker-compose -f docker-compose.yml up -d
+          cp config.sample.py config.py
       - name: init db
         env:
           MYSQL_USER: "tonghs"
@@ -59,11 +55,11 @@ jobs:
           cat <<EOF | sudo tee -a /etc/hosts
           127.0.0.1 db_host
           EOF
-          mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -h db_host -e "DROP DATABASE IF EXISTS ${MYSQL_DATABASE};"
-          mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -h db_host -e "CREATE DATABASE ${MYSQL_DATABASE} CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;"
+          mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -h db_host -e "DROP DATABASE IF EXISTS ${MYSQL_DB};"
+          mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -h db_host -e "CREATE DATABASE ${MYSQL_DB} CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;"
           mysql -u $MYSQL_USER -p$MYSQL_PASS
       - run: |
           pip3 install pytest pytest-mock pytest-cov freezegun
-          py.test --cache-clear -vv -s --cov=models --cov=utils --cov-report=html tests/
+          py.test --cache-clear -vv -s --cov=models --cov=utils --cov-report=xml tests/
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
