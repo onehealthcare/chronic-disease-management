@@ -70,6 +70,7 @@ jobs:
           MYSQL_PASSWORD: "pwd"
           MYSQL_DATABASE: "db"
         run: |
+          echo $MYSQL_HOST
           mkdir -p $LOG_PATH
           pip3 install pytest pytest-mock pytest-cov freezegun
           py.test --cache-clear -vv -s --cov=models --cov=utils --cov-report=xml tests/

@@ -66,6 +66,10 @@ jobs:
       - name: run test
         env:
           LOG_PATH: "./log/"
+          MYSQL_HOST: "db_host"
+          MYSQL_USER: "user"
+          MYSQL_PASSWORD: "pwd"
+          MYSQL_DATABASE: "db"
         run: |
           mkdir -p $LOG_PATH
           pip3 install pytest pytest-mock pytest-cov freezegun
