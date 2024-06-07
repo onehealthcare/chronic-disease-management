@@ -66,6 +66,7 @@ jobs:
         env:
           LOG_PATH: "./log/"
         run: |
+          echo $LOG_PATH
           mkdir -p $LOG_PATH
           pip3 install pytest pytest-mock pytest-cov freezegun
           py.test --cache-clear -vv -s --cov=models --cov=utils --cov-report=xml tests/
