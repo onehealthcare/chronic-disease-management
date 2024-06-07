@@ -27,7 +27,7 @@ jobs:
           MYSQL_PORT: "3306"
           MYSQL_USER: "user"
           MYSQL_PASSWORD: "pwd"
-          MYSQL_DB: "db"
+          MYSQL_DATABASE: "db"
         ports:
           - 3306:3306
         options: >-
@@ -47,15 +47,15 @@ jobs:
         env:
           MYSQL_USER: "user"
           MYSQL_PASSWORD: "pwd"
-          MYSQL_DB: "db"
+          MYSQL_DATABASE: "db"
         run: |
           # init ci hosts
           cat <<EOF | sudo tee -a /etc/hosts
           127.0.0.1 db_host
           EOF
-          mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -h db_host -e "DROP DATABASE IF EXISTS ${MYSQL_DB};"
-          mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -h db_host -e "CREATE DATABASE ${MYSQL_DB} CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;"
-          mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -h db_host $MYSQL_DB <ci/tables.sql
+          mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -h db_host -e "DROP DATABASE IF EXISTS ${MYSQL_DATABASE};"
+          mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -h db_host -e "CREATE DATABASE ${MYSQL_DATABASE} CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;"
+          mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -h db_host $MYSQL_DATABASE <ci/tables.sql
       - run: |
           pip3 install pytest pytest-mock pytest-cov freezegun
           py.test --cache-clear -vv -s --cov=models --cov=utils --cov-report=xml tests/
