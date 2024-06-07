@@ -63,7 +63,10 @@ jobs:
           mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -h db_host -e "CREATE DATABASE ${MYSQL_DATABASE} CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;"
           mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -h db_host $MYSQL_DATABASE <ci/tables.sql
       - name: run test
+        env:
+          LOG_PATH: "./log/"
         run: |
+          mkdir -p $LOG_PATH
           pip3 install pytest pytest-mock pytest-cov freezegun
           py.test --cache-clear -vv -s --cov=models --cov=utils --cov-report=xml tests/
       - name: Upload coverage reports to Codecov
