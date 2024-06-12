@@ -38,9 +38,10 @@ QCLOUD_CDM_COS_BUCKET = os.environ.get('QCLOUD_CDM_COS_BUCKET', '')
 QCLOUD_CDM_COS_REGION = os.environ.get('QCLOUD_CDM_COS_REGION', '')
 QCLOUD_CDM_COS_DOMAIN = os.environ.get('QCLOUD_CDM_COS_DOMAIN', '')
 QCLOUD_CDM_COS_URL = 'https://{}/{}{}'.format(QCLOUD_CDM_COS_DOMAIN, '{}', '?imageView2/2/w/1024/q/85')
-QCLOUD_CDM_COS_URL_PATTERN = 'https://{}/{}{}'.format(
-    QCLOUD_CDM_COS_DOMAIN, '{}', '?imageMogr2/crop/#width#x#height#/gravity/center/rquality/85'
-)
+QCLOUD_CDM_COS_URL_PATTERN = 'https://{}/{}{}'.format(QCLOUD_CDM_COS_DOMAIN, '{}', '?imageView2/2/h/#height/q/90')
+# QCLOUD_CDM_COS_URL_PATTERN = 'https://{}/{}{}'.format(
+#     QCLOUD_CDM_COS_DOMAIN, '{}', '?imageMogr2/crop/#width#x#height#/gravity/center/rquality/90'
+# )
 
 # redis
 REDIS_HOST = os.environ.get('REDIS_HOST', 'test-redis')
